@@ -28,8 +28,9 @@ public:
 	void setIdentificationNumber(string identificationNumber);
 	Department* getDepartments(int indeks);
 	void pushDepartments(Department *department);
-
-    void ucitajPodatke();
+    void setDepartments(vector<Department*> departments);
+    void readData1(string path);
+    string toString() const;
 
 };
 

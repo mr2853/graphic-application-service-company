@@ -14,6 +14,7 @@ private:
 
 public:
     Accountant();
+    Accountant(string in);
     Accountant(string name, string lastname, Date *dateBirth, double salary, string bodyIssuedPermit, double maxAmountCompanyIncome);
     ~Accountant();
 

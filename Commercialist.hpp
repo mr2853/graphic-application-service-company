@@ -14,10 +14,12 @@ private:
 public:
     Commercialist();
     ~Commercialist();
+    Commercialist(string in);
     Commercialist(string name, string lastname, Date *dateBirth, double salary);
 
     string getContact(int indeks);
     void pushContact(string contact);
+    void setBusinessContact(vector<string> *businessContact);
 };
 
 #endif

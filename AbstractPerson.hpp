@@ -15,13 +15,15 @@ private:
 
 public:
     AbstractPerson();
-    ~AbstractPerson();
+    virtual ~AbstractPerson();
     AbstractPerson(string name, string lastname, Date *dateBirth);
 
-    virtual string getName() = 0;
-	virtual void setName(string name) = 0;
-	virtual string getLastname() = 0;
-	virtual void setLastname(string lastname) = 0;
+    virtual string getName();
+	virtual void setName(string name);
+	virtual string getLastname();
+	virtual void setLastname(string lastname);
+    virtual Date* getDateBirth();
+	virtual void setDateBirth(Date *dateBirth);
 };
 
 #endif

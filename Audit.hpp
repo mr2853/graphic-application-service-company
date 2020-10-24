@@ -13,15 +13,14 @@ private:
 public:
     Audit();
     ~Audit();
+    Audit(string in);
     Audit(Auditor* auditor, Date* date);
 
     Auditor* getAuditor();
-
 	void setAuditor(Auditor *auditor);
-
 	Date* getDate();
-
 	void setDate(Date *date);
+    //static vector<Audit*> readData(string in);
 };
 
 
