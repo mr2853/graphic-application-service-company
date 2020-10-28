@@ -1,15 +1,14 @@
 #include "AuditorTable.hpp"
 
-AuditorTable::AuditorTable(int x, int y, int w, int h,
-                         ArrayAuditors *auditors) : Fl_Table_Row(x, y, w, h)
+AuditorTable::AuditorTable(int x, int y, int w, int h, ArrayAuditors *auditors) : Fl_Table_Row(x, y, w, h), auditors(auditors)
 {
-    this->auditors = auditors;
+    this->auditors = new ArrayAuditors();
     this->end();
     col_resize_min(10);
     col_resize(1);
     col_header(1);
     row_header(1);
-    this->auditors->subscribeListener(this);
+    auditors->subscribeListener(this);
 }
 void AuditorTable::draw_cell(TableContext context, int red, int kolona, int x, int y, int w, int h)
 {
@@ -74,8 +73,14 @@ AuditorTable::~AuditorTable()
 {
 }
 void AuditorTable::add(Auditor *r)
-  {
+{
     this->auditors->add(r);
     rows(auditors->numberOfRows());
     cols(auditors->numberOfColumns());
-  }
+}
+/*void AuditorTable::removeAuditor(Auditor *r)
+{
+    this->auditors->removeAuditorsElem(r);
+    rows(auditors->numberOfRows());
+    cols(auditors->numberOfColumns());
+}*/

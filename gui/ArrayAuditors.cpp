@@ -30,10 +30,10 @@ void ArrayAuditors::pushRow(int row, Auditor* elem){
     AbstractTableModel<Auditor *>::pushRow(row, elem);
 };
 
-void ArrayAuditors::removeRow(int indeks)
+void ArrayAuditors::removeRow(int index)
 {
-    auditors->erase(auditors->begin() + indeks);
-    AbstractTableModel::removeRow(indeks);
+    auditors->erase(auditors->begin() + index);
+    AbstractTableModel::removeRow(index);
 }
 
 void ArrayAuditors::write(ostream &output)
@@ -75,7 +75,11 @@ string ArrayAuditors::getText(int row, int column)
     }
     else if (column == 2)
     {
-        return o->getType();
+        return o->getDateBirth().getDateWithTime();
+    }
+    else if (column == 3)
+    {
+        return to_string(o->getSalary());
     }
     return "";
 }
@@ -91,12 +95,16 @@ string ArrayAuditors::horizontalHeader(int column)
     }
     else if (column == 2)
     {
-        return "Type";
+        return "Date birth";
+    }
+    else if (column == 3)
+    {
+        return "Salary";
     }
     return "";
 }
 string ArrayAuditors::verticalHeader(int row){  
-    if (row == 0)
+    /*if (row == 0)
     {
         return auditors->at(row)->getName();
     }
@@ -112,11 +120,11 @@ string ArrayAuditors::verticalHeader(int row){
     {
         return to_string(auditors->at(row)->getSalary());
     }
-    /*else if (row == 4)
+    else if (row == 4)
     {
         return auditors->at(row)->getDateVisiting(0).getDateWithTime();
     }*/
-    return "";
+    return to_string(row+1);
 };
 void ArrayAuditors::pushElement(int row, Auditor *a)
 {

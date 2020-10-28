@@ -19,10 +19,10 @@ using namespace std;
 
 int main()
 {
-    Company company;
-    company.readData1("podaci.txt");
-    Fl_Window *window = new Fl_Window(900, 700, "Zadatak 5");
-    MainWindow *mainWindow = new MainWindow(100, 100, 800, 600, "", company);
+    Company *company = new Company();
+    company->readData1("podaci.txt");
+    Fl_Window *window = new Fl_Window(900, 700, "Projekat");
+    MainWindow *mainWindow = new MainWindow(50, 50, 900, 700, "", *company);
     window->resizable(mainWindow);
     window->end();
     window->show(); 

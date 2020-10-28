@@ -83,6 +83,10 @@ void Auditor::procitaj(istream &input)
     this->setName(ime);
     this->setLastname(prezime);
 }*/
+int Auditor::getNumberOfVisits()
+{
+    return datesVisiting.size();
+}
 string Auditor::verticalHeader(int row)
 {  
     if (row == 0)

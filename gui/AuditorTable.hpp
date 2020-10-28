@@ -28,7 +28,9 @@ protected:
 public:
     AuditorTable(int x, int y, int w, int h, ArrayAuditors *auditors);
     virtual ~AuditorTable();
+    AuditorTable();
     void add(Auditor *p);
+    //void AuditorTable::removeAuditor(Auditor *r);
 };
 
 #endif

@@ -3,6 +3,7 @@
 #include "AbstractTableModel.hpp"
 #include "../Class/Auditor.hpp"
 #include "ArrayAuditors.hpp"
+#include "DataOfAuditors.hpp"
 
 MainWindow::~MainWindow(){}
 MainWindow::MainWindow(int x, int y, int w, int h, const char *label, Company &company)
@@ -32,8 +33,6 @@ void MainWindow::callTableAuditors(Fl_Widget *widget, void *data)
 {
     MainWindow *prikazOsoba = (MainWindow *)data;
     string type = "Auditor";
-    vector<Auditor *> *p = prikazOsoba->company.getCompanyAuditors();
-    ArrayAuditors *auditors = new ArrayAuditors();
 
     prikazOsoba->btnWorkers->hide();
     prikazOsoba->btnDepartments->hide();
@@ -43,10 +42,8 @@ void MainWindow::callTableAuditors(Fl_Widget *widget, void *data)
     prikazOsoba->btnAuditors->hide();
     prikazOsoba->btnAccountant->hide();
 
-    AuditorTable *tableAuditors = new AuditorTable(prikazOsoba->x, prikazOsoba->y, prikazOsoba->w, prikazOsoba->h, auditors);
+    DataOfAuditors *dataOfAuditors = new DataOfAuditors(prikazOsoba->x, prikazOsoba->y, prikazOsoba->w, prikazOsoba->h, prikazOsoba->company, "");
     
-    for(Auditor *aud : *p)
-        tableAuditors->add(aud);
     
     /*tableAuditors->when(FL_WHEN_RELEASE | FL_WHEN_CHANGED);
     tableAuditors->table_box(FL_NO_BOX);
@@ -60,7 +57,7 @@ void MainWindow::callTableAuditors(Fl_Widget *widget, void *data)
     tableAuditors->cols(3);*/
     
     
-    prikazOsoba->add(tableAuditors);
+    prikazOsoba->add(dataOfAuditors);
 };
 void MainWindow::callTableCompany(Fl_Widget *widget, void *data)
 {

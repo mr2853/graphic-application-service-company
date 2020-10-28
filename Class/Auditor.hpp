@@ -25,6 +25,7 @@ public:
     void setDatesVisiting(vector<Date*> datesVisiting);
     virtual string verticalHeader(int row);
     virtual string horizontalHeader(int kolona);
+    int getNumberOfVisits();
     
     //virtual void zapisi(ostream &output);
     //virtual void procitaj(istream &input);
