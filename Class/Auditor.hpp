@@ -10,19 +10,19 @@ using namespace std;
 
 class Auditor : public AbstractWorker{
 private:
-    vector<Date*> datesVisiting;
+    vector<Date*> *datesVisiting;
     const string type = "Auditor";
 
 public:
     Auditor();
     ~Auditor();
     Auditor(string text);
-    Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> datesVisiting);
+    Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting);
 
     virtual string getType();
     void pushDateVisiting(Date *date);
     Date* getDateVisiting(int indeks);
-    void setDatesVisiting(vector<Date*> datesVisiting);
+    void setDatesVisiting(vector<Date*> *datesVisiting);
     virtual string verticalHeader(int row);
     virtual string horizontalHeader(int kolona);
     int getNumberOfVisits();

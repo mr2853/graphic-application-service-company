@@ -16,6 +16,7 @@
 #include "../Class/Auditor.hpp"
 #include "ArrayAuditors.hpp"
 #include "AbstractDisplay.hpp"
+#include "../Class/Company.hpp"
 
 class AuditorTable : public Fl_Table_Row, protected AbstractDisplay<Auditor *>
 {
@@ -26,10 +27,11 @@ protected:
     virtual void elementRemoved(int red);
 
 public:
-    AuditorTable(int x, int y, int w, int h, ArrayAuditors *auditors);
+    AuditorTable(int x, int y, int w, int h, Company &company);
     virtual ~AuditorTable();
     AuditorTable();
     void add(Auditor *p);
+    void refreshTable();
     //void AuditorTable::removeAuditor(Auditor *r);
 };
 

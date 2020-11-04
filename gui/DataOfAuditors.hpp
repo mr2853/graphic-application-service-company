@@ -19,17 +19,18 @@ protected:
     ArrayAuditors *auditors;
     DisplayAuditor *displayAuditor;
     AuditorTable *auditorTable;
-    Fl_Button *btnAdd;
     //Fl_Button *btnView;
     Fl_Button *btnRemove;
+    Company &company;
 
 public:
     DataOfAuditors(int x, int y, int w, int h, Company &company, const char *l);
     virtual ~DataOfAuditors();
-    static void add(Fl_Widget *widget, void *data);
     static void remove(Fl_Widget *widget, void *data);
     //static void view(Fl_Widget *widget, void *data);
     void addAuditor(Fl_Widget *widget, void *data);
+    Company& getCompany();
+    void refreshTable();
 };
 
 

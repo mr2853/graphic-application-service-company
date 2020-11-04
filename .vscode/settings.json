@@ -13,6 +13,8 @@
         "vector": "cpp",
         "initializer_list": "cpp",
         "utility": "cpp",
-        "unordered_map": "cpp"
+        "unordered_map": "cpp",
+        "optional": "cpp",
+        "system_error": "cpp"
     }
 }

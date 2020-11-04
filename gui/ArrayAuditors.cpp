@@ -1,8 +1,11 @@
 #include "ArrayAuditors.hpp"
 
-ArrayAuditors::ArrayAuditors() : AbstractTableModel<Auditor *>()
+ArrayAuditors::ArrayAuditors() : AbstractTableModel<Auditor*>()
 {
-    auditors = new vector<Auditor *>();
+    auditors = new vector<Auditor*>();
+}
+ArrayAuditors::ArrayAuditors(vector<Auditor*> *auditors) : AbstractTableModel<Auditor*>(), auditors(auditors)
+{
 }
 int ArrayAuditors::numberOfRows()
 {

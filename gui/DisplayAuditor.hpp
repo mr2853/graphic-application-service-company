@@ -11,28 +11,31 @@
 #include "DisplayWorker.hpp"
 #include "AbstractModel.hpp"
 #include "AbstractDisplay.hpp"
+#include "ArrayAuditors.hpp"
 
-class DisplayAuditor : public Fl_Group, protected AbstractDisplay<Auditor *>{
+class DisplayAuditor : public DisplayWorker, protected AbstractDisplay<Auditor *>{
 protected:
     DisplayWorker *displayWorker;
     Fl_Multiline_Input *datesVisiting;
     Fl_Button *btnNext;
     Fl_Button *btnPrevious;
+    Fl_Button *btnAdd;
+    
     int current = -1;
-    AbstractModel<Auditor *> *auditors;
+    ArrayAuditors *auditors;
 
     void updateLabel();
     void checkButtons();
     void setDisplay(int indeks);
     static void nextElement(Fl_Widget *widget, void *data);
     static void previousElement(Fl_Widget *widget, void *data);
+    static void add(Fl_Widget *widget, void *data);
     void elementPushed(int indeks, Auditor *element);
     void elementRemoved(int indeks);
-    static void addAuditor(Fl_Widget *widget, void *data);
-    vector<Date*> getDatesVisiting();
 public:
-    DisplayAuditor(int x, int y, int w, int h, AbstractModel<Auditor *> *auditors, const char *l);
+    DisplayAuditor(int x, int y, int w, int h, Company& company, AuditorTable *auditorTable, const char *l);
     virtual ~DisplayAuditor();
+    vector<Date*>* getDatesVisiting();
 };
 
 

@@ -43,20 +43,7 @@ void MainWindow::callTableAuditors(Fl_Widget *widget, void *data)
     prikazOsoba->btnAccountant->hide();
 
     DataOfAuditors *dataOfAuditors = new DataOfAuditors(prikazOsoba->x, prikazOsoba->y, prikazOsoba->w, prikazOsoba->h, prikazOsoba->company, "");
-    
-    
-    /*tableAuditors->when(FL_WHEN_RELEASE | FL_WHEN_CHANGED);
-    tableAuditors->table_box(FL_NO_BOX);
-    tableAuditors->col_resize_min(4);
-    tableAuditors->row_resize_min(4);
-    tableAuditors->row_height_all(20);
-    tableAuditors->col_resize(1);
-    tableAuditors->col_header(1);
-    tableAuditors->col_header_height(25);
-    tableAuditors->col_width_all(80);
-    tableAuditors->cols(3);*/
-    
-    
+
     prikazOsoba->add(dataOfAuditors);
 };
 void MainWindow::callTableCompany(Fl_Widget *widget, void *data)

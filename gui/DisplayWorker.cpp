@@ -1,5 +1,4 @@
 #include "DisplayWorker.hpp"
-
 DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
  : Fl_Group(x,y,w,h,l){
 
@@ -31,22 +30,21 @@ string DisplayWorker::getValueLastName()
 Date* DisplayWorker::getValueDateBirth()
 {
     string t = dateBirth->value();
-
     int index = t.find("-");
     int hour = stoi(t.substr(0, index));
-    t.erase(0, index);
-
+    t.erase(0, index+1);
+    
     index = t.find("-");
     int minute = stoi(t.substr(0, index));
-    t.erase(0, index);
+    t.erase(0, index+1);
 
     index = t.find("-");
     int day = stoi(t.substr(0, index));
-    t.erase(0, index);
+    t.erase(0, index+1);
 
     index = t.find("-");
     int month = stoi(t.substr(0, index));
-    t.erase(0, index);
+    t.erase(0, index+1);
 
     index = t.find("-");
     int year = stoi(t.substr(0, index));

@@ -11,6 +11,9 @@
 #include "Class/Audit.hpp"
 #include "Class/Accountant.hpp"
 #include "Class/AbstractWorker.hpp"
+#include "gui/ArrayAuditors.hpp"
+#include "gui/AuditorTable.hpp"
+#include "gui/DisplayAuditor.hpp"
 
 using namespace std;
 

@@ -32,8 +32,8 @@ Auditor::Auditor(string text)
     
     index = text.find(lessThan);
     text.erase(0,index+1);
-    vector<Date*> dates = vector<Date*>();
-    dates = Date::readArray(text);
+    vector<Date*> *dates = new vector<Date*>();
+    *dates = Date::readArray(text);
     
     this->setName(t.at(0));
     this->setLastname(t.at(1));
@@ -51,18 +51,18 @@ Auditor::Auditor(string text)
             return;
     }*/
 }
-Auditor::Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> datesVisiting)
+Auditor::Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting)
     : AbstractWorker(name, lastname, dateBirth, salary), datesVisiting(datesVisiting){}
 
 void Auditor::pushDateVisiting(Date *date)
 {
-    datesVisiting.push_back(date);
+    datesVisiting->push_back(date);
 }
 Date* Auditor::getDateVisiting(int indeks)
 {
-    return datesVisiting.at(indeks);
+    return datesVisiting->at(indeks);
 }
-void Auditor::setDatesVisiting(vector<Date*> datesVisiting)
+void Auditor::setDatesVisiting(vector<Date*> *datesVisiting)
 {
     this->datesVisiting = datesVisiting;
 }
@@ -85,7 +85,7 @@ void Auditor::procitaj(istream &input)
 }*/
 int Auditor::getNumberOfVisits()
 {
-    return datesVisiting.size();
+    return datesVisiting->size();
 }
 string Auditor::verticalHeader(int row)
 {  

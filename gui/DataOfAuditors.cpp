@@ -1,50 +1,30 @@
 #include "DataOfAuditors.hpp"
+#include "../Class/Auditor.hpp"
+using namespace std;
 
-
-struct Event
+/*struct Event
 {
     ArrayAuditors *auditors;
     AuditorTable *tabela;
     DisplayAuditor *displayAuditor;
-};
-DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, Company &company, const char *l=0) : Fl_Group(x , y ,w ,h ,l){
+};*/
+DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, Company &company, const char *l=0) : Fl_Group(x , y ,w ,h ,l), company(company){
 
     this->auditors = new ArrayAuditors();
-    vector<Auditor *> *auditors = company.getCompanyAuditors();
-    for(Auditor *aud : *auditors)
-    {
-        this->auditors->add(aud);
-    }
     
-    DisplayAuditor *displayAuditor = new DisplayAuditor(x+50, y, 300, 150, this->auditors, "");
-    AuditorTable *auditorTable = new AuditorTable(x, y+340, 400, 280, this->auditors);
+    auditorTable = new AuditorTable(x, y+340, 400, 280, this->company);
+    displayAuditor = new DisplayAuditor(x+50, y, 300, 390, company, auditorTable, "");
     
-    for(Auditor *aud : *auditors)
-    {
-        auditorTable->add(aud);
-        //this->auditors->add(aud);
-    }
-
-    btnAdd = new Fl_Button(x+250, y+300, 70, 30, "Add");
     //btnView = new Fl_Button(x+330, y+300, 70, 30, "View");
     btnRemove = new Fl_Button(x+400, y+300, 70, 30, "Remove");
 
-    Event *ev = new Event();
-    ev->auditors = this->auditors;
-    ev->displayAuditor = this->displayAuditor;
-    ev->tabela = auditorTable;
-
-    btnAdd->callback(DataOfAuditors::add, this);
     //btnView->callback(DataOfAuditors::view, ev);
-    btnRemove->callback(DataOfAuditors::remove, ev);
+    btnRemove->callback(DataOfAuditors::remove, this);
 
     this->end();
 }
 
-void DataOfAuditors::add(Fl_Widget *widget, void *data)
-{
-    DataOfAuditors *dataOfAuditors = (DataOfAuditors *)data;
-}
+
 
 /*void DataOfAuditors::view(Fl_Widget *widget, void *data)
 {
@@ -60,16 +40,25 @@ DataOfAuditors::~DataOfAuditors(){}
 
 void DataOfAuditors::remove(Fl_Widget *widget, void *data)
 {
-    Event *event = (Event *)data;
+    DataOfAuditors *e = (DataOfAuditors *)data;
     int startRow;
     int endRow;
     int colLeft;
     int colRight;
-    event->tabela->get_selection(startRow, colLeft, endRow, colRight);
+    e->auditorTable->get_selection(startRow, colLeft, endRow, colRight);
     for (int i = endRow; i >= startRow; i--)
     {
-        event->auditors->removeRow(i);
-        event->tabela->rows(event->auditors->numberOfRows());
-        event->tabela->cols(event->auditors->numberOfColumns());
+        e->auditors->removeRow(i);
+        e->auditorTable->rows(e->auditors->numberOfRows());
+        e->auditorTable->cols(e->auditors->numberOfColumns());
     }
+}
+
+Company& DataOfAuditors::getCompany()
+{
+    return company;
+}
+void DataOfAuditors::refreshTable()
+{
+    auditorTable->refreshTable();
 }

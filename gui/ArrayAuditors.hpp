@@ -25,6 +25,7 @@ public:
     void write(ostream &output);
     void read(istream &input);
     ArrayAuditors();
+    ArrayAuditors(vector<Auditor*> *auditors);
     virtual ~ArrayAuditors();
     void add(Auditor *p);
 };
