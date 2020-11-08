@@ -22,7 +22,7 @@ int DataOfAuditors::numberOfAuditors()
     return auditors->numberOfElement();
 }
 
-DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l=0) : Fl_Group(x , y ,w ,h ,l), company(company){
+DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l) : Fl_Group(x , y ,w ,h ,l), company(company){
 
     this->auditors = new ArrayAuditors(company.getCompanyAuditors());
     

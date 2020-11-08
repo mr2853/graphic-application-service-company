@@ -25,7 +25,7 @@ protected:
     Fl_Button *btnGoBack;
 
 public:
-    DataOfAuditors(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l);
+    DataOfAuditors(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l=0);
     virtual ~DataOfAuditors();
     static void remove(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);

@@ -13,9 +13,9 @@ protected:
     Fl_Button *btnAudits;
     Fl_Button *btnCompany;
     Fl_Button *btnDepartments;
-    Fl_Button *btnAccountant;
-    Fl_Button *btnCommercialist;
-    Fl_Button *btnAuditors;
+    //Fl_Button *btnAccountant;
+    // Fl_Button *btnCommercialist;
+    // Fl_Button *btnAuditors;
     Fl_Button *btnWorkers;
     Company &company;
     int x,y,w,h;
@@ -27,9 +27,9 @@ public:
     static void callTableAudits(Fl_Widget *widget, void *data);
     static void callTableCompany(Fl_Widget *widget, void *data);
     static void callTableDepartments(Fl_Widget *widget, void *data);
-    static void callTableAccountant(Fl_Widget *widget, void *data);
-    static void callTableCommercialist(Fl_Widget *widget, void *data);
-    static void callTableAuditors(Fl_Widget *widget, void *data);
+    // static void callTableAccountant(Fl_Widget *widget, void *data);
+    // static void callTableCommercialist(Fl_Widget *widget, void *data);
+    // static void callTableAuditors(Fl_Widget *widget, void *data);
     static void callTableWorkers(Fl_Widget *widget, void *data);
 
     void hide();
