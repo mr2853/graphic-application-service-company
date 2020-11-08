@@ -33,7 +33,7 @@ protected:
     void elementPushed(int indeks, Auditor *element);
     void elementRemoved(int indeks);
 public:
-    DisplayAuditor(int x, int y, int w, int h, Company& company, AuditorTable *auditorTable, const char *l);
+    DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l);
     virtual ~DisplayAuditor();
     vector<Date*>* getDatesVisiting();
 };

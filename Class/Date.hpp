@@ -19,6 +19,7 @@ public:
     Date();
     Date(string in);
     Date(int day, int month, int year, int hour = 0, int minute = 0);
+    Date(int day, int month, int year);
     ~Date();
 
 	int getHour();

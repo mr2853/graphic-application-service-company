@@ -35,7 +35,10 @@ void ArrayAuditors::pushRow(int row, Auditor* elem){
 
 void ArrayAuditors::removeRow(int index)
 {
+    // cout << "line38" << endl;
+    // cout << "size:" << auditors->size() << endl;
     auditors->erase(auditors->begin() + index);
+    // cout << "line40" << endl;
     AbstractTableModel::removeRow(index);
 }
 
@@ -138,4 +141,8 @@ ArrayAuditors::~ArrayAuditors(){}
 void ArrayAuditors::add(Auditor *p)
 {
     auditors->push_back(p);
+}
+Auditor* ArrayAuditors::getAuditor(int in)
+{
+    return auditors->at(in);
 }

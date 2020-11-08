@@ -28,6 +28,7 @@ public:
     ArrayAuditors(vector<Auditor*> *auditors);
     virtual ~ArrayAuditors();
     void add(Auditor *p);
+    Auditor* getAuditor(int in);
 };
 
 

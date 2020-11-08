@@ -28,23 +28,34 @@ MainWindow::MainWindow(int x, int y, int w, int h, const char *label, Company &c
 
     this->end();
 };
-
+void MainWindow::hide()
+{
+    this->btnWorkers->hide();
+    this->btnDepartments->hide();
+    this->btnCompany->hide();
+    this->btnCommercialist->hide();
+    this->btnAudits->hide();
+    this->btnAuditors->hide();
+    this->btnAccountant->hide();
+}
+void MainWindow::unhide()
+{
+    this->btnWorkers->show();
+    this->btnDepartments->show();
+    this->btnCompany->show();
+    this->btnCommercialist->show();
+    this->btnAudits->show();
+    this->btnAuditors->show();
+    this->btnAccountant->show();
+}
 void MainWindow::callTableAuditors(Fl_Widget *widget, void *data)
 {
-    MainWindow *prikazOsoba = (MainWindow *)data;
+    MainWindow *mainWindow = (MainWindow *)data;
     string type = "Auditor";
+    mainWindow->hide();
+    DataOfAuditors *dataOfAuditors = new DataOfAuditors(mainWindow->x, mainWindow->y, mainWindow->w, mainWindow->h, mainWindow->company, mainWindow, "");
 
-    prikazOsoba->btnWorkers->hide();
-    prikazOsoba->btnDepartments->hide();
-    prikazOsoba->btnCompany->hide();
-    prikazOsoba->btnCommercialist->hide();
-    prikazOsoba->btnAudits->hide();
-    prikazOsoba->btnAuditors->hide();
-    prikazOsoba->btnAccountant->hide();
-
-    DataOfAuditors *dataOfAuditors = new DataOfAuditors(prikazOsoba->x, prikazOsoba->y, prikazOsoba->w, prikazOsoba->h, prikazOsoba->company, "");
-
-    prikazOsoba->add(dataOfAuditors);
+    mainWindow->add(dataOfAuditors);
 };
 void MainWindow::callTableCompany(Fl_Widget *widget, void *data)
 {

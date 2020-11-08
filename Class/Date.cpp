@@ -30,8 +30,11 @@ Date::Date(string in)
         this->minute = 0;
     }
 }
-Date::Date(int day, int month, int year, int hour, int minute)
+Date::Date( int hour, int minute, int day, int month, int year)
     : hour(hour), minute(minute), day(day), month(month), year(year){}
+
+Date::Date(int day, int month, int year)
+    : hour(0), minute(0), day(day), month(month), year(year){}
 
 int Date::getHour() {
     return hour;

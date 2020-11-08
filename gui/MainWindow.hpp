@@ -32,6 +32,8 @@ public:
     static void callTableAuditors(Fl_Widget *widget, void *data);
     static void callTableWorkers(Fl_Widget *widget, void *data);
 
+    void hide();
+    void unhide();
 };
 
 

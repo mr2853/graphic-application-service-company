@@ -1,11 +1,13 @@
 #include "DisplayAuditor.hpp"
 #include "DataOfAuditors.hpp"
+#include "../Util.hpp"
 
-DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, Company& company, AuditorTable* auditorTable, const char *l=0)
-: DisplayWorker(x, y, w, h, l), auditors(new ArrayAuditors(company.getCompanyAuditors()))
+DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l=0)
+: DisplayWorker(x, y, w, h, l), auditors(auditors)
 {
     if(this->auditors->numberOfElement() != 0)
     {
+        DataOfAuditors *d = (DataOfAuditors*)data;
         displayWorker = new DisplayWorker(x, y, 200, 190, "");
         datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
         btnAdd = new Fl_Button(x+250, y+300, 70, 30, "Add");
@@ -21,7 +23,7 @@ DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, Company& company, Aud
         widgets->push_back(displayWorker);
         widgets->push_back(datesVisiting);
         widgets->push_back(this);
-        widgets->push_back(auditorTable);
+        widgets->push_back(d);
 
         btnNext->callback(nextElement, this);
         btnPrevious->callback(previousElement, this);
@@ -68,7 +70,7 @@ void DisplayAuditor::setDisplay(int indeks)
         datesVisiting->value("");
         for(int i = 0; i < auditors->getElement(0)->getNumberOfVisits(); i++)
         {
-            datesVisiting->insert(auditors->getElement(indeks)->getDateVisiting(i)->getDateWithTime().c_str());
+            datesVisiting->insert(auditors->getElement(0)->getDateVisiting(i)->getDateWithTime().c_str());
         }
     }
     updateLabel();
@@ -126,30 +128,21 @@ void DisplayAuditor::elementRemoved(int indeks) {
 
 vector<Date*>* DisplayAuditor::getDatesVisiting(){
     string t = datesVisiting->value();
-    vector<Date*> *dates;
+    vector<Date*> *dates = new vector<Date*>();
+    int index;
+
+    while(t.find(",")){
+        index = t.find(",");
+        string subs = t.substr(0, index);
+        vector<int> d = getDate(subs);
+        t.erase(0, index + 1);
+        dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
+    }
+
+    vector<int> d = getDate(t);
+    t.erase(0, index + 1);
+    dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
     
-    int index = t.find("-");
-    int hour = stoi(t.substr(0, index));
-    t.erase(0, index+1);
-    
-    index = t.find("-");
-    int minute = stoi(t.substr(0, index));
-    t.erase(0, index+1);
-
-    index = t.find("-");
-    int day = stoi(t.substr(0, index));
-    t.erase(0, index+1);
-
-    index = t.find("-");
-    int month = stoi(t.substr(0, index));
-    t.erase(0, index+1);
-
-    index = t.find("-");
-    int year = stoi(t.substr(0, index));
-    t.erase(0, index);
-
-    Date *d = new Date(hour, minute, day, month, year);
-    dates->push_back(d);
     return dates;
 }
 /*struct Event
@@ -164,11 +157,15 @@ void DisplayAuditor::add(Fl_Widget *widget, void *data)
     DisplayWorker *displayWorker = (DisplayWorker*)widgets->at(0);
     Fl_Multiline_Input *datesVisiting = (Fl_Multiline_Input*)widgets->at(1);
     DisplayAuditor *displayAuditor = (DisplayAuditor*)widgets->at(2);
-    AuditorTable *auditorTable = (AuditorTable*)widgets->at(3);
+    DataOfAuditors *d = (DataOfAuditors*)widgets->at(3);
+    AuditorTable *auditorTable = d->getAuditorTable();
 
     Auditor *novaOsoba = new Auditor(displayWorker->getValueName(), displayWorker->getValueLastName(),
                     displayWorker->getValueDateBirth(), stod(displayWorker->getValueSalary()), displayAuditor->getDatesVisiting());
                     
     //displayAuditor->auditors->add(novaOsoba);
     auditorTable->add(novaOsoba);
+    // cout << "numb of elem: " << d->numberOfAuditors() << endl;
+    // d->addAuditor(novaOsoba);
+    // cout << "numb of elem1: " << d->numberOfAuditors() << endl;
 }

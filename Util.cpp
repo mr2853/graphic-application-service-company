@@ -72,7 +72,37 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
     parts.push_back(line);
     return parts;
 };
+vector<int> getDate(string &t)
+{
+    vector<int> date = vector<int>();
 
+    int index = t.find("-");
+    int hour = stoi(t.substr(0, index));
+    t.erase(0, index+1);
+    
+    index = t.find("-");
+    int minute = stoi(t.substr(0, index));
+    t.erase(0, index+1);
+
+    index = t.find("-");
+    int day = stoi(t.substr(0, index));
+    t.erase(0, index+1);
+
+    index = t.find("-");
+    int month = stoi(t.substr(0, index));
+    t.erase(0, index+1);
+
+    int year = stoi(t.substr(0, index));
+    t.erase(0, t.length());
+
+    date.push_back(hour);
+    date.push_back(minute);
+    date.push_back(day);
+    date.push_back(month);
+    date.push_back(year);
+    
+    return date;
+}
 /*void inputStrings(string &in, int &index, vector<string> &text)
 {
     while(true)

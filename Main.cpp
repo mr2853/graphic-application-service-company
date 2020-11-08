@@ -1,7 +1,6 @@
 #include <iostream>
-#include <FL/Fl.H>
 #include <FL/Fl_Window.H>
-
+#include <FL/Fl.H>
 
 #include "Util.hpp"
 #include "Class/AbstractPerson.hpp"

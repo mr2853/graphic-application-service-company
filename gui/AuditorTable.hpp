@@ -27,7 +27,7 @@ protected:
     virtual void elementRemoved(int red);
 
 public:
-    AuditorTable(int x, int y, int w, int h, Company &company);
+    AuditorTable(int x, int y, int w, int h, ArrayAuditors *auditors);
     virtual ~AuditorTable();
     AuditorTable();
     void add(Auditor *p);

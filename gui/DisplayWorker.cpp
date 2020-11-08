@@ -30,6 +30,7 @@ string DisplayWorker::getValueLastName()
 Date* DisplayWorker::getValueDateBirth()
 {
     string t = dateBirth->value();
+    
     int index = t.find("-");
     int hour = stoi(t.substr(0, index));
     t.erase(0, index+1);
@@ -37,19 +38,19 @@ Date* DisplayWorker::getValueDateBirth()
     index = t.find("-");
     int minute = stoi(t.substr(0, index));
     t.erase(0, index+1);
-
+    
     index = t.find("-");
     int day = stoi(t.substr(0, index));
     t.erase(0, index+1);
-
+    
     index = t.find("-");
     int month = stoi(t.substr(0, index));
     t.erase(0, index+1);
-
-    index = t.find("-");
-    int year = stoi(t.substr(0, index));
-    t.erase(0, index);
-
+    
+    //index = t.find("-");
+    int year = stoi(t);
+    //t.erase(0, index);
+    
     Date *d = new Date(hour, minute, day, month, year);
     return d;
 }

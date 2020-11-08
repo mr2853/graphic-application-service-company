@@ -1,7 +1,7 @@
 #include "AuditorTable.hpp"
 
-AuditorTable::AuditorTable(int x, int y, int w, int h, Company &company) : Fl_Table_Row(x, y, w, h),
-    auditors(new ArrayAuditors(company.getCompanyAuditors()))
+AuditorTable::AuditorTable(int x, int y, int w, int h, ArrayAuditors *auditors) : Fl_Table_Row(x, y, w, h),
+    auditors(auditors)
 {
     this->end();
     /*auditors = new ArrayAuditors(company.getCompanyAuditors());
@@ -20,7 +20,13 @@ AuditorTable::AuditorTable(int x, int y, int w, int h, Company &company) : Fl_Ta
 }
 void AuditorTable::draw_cell(TableContext context, int red, int kolona, int x, int y, int w, int h)
 {
-    cout << context << endl;
+    // for(int i=0; i<auditors->numberOfElement(); i++){
+    //     cout << "lastname:" << auditors->getAuditor(i)->getLastname() << endl;
+    //     cout << "Salary:" << auditors->getAuditor(i)->getSalary() << endl;
+    //     cout << "DateBirth:" << auditors->getAuditor(i)->getDateBirth().getDateWithTime() << endl;
+    //     cout << "DateVisiting:" << auditors->getAuditor(i)->getDateVisiting(0)->getDateWithTime() << endl;
+    //     cout << "\n\n\n\n" << endl;
+    // }
     switch (context)
     {
     case CONTEXT_COL_HEADER:

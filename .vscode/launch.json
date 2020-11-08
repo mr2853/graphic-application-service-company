@@ -8,7 +8,7 @@
             "name": "g++.exe - Build and debug active file",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "program": "C:\\Users\\38164\\Desktop\\faks 2 godina\\1 semestar\\Programiranje 2\\Programiranje-2\\projekat.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

@@ -22,15 +22,20 @@ protected:
     //Fl_Button *btnView;
     Fl_Button *btnRemove;
     Company &company;
+    Fl_Button *btnGoBack;
 
 public:
-    DataOfAuditors(int x, int y, int w, int h, Company &company, const char *l);
+    DataOfAuditors(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l);
     virtual ~DataOfAuditors();
     static void remove(Fl_Widget *widget, void *data);
+    static void goBack(Fl_Widget *widget, void *data);
     //static void view(Fl_Widget *widget, void *data);
     void addAuditor(Fl_Widget *widget, void *data);
     Company& getCompany();
     void refreshTable();
+    AuditorTable* getAuditorTable();
+    void addAuditor(Auditor* a);
+    int numberOfAuditors();
 };
 
 
