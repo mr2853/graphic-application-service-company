@@ -7,7 +7,7 @@
 
 Company::Company(){}
 Company::~Company(){}
-Company::Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*> departments)
+Company::Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments)
     : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments){}
 
 
@@ -29,18 +29,18 @@ string Company::getIdentificationNumber() {
 void Company::setIdentificationNumber(string identificationNumber) {
     this->identificationNumber = identificationNumber;
 }
-Department* Company::getDepartments(int indeks) {
-    return departments.at(indeks);
+Department* Company::getDepartment(int indeks) {
+    return departments->at(indeks);
 }
 void Company::pushDepartments(Department *department) {
-    departments.push_back(department);
+    departments->push_back(department);
 }
-void Company::setDepartments(vector<Department*> departments) {
+void Company::setDepartments(vector<Department*>* departments) {
     this->departments = departments;
 }
 int Company::getDepartmentsSize()
 {
-    return departments.size();
+    return departments->size();
 }
 
 void Company::readData1(string path)
@@ -73,7 +73,7 @@ void Company::readData1(string path)
     string identificationNumber = path.substr(0, index);
     index = path.find(lessThan);
     path.erase(0,index+1);
-    vector<Department*> departments = vector<Department*>();
+    vector<Department*>* departments = new vector<Department*>();
     departments = Department::readArray(path); 
     company->setName(name);
     company->setTaxIdentificationNumber(taxIdentificationNumber);
@@ -92,11 +92,11 @@ string Company::toString() const
 vector<Commercialist*>* Company::getCompanyCommercialists()
 {
     vector<Commercialist*>* ret;
-    for(int i = 0; i < departments.size(); i++)
+    for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments.at(i)->getCommercialists().size(); j++)
+        for(int j = 0; j < departments->at(i)->getCommercialists().size(); j++)
         {
-            ret->push_back(departments.at(i)->getCommercialists().at(j));
+            ret->push_back(departments->at(i)->getCommercialists().at(j));
         }
     }
     return ret;
@@ -104,11 +104,11 @@ vector<Commercialist*>* Company::getCompanyCommercialists()
 vector<Auditor*>* Company::getCompanyAuditors()
 {
     vector<Auditor*> *ret = new vector<Auditor*>();
-    for(int i = 0; i < departments.size(); i++)
+    for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments.at(i)->getAuditors().size(); j++)
+        for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
         {
-            ret->push_back(departments.at(i)->getAuditors().at(j));
+            ret->push_back(departments->at(i)->getAuditors()->at(j));
         }
     }
     return ret;
@@ -116,12 +116,20 @@ vector<Auditor*>* Company::getCompanyAuditors()
 vector<Accountant*>* Company::getCompanyAccountants()
 {
     vector<Accountant*>* ret;
-    for(int i = 0; i < departments.size(); i++)
+    for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments.at(i)->getAccountants().size(); j++)
+        for(int j = 0; j < departments->at(i)->getAccountants().size(); j++)
         {
-            ret->push_back(departments.at(i)->getAccountants().at(j));
+            ret->push_back(departments->at(i)->getAccountants().at(j));
         }
     }
     return ret;
+}
+void Company::removeDepartment(int index)
+{
+    departments->erase(departments->begin() + index);
+}
+vector<Department*>* Company::getDepartments()
+{
+    return departments;
 }

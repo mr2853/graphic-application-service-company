@@ -21,7 +21,7 @@ protected:
     Fl_Button *btnPrevious;
     Fl_Button *btnAdd;
     
-    int current = -1;
+    int current = 0;
     ArrayAuditors *auditors;
 
     void updateLabel();
@@ -36,6 +36,8 @@ public:
     DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l);
     virtual ~DisplayAuditor();
     vector<Date*>* getDatesVisiting();
+    void hideGroup();
+    void unhide();
 };
 
 

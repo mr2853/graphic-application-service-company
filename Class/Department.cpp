@@ -109,8 +109,8 @@ void Department::setCommercialists(vector<Commercialist*> commercialists) {
     this->commercialists = commercialists;
 }
 
-vector<Auditor*> Department::getAuditors() {
-    return auditors;
+vector<Auditor*>* Department::getAuditors() {
+    return &auditors;
 }
 
 void Department::setAuditors(vector<Auditor*> auditors) {
@@ -146,9 +146,9 @@ void Department::setAccountants(vector<Accountant*> accountants) {
 
     return departments;
 }*/
-vector<Department*> Department::readArray(string in)
+vector<Department*>* Department::readArray(string in)
 {
-    vector<Department*> array = vector<Department*>();
+    vector<Department*>* array = new vector<Department*>();
     int index;
     vector<string> text;
     string type1;
@@ -174,7 +174,7 @@ vector<Department*> Department::readArray(string in)
         index = s.find("[");
         type1 = s.substr(0, index);
         Department *d = new Department(s);
-        array.push_back(d);
+        array->push_back(d);
     }
     return array;
 };

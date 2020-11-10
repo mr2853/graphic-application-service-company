@@ -5,39 +5,60 @@
 DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l=0)
 : DisplayWorker(x, y, w, h, l), auditors(auditors)
 {
-    if(this->auditors->numberOfElement() != 0)
+    DataOfAuditors *d = (DataOfAuditors*)data;
+    displayWorker = new DisplayWorker(x, y, 200, 190, "");
+    datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
+    btnAdd = new Fl_Button(x+250, y+300, 70, 30, "Add");
+
+    /*for(int i = 0; i < auditors->getElement(0)->getNumberOfVisits(); i++)
     {
-        DataOfAuditors *d = (DataOfAuditors*)data;
-        displayWorker = new DisplayWorker(x, y, 200, 190, "");
-        datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
-        btnAdd = new Fl_Button(x+250, y+300, 70, 30, "Add");
-    
-        /*for(int i = 0; i < auditors->getElement(0)->getNumberOfVisits(); i++)
-        {
-            datesVisiting->insert(auditor->getDateVisiting(i)->getDateWithTime().c_str());
-        }*/
-        btnPrevious = new Fl_Button(x+220, y, 45, 70, "@<-");
-        btnNext = new Fl_Button(x + 270, y, 45, 70, "@->");
+        datesVisiting->insert(auditor->getDateVisiting(i)->getDateWithTime().c_str());
+    }*/
+    btnPrevious = new Fl_Button(x+220, y, 45, 70, "@<-");
+    btnNext = new Fl_Button(x + 270, y, 45, 70, "@->");
 
-        vector<Fl_Widget*> *widgets = new vector<Fl_Widget*>();
-        widgets->push_back(displayWorker);
-        widgets->push_back(datesVisiting);
-        widgets->push_back(this);
-        widgets->push_back(d);
+    vector<Fl_Widget*> *widgets = new vector<Fl_Widget*>();
+    widgets->push_back(displayWorker);
+    widgets->push_back(datesVisiting);
+    widgets->push_back(this);
+    widgets->push_back(d);
 
-        btnNext->callback(nextElement, this);
-        btnPrevious->callback(previousElement, this);
-        btnAdd->callback(add, widgets);
+    btnNext->callback(nextElement, this);
+    btnPrevious->callback(previousElement, this);
+    btnAdd->callback(add, widgets);
 
-        auditors->subscribeListener(this);
+    if(auditors->numberOfElement() != 0){
+        this->setDisplay(current);
+        this->checkButtons();
     }
+
+    auditors->subscribeListener(this);
     this->end();
+}
+void DisplayAuditor::hideGroup()
+{
+    this->label("");
+    this->displayWorker->hideGroup();
+    this->datesVisiting->hide();
+    this->btnNext->hide();
+    this->btnPrevious->hide();
+    this->btnAdd->hide();
+    this->hide();
+}
+void DisplayAuditor::unhide()
+{
+    this->displayWorker->unhide();
+    this->datesVisiting->show();
+    this->btnNext->show();
+    this->btnPrevious->show();
+    this->btnAdd->show();
+    this->show();
 }
 DisplayAuditor::~DisplayAuditor(){}
 void DisplayAuditor::updateLabel()
 {
     stringstream sstream;
-    sstream << "Osoba " << current + 1 << "/" << auditors->numberOfElement();
+    sstream << "Auditor " << current + 1 << "/" << auditors->numberOfElement();
     this->copy_label(sstream.str().c_str());
 }
 
@@ -130,27 +151,24 @@ vector<Date*>* DisplayAuditor::getDatesVisiting(){
     string t = datesVisiting->value();
     vector<Date*> *dates = new vector<Date*>();
     int index;
-
-    while(t.find(",")){
+    while(t.find(",") != string::npos){
         index = t.find(",");
         string subs = t.substr(0, index);
         vector<int> d = getDate(subs);
         t.erase(0, index + 1);
+        cout << t << endl;
         dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
     }
-
-    vector<int> d = getDate(t);
-    t.erase(0, index + 1);
-    dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
-    
+    if(t.find(",") == string::npos){
+        vector<int> d = getDate(t);
+        t.erase(0, index + 1);
+        dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
+        return dates;
+    }
+    cout << "\nprosao\n" << endl;
     return dates;
 }
-/*struct Event
-{
-    ArrayAuditors *auditors;
-    AuditorTable *tabela;
-    DisplayAuditor *displayAuditor;
-};*/
+
 void DisplayAuditor::add(Fl_Widget *widget, void *data)
 {
     vector<Fl_Widget*> *widgets = (vector<Fl_Widget*>*)data;
@@ -163,9 +181,5 @@ void DisplayAuditor::add(Fl_Widget *widget, void *data)
     Auditor *novaOsoba = new Auditor(displayWorker->getValueName(), displayWorker->getValueLastName(),
                     displayWorker->getValueDateBirth(), stod(displayWorker->getValueSalary()), displayAuditor->getDatesVisiting());
                     
-    //displayAuditor->auditors->add(novaOsoba);
     auditorTable->add(novaOsoba);
-    // cout << "numb of elem: " << d->numberOfAuditors() << endl;
-    // d->addAuditor(novaOsoba);
-    // cout << "numb of elem1: " << d->numberOfAuditors() << endl;
 }

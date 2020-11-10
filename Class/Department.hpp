@@ -41,14 +41,14 @@ public:
     vector<Commercialist*> getCommercialists();
 
 	void setCommercialists(vector<Commercialist*> commercialists);
-	vector<Auditor*> getAuditors();
+	vector<Auditor*>* getAuditors();
 
 	void setAuditors(vector<Auditor*> auditors);
 
 	vector<Accountant*> getAccountants();
 
 	void setAccountants(vector<Accountant*> accountants);
-    static vector<Department*> readArray(string in);
+    static vector<Department*>* readArray(string in);
 };
 
 #endif

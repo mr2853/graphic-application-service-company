@@ -7,27 +7,42 @@
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Widget.H>
 #include "../Class/Company.hpp"
+#include "../Class/Department.hpp"
+#include "DisplayDepartment.hpp"
+#include "ArrayDepartments.hpp"
+#include "DepartmentTable.hpp"
 
 class DataOfDepartments : public Fl_Group{
 protected:
-    Fl_Choice *chDepartment;
-    Fl_Choice *chWorkerType;
-    Fl_Button *btnDetails;
-    Fl_Button *btnAdd;
-    Fl_Button *btnRemove;
-    Fl_Button *btnChange;
-    Fl_Button *btnGoBack;
+    ArrayDepartments *departments;
+    DisplayDepartment *displayDepartment;
+    DepartmentTable *departmentTable;
     Company &company;
 
-    static void details(Fl_Widget *widget, void *data);
-    static void add(Fl_Widget *widget, void *data);
-    static void remove(Fl_Widget *widget, void *data);
-    static void change(Fl_Widget *widget, void *data);
-    static void goBack(Fl_Widget *widget, void *data);
+    Fl_Button *btnChange;
+    Fl_Button *btnRemove;
+    Fl_Button *btnGoBack;
+    Fl_Button *btnDetails;
+
+    Fl_Choice *chDepartment;
+    Fl_Choice *chWorkerType;
 
 public:
-    DataOfDepartments(int x, int y, int w, int h, Company &company, void *data, const char *l=0);
+    DataOfDepartments(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l=0);
     virtual ~DataOfDepartments();
+    static void remove(Fl_Widget *widget, void *data);
+    static void goBack(Fl_Widget *widget, void *data);
+    static void details(Fl_Widget *widget, void *data);
+    static void change(Fl_Widget *widget, void *data);
+    //static void view(Fl_Widget *widget, void *data);
+    void addDepartment(Fl_Widget *widget, void *data);
+    Company& getCompany();
+    void refreshTable();
+    DepartmentTable* getDepartmentTable();
+    void addDepartment(Department* a);
+    int numberOfDepartments();
+    void hideGroup();
+    void unhide();
 };
 
 #endif

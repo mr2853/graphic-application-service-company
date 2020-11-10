@@ -14,12 +14,12 @@ private:
     string name;
     string taxIdentificationNumber;
     string identificationNumber;
-    vector<Department*> departments;
+    vector<Department*> *departments;
 
 public:
     Company();
     ~Company();
-    Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*> departments);
+    Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments);
     
     string getName();
 	void setName(string name);
@@ -27,15 +27,17 @@ public:
 	void setTaxIdentificationNumber(string taxIdentificationNumber);
 	string getIdentificationNumber();
 	void setIdentificationNumber(string identificationNumber);
-	Department* getDepartments(int indeks);
+	Department* getDepartment(int indeks);
 	void pushDepartments(Department *department);
-    void setDepartments(vector<Department*> departments);
+    void setDepartments(vector<Department*>* departments);
+    vector<Department*>* getDepartments();
     int getDepartmentsSize();
     void readData1(string path);
     string toString() const;
     vector<Commercialist*>* getCompanyCommercialists();
     vector<Auditor*>* getCompanyAuditors();
     vector<Accountant*>* getCompanyAccountants();
+    void removeDepartment(int index);
 
 };
 
