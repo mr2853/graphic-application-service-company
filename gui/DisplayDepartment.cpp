@@ -105,6 +105,10 @@ void DisplayDepartment::elementRemoved(int indeks) {
     checkButtons();
     updateLabel();
 }
+int DisplayDepartment::getCurrent()
+{
+    return current;
+}
 void DisplayDepartment::hideGroup() {
     this->label("");
     this->name->hide();

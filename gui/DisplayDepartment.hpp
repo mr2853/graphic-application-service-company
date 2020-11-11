@@ -10,7 +10,7 @@
 #include "../Class/Department.hpp"
 #include "ArrayDepartments.hpp"
 
-class DisplayDepartment : protected Fl_Group, protected AbstractDisplay<Department *>{
+class DisplayDepartment : public DisplayWorker, protected AbstractDisplay<Department *>{
 protected:
     Fl_Input *name;
     DisplayWorker *headOfDepartment;
@@ -32,6 +32,7 @@ protected:
 public:
     DisplayDepartment(int x, int y, int w, int h, ArrayDepartments *departments, void* data, const char *l);
     virtual ~DisplayDepartment();
+    int getCurrent();
     void hideGroup();
     void unhide();
 };

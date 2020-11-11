@@ -57,14 +57,25 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Company &compan
     btnGoBack->callback(DataOfDepartments::goBack, v);
     btnDetails->callback(details, v);
 
-    btnChange->callback(change, v);
+    vector<Fl_Widget*> *v1 = new vector<Fl_Widget*>(0);
+    v1->push_back(this);
+    v1->push_back(displayDepartment);
+    v1->push_back(departmentTable);
+    btnChange->callback(change, v1);
 
     this->end();
 }
 
-void DataOfDepartments::change(Fl_Widget *widget, void *data)
+void DataOfDepartments::change(Fl_Widget *widget, void *d)
 {
-
+    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
+    DataOfDepartments *data = (DataOfDepartments*)v->at(0);
+    DisplayDepartment *displayDepartment = (DisplayDepartment*)v->at(1);
+    DepartmentTable *departmentTable = (DepartmentTable*)v->at(2);
+    Department *a = data->departments->getRow(displayDepartment->getCurrent());
+    a->setName(displayDepartment->getValueName());
+    //a->setHeadOfDepartment(); odraditi
+    departmentTable->redraw();
 }
 
 void DataOfDepartments::hideGroup(){

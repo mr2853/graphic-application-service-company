@@ -90,10 +90,10 @@ void DisplayAuditor::setDisplay(int indeks)
         current = indeks;
         this->displayWorker(auditors->getElement(indeks));
         datesVisiting->value("");
-        for(int i = 0; i < auditors->getElement(0)->getNumberOfVisits(); i++)
+        for(int i = 0; i < auditors->getElement(current)->getNumberOfVisits(); i++)
         {
-            datesVisiting->insert(auditors->getElement(0)->getDateVisiting(i)->getDateWithTime().c_str());
-            if(auditors->getElement(0)->getNumberOfVisits()-1 != i){
+            datesVisiting->insert(auditors->getElement(current)->getDateVisiting(i)->getDateWithTime().c_str());
+            if(auditors->getElement(current)->getNumberOfVisits()-1 != i){
                 datesVisiting->insert(",\n");
             }
         }
@@ -158,6 +158,9 @@ int DisplayAuditor::getCurrent()
 vector<Date*>* DisplayAuditor::getDatesVisiting(){
     string t = datesVisiting->value();
     vector<Date*> *dates = new vector<Date*>();
+    if(t.empty()){
+        return dates;
+    }
     int index;
     while(t.find(",") != string::npos){
         index = t.find(",");
