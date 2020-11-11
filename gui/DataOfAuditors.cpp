@@ -1,6 +1,9 @@
 #include "DataOfAuditors.hpp"
 #include "../Class/Auditor.hpp"
 #include "DataOfDepartments.hpp"
+#include "MainWindow.hpp"
+#include <sstream>
+
 using namespace std;
 
 /*struct Event
@@ -22,10 +25,12 @@ int DataOfAuditors::numberOfAuditors()
     return auditors->numberOfElement();
 }
 
-DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *auditors, void *dataOfDepartments, const char *l)
+DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *auditors, void *d, const char *l)
  : Fl_Group(x , y ,w ,h ,l), auditors(auditors)
  {
-    
+    vector<Fl_Widget*> *data = (vector<Fl_Widget*>*)d;
+    MainWindow *main = (MainWindow*)data->at(0);
+    DataOfDepartments *parent = (DataOfDepartments*)data->at(1);
     displayAuditor = new DisplayAuditor(x+50, y, 300, 390, auditors, this, "");
     auditorTable = new AuditorTable(x+50, y+340, 400, 280, auditors);
     
@@ -34,40 +39,60 @@ DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *audito
     btnGoBack = new Fl_Button(x+460, y+300, 70, 30, "Go back");
 
     //btnView->callback(DataOfAuditors::view, ev);
-    btnRemove->callback(DataOfAuditors::remove, this);
+    btnRemove->callback(DataOfAuditors::removeElem, this);
 
-    vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
-    DataOfDepartments *parent = (DataOfDepartments*)dataOfDepartments;
+    vector<Fl_Widget*> *v = new vector<Fl_Widget*>(0);
     v->push_back(parent);
     v->push_back(this);
+    v->push_back(main);
     btnGoBack->callback(DataOfAuditors::goBack, v);
     
-    btnChange->callback(change, v);
-
+    vector<Fl_Widget*> *v1 = new vector<Fl_Widget*>(0);
+    v1->push_back(this);
+    v1->push_back(displayAuditor);
+    v1->push_back(auditorTable);
+    btnChange->callback(change, v1);
     this->end();
 }
-
-void DataOfAuditors::change(Fl_Widget *widget, void *data)
+DataOfAuditors::~DataOfAuditors()
 {
-
+    delete displayAuditor;
+    delete auditorTable;
+    delete btnChange;
+    delete btnRemove;
+    delete btnGoBack;
 }
 void DataOfAuditors::hideGroup()
 {
-    this->label("");
-    this->displayAuditor->hideGroup();
+    this->displayAuditor->hide();
     this->auditorTable->hide();
+    this->btnChange->hide();
     this->btnRemove->hide();
     this->btnGoBack->hide();
-    this->btnChange->hide();
-    this->hide();
+}
+void DataOfAuditors::change(Fl_Widget *widget, void *d)
+{
+    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
+    DataOfAuditors *data = (DataOfAuditors*)v->at(0);
+    DisplayAuditor *displayAuditor = (DisplayAuditor*)v->at(1);
+    AuditorTable *auditorTable = (AuditorTable*)v->at(2);
+    Auditor *a = data->auditors->getRow(displayAuditor->getCurrent());
+    a->setName(displayAuditor->getValueName());
+    a->setLastname(displayAuditor->getValueLastName());
+    a->setSalary(stod(displayAuditor->getValueSalary()));
+    a->setDateBirth(displayAuditor->getValueDateBirth());
+    a->setDatesVisiting(displayAuditor->getDatesVisiting());
+    auditorTable->redraw();
 }
 void DataOfAuditors::goBack(Fl_Widget *widget, void *d)
 {
     vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
     DataOfDepartments *parent = (DataOfDepartments*)v->at(0);
     DataOfAuditors *data = (DataOfAuditors*)v->at(1);
+    MainWindow *main = (MainWindow*)v->at(2);
     data->hideGroup();
-    //delete data;
+    data->hide();
+    main->remove(data);
     parent->unhide();
 }
 
@@ -81,9 +106,8 @@ void DataOfAuditors::goBack(Fl_Widget *widget, void *d)
     event->tabela->get_selection(startRow, colLeft, endRow, colRight);
     event->displayAuditor->displayAuditor(event->auditors->getElement(endRow));
 }*/
-DataOfAuditors::~DataOfAuditors(){}
 
-void DataOfAuditors::remove(Fl_Widget *widget, void *data)
+void DataOfAuditors::removeElem(Fl_Widget *widget, void *data)
 {
     DataOfAuditors *e = (DataOfAuditors *)data;
     int startRow;

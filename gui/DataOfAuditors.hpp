@@ -29,7 +29,7 @@ public:
     DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *auditors, void *mainWindow, const char *l=0);
     virtual ~DataOfAuditors();
     
-    static void remove(Fl_Widget *widget, void *data);
+    static void removeElem(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
 
@@ -40,7 +40,6 @@ public:
     void addAuditor(Auditor* a);
     int numberOfAuditors();
     void hideGroup();
-
 };
 
 

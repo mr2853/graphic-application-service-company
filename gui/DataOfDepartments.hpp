@@ -30,7 +30,7 @@ protected:
 public:
     DataOfDepartments(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l=0);
     virtual ~DataOfDepartments();
-    static void remove(Fl_Widget *widget, void *data);
+    static void removeElem(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);

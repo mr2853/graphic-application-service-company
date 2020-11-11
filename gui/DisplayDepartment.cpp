@@ -108,11 +108,11 @@ void DisplayDepartment::elementRemoved(int indeks) {
 void DisplayDepartment::hideGroup() {
     this->label("");
     this->name->hide();
-    this->headOfDepartment->hideGroup();
+    this->headOfDepartment->hide();
+    
     this->btnNext->hide();
     this->btnPrevious->hide();
     this->btnAdd->hide();
-    this->hide();
 }
 void DisplayDepartment::unhide() {
     this->name->show();
@@ -124,7 +124,6 @@ void DisplayDepartment::unhide() {
         this->setDisplay(current);
         this->checkButtons();
     }
-    this->show();
 }
 /*void DisplayDepartment::DisplayDepartment(Auditor *auditor)
 {

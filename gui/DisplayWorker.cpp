@@ -9,15 +9,20 @@ DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
 
     this->end();
 }
-DisplayWorker::~DisplayWorker(){}
-void DisplayWorker::hideGroup()
+DisplayWorker::~DisplayWorker()
+{
+    delete name;
+    delete lastName;
+    delete dateBirth;
+    delete salary;
+}
+void DisplayWorker::hide()
 {
     this->label("");
     this->name->hide();
     this->lastName->hide();
     this->dateBirth->hide();
     this->salary->hide();
-    this->hide();
 }
 void DisplayWorker::unhide()
 {
@@ -25,7 +30,6 @@ void DisplayWorker::unhide()
     this->lastName->show();
     this->dateBirth->show();
     this->salary->show();
-    this->show();
 }
 void DisplayWorker::displayWorker(AbstractWorker *worker)
 {

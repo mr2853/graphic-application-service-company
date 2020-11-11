@@ -15,7 +15,6 @@
 
 class DisplayAuditor : public DisplayWorker, protected AbstractDisplay<Auditor *>{
 protected:
-    DisplayWorker *displayWorker;
     Fl_Multiline_Input *datesVisiting;
     Fl_Button *btnNext;
     Fl_Button *btnPrevious;
@@ -36,8 +35,9 @@ public:
     DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l);
     virtual ~DisplayAuditor();
     vector<Date*>* getDatesVisiting();
-    void hideGroup();
+    virtual void hide();
     void unhide();
+    int getCurrent();
 };
 
 

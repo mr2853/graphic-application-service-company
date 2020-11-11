@@ -24,7 +24,7 @@ public:
     string getValueLastName();
     Date* getValueDateBirth();
     string getValueSalary();
-    void hideGroup();
+    virtual void hide();
     void unhide();
 };
 

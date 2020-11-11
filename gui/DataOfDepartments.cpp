@@ -47,7 +47,7 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Company &compan
     btnGoBack = new Fl_Button(x+460, y+300, 70, 30, "Go back");
 
     //btnView->callback(DataOfDepartments::view, ev);
-    btnRemove->callback(DataOfDepartments::remove, this);
+    btnRemove->callback(DataOfDepartments::removeElem, this);
 
     vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
     MainWindow *main = (MainWindow*)mainWindow;
@@ -79,18 +79,18 @@ void DataOfDepartments::hideGroup(){
 
     this->chDepartment->hide();
     this->chWorkerType->hide();
-    this->hide();
 }
 void DataOfDepartments::unhide(){
     this->displayDepartment->unhide();
     this->departmentTable->show();
+
     this->btnRemove->show();
     this->btnGoBack->show();
     this->btnDetails->show();
     this->btnChange->show();
+    
     this->chDepartment->show();
     this->chWorkerType->show();
-    this->show();
 }
 void DataOfDepartments::details(Fl_Widget *widget, void *d)
 {
@@ -104,9 +104,9 @@ void DataOfDepartments::details(Fl_Widget *widget, void *d)
 
     }
     else if(workerType == 1){
-        data->hideGroup();
         DataOfAuditors *dataOfAuditors = new DataOfAuditors(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), data);
+                        data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), v);
+        data->hideGroup();
         mainWindow->add(dataOfAuditors);
     }
     else if(workerType == 2){
@@ -134,7 +134,7 @@ void DataOfDepartments::goBack(Fl_Widget *widget, void *d)
 }*/
 DataOfDepartments::~DataOfDepartments(){}
 
-void DataOfDepartments::remove(Fl_Widget *widget, void *data)
+void DataOfDepartments::removeElem(Fl_Widget *widget, void *data)
 {
     DataOfDepartments *e = (DataOfDepartments *)data;
     int startRow;
@@ -185,13 +185,13 @@ void DataOfDepartments::refreshTable()
 
     // btnDetails = new Fl_Button(x+270, y, 150, 50, "Data of worker type");
     // btnAdd = new Fl_Button(x+270, y+60, 100, 50, "Add");
-    // btnRemove = new Fl_Button(x+270, y+110, 100, 50, "Remove");
+    // btnRemove = new Fl_Button(x+270, y+110, 100, 50, "removeElem");
     // btnChange = new Fl_Button(x+270, y+160, 150, 50, "Change Department data");
     // btnGoBack = new Fl_Button(x+270, y+210, 100, 50, "Go back");
 
     // btnDetails->callback(details, this);
     // btnAdd->callback(add, this);
-    // btnRemove->callback(remove, this);
+    // btnRemove->callback(removeElem, this);
     // btnChange->callback(change, this);
 
 //     vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
@@ -213,7 +213,7 @@ void DataOfDepartments::refreshTable()
 // {
     
 // }
-// void DataOfDepartments::remove(Fl_Widget *widget, void *d)
+// void DataOfDepartments::removeElem(Fl_Widget *widget, void *d)
 // {
 //     DataOfDepartments *data = (DataOfDepartments*)d;
 //     data->company.removeDepartment(data->chDepartment->value());
