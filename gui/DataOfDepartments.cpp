@@ -24,7 +24,7 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Company &compan
     this->departments = new ArrayDepartments(company.getDepartments());
     
     displayDepartment = new DisplayDepartment(x+50, y, 300, 390, departments, this, "");
-    departmentTable = new DepartmentTable(x, y+340, 400, 280, departments);
+    departmentTable = new DepartmentTable(x+200, y+340, 400, 280, departments);
 
     chDepartment = new Fl_Choice(x+450, y, 100, 40, "Departments:");
     string depart = "";

@@ -28,6 +28,7 @@ public:
     Department(string &in);
     Department(vector<Commercialist*> commercialists, vector<Auditor*> auditors,
     vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits);
+    Department(AbstractWorker *headOfDepartment, string name);
     //static vector<Department*> readData1(string in);
 
     vector<AbstractWorker*> getWorker();

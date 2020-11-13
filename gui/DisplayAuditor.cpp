@@ -191,3 +191,14 @@ void DisplayAuditor::add(Fl_Widget *widget, void *data)
                     
     auditorTable->add(novaOsoba);
 }
+// void DisplayAuditor::displayWorker(Auditor *worker)
+// {
+//     //this->worker = worker;
+//     DisplayWorker::displayWorker(worker);
+//     // datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
+//     datesVisiting->value("");
+//     for(int i = 0; i < worker->getNumberOfVisits(); i++){
+//         datesVisiting->insert(worker->getDateVisiting(i)->getDateWithTime().c_str());
+//         datesVisiting->insert(",\n");
+//     }
+// }

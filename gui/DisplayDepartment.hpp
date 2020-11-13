@@ -5,6 +5,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Button.H>
+#include <FL/Fl_Choice.H>
 
 #include "DisplayWorker.hpp"
 #include "../Class/Department.hpp"
@@ -13,7 +14,8 @@
 class DisplayDepartment : public DisplayWorker, protected AbstractDisplay<Department *>{
 protected:
     Fl_Input *name;
-    DisplayWorker *headOfDepartment;
+    //DisplayWorker *headOfDepartment;
+    Fl_Choice *chTypeOfHead;
     Fl_Button *btnNext;
     Fl_Button *btnPrevious;
     Fl_Button *btnAdd;

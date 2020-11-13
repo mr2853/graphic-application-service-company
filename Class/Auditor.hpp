@@ -23,6 +23,7 @@ public:
     void pushDateVisiting(Date *date);
     Date* getDateVisiting(int indeks);
     void setDatesVisiting(vector<Date*> *datesVisiting);
+    vector<Date*>* getDatesVisiting();
     virtual string verticalHeader(int row);
     virtual string horizontalHeader(int kolona);
     int getNumberOfVisits();

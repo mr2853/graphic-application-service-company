@@ -72,6 +72,10 @@ Department::Department(string &in)
     this->setHeadOfDepartment(headOfDepartment);
     this->setAudits(audits);
 }
+Department::Department(AbstractWorker *headOfDepartment, string name)
+    : headOfDepartment(headOfDepartment), name(name), commercialists(vector<Commercialist*>()),
+     auditors(vector<Auditor*>()), accountants(vector<Accountant*>()), audits(vector<Audit*>()){}
+     
 Department::Department(vector<Commercialist*> commercialists, vector<Auditor*> auditors,
     vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits)
     : commercialists(commercialists), auditors(auditors), accountants(accountants),

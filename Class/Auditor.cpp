@@ -66,6 +66,9 @@ void Auditor::setDatesVisiting(vector<Date*> *datesVisiting)
 {
     this->datesVisiting = datesVisiting;
 }
+vector<Date*>* Auditor::getDatesVisiting(){
+    return datesVisiting;
+}
 string Auditor::getType()
 {
 	return type;

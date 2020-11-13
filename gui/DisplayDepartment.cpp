@@ -3,18 +3,21 @@
 #include "../Util.hpp"
 
 DisplayDepartment::DisplayDepartment(int x, int y, int w, int h, ArrayDepartments *departments, void* data, const char *l=0)
-: Fl_Group(x, y, w, h, l), departments(departments)
+: DisplayWorker(x, y, w, h, l), departments(departments)
 {
     DataOfDepartments *d = (DataOfDepartments*)data;
     name = new Fl_Input(x, y, 100, 40, "Name:");
-    headOfDepartment = new DisplayWorker(x, y+60, 100, 190, "Head of Department");
+    //headOfDepartment = new DisplayWorker(x, y+60, 100, 190, "Head of Department");
+    chTypeOfHead = new Fl_Choice(x+20, y+200, 100, 50, "Type of HeadOD:");
+    chTypeOfHead->add("Accountant|Auditor|Commercialist");
+    chTypeOfHead->value(0);
     btnAdd = new Fl_Button(x+250, y+300, 70, 30, "Add");
 
     btnPrevious = new Fl_Button(x+120, y, 45, 70, "@<-");
     btnNext = new Fl_Button(x+170, y, 45, 70, "@->");
 
     vector<Fl_Widget*> *widgets = new vector<Fl_Widget*>();
-    widgets->push_back(headOfDepartment);
+    //widgets->push_back(headOfDepartment);
     widgets->push_back(name);
     widgets->push_back(this);
     widgets->push_back(d);
@@ -63,9 +66,22 @@ void DisplayDepartment::setDisplay(int indeks)
 {
     if (indeks >= 0 && indeks < departments->numberOfElement())
     {
+        string type = departments->getDepartment(current)->getHeadOfDepartment()->getType();
         current = indeks;
-        headOfDepartment->displayWorker(departments->getDepartment(indeks)->getHeadOfDepartment());
+        //this->displayWorker(departments->getDepartment(indeks)->getHeadOfDepartment());
         name->value(departments->getDepartment(indeks)->getName().c_str());
+        if(type == "Accountant") //Accountant
+        {
+            
+        }
+        else if(type == "Auditor") //Auditor
+        {
+            this->displayWorker(departments->getDepartment(indeks)->getHeadOfDepartment());
+        }
+        else if(type == "Commercialist") //Commercialist
+        {
+            
+        }
     }
     updateLabel();
 }
@@ -112,7 +128,7 @@ int DisplayDepartment::getCurrent()
 void DisplayDepartment::hideGroup() {
     this->label("");
     this->name->hide();
-    this->headOfDepartment->hide();
+    DisplayWorker::hide();
     
     this->btnNext->hide();
     this->btnPrevious->hide();
@@ -120,7 +136,7 @@ void DisplayDepartment::hideGroup() {
 }
 void DisplayDepartment::unhide() {
     this->name->show();
-    this->headOfDepartment->unhide();
+    DisplayWorker::unhide();
     this->btnNext->show();
     this->btnPrevious->show();
     this->btnAdd->show();
@@ -177,13 +193,10 @@ void DisplayDepartment::add(Fl_Widget *widget, void *data)
     string *name = (string*)widgets->at(2);
     DataOfDepartments *d = (DataOfDepartments*)widgets->at(3);
     DepartmentTable *departmentTable = d->getDepartmentTable();
+    // AbstractWorker *worker =
 
-    // Auditor *novaOsoba = new Auditor(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),
-    //                 headOfDepartment->getValueDateBirth(), stod(headOfDepartment->getValueSalary()));
+    //  Department *department = new Department(displayDepartment->getValueName(), displayDepartment->getValueLastName(),
+    //                 displayDepartment->getValueDateBirth(), stod(displayDepartment->getValueSalary()), displayDepartment->getDatesVisiting());
                     
-    //DisplayDepartment->departments->add(novaOsoba);
-    // auditorTable->add(novaOsoba);
-    // cout << "numb of elem: " << d->numberOfAuditors() << endl;
-    // d->addAuditor(novaOsoba);
-    // cout << "numb of elem1: " << d->numberOfAuditors() << endl;
+    // departmentTable->add(department);
 }
