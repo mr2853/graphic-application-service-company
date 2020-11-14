@@ -41,7 +41,7 @@ void DisplayWorker::displayWorker(AbstractWorker *worker)
     //this->worker = worker;
     name->value(worker->getName().c_str());
     lastName->value(worker->getLastname().c_str());
-    dateBirth->value(worker->getDateBirth().getDateWithTime().c_str());
+    dateBirth->value(worker->getDateBirth()->getDateWithTime().c_str());
     salary->value(to_string(worker->getSalary()).c_str());
 }
 

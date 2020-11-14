@@ -13,10 +13,10 @@
 #include <FL/Fl_Table_Row.H>
 #include <FL/Fl_Spinner.H>
 
-#include "../Class/Auditor.hpp"
+#include "../../Class/Auditor.hpp"
 #include "ArrayAuditors.hpp"
-#include "AbstractDisplay.hpp"
-#include "../Class/Company.hpp"
+#include "../AbstractDisplay.hpp"
+#include "../../Class/Company.hpp"
 
 class AuditorTable : public Fl_Table_Row, protected AbstractDisplay<Auditor *>
 {

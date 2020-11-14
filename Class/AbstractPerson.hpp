@@ -24,7 +24,7 @@ public:
 	virtual void setName(string name);
 	virtual string getLastname();
 	virtual void setLastname(string lastname);
-    virtual Date getDateBirth();
+    virtual Date* getDateBirth();
 	virtual void setDateBirth(Date *dateBirth);
 };
 

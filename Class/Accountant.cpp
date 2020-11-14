@@ -18,6 +18,9 @@ Accountant::Accountant(string in)
 		this->maxAmountCompanyIncome = stod(parts.at(5));
     }
 }
+Accountant::Accountant(string name, string lastname, Date *dateBirth, double salary)
+: AbstractWorker(name, lastname, dateBirth, salary), bodyIssuedPermit(""), maxAmountCompanyIncome(0) {}
+
 Accountant::Accountant(string name, string lastname, Date *dateBirth, double salary, string bodyIssuedPermit, double maxAmountCompanyIncome)
 : AbstractWorker(name, lastname, dateBirth, salary), bodyIssuedPermit(bodyIssuedPermit), 
     maxAmountCompanyIncome(maxAmountCompanyIncome){}

@@ -64,6 +64,7 @@ DataOfAccountants::~DataOfAccountants()
 }
 void DataOfAccountants::hideGroup()
 {
+    this->label("");
     this->displayAccountant->hide();
     this->accountantTable->hide();
     this->btnChange->hide();

@@ -1,9 +1,9 @@
 #include "MainWindow.hpp"
-#include "AuditorTable.hpp"
+#include "Auditor/AuditorTable.hpp"
 #include "AbstractTableModel.hpp"
 #include "../Class/Auditor.hpp"
-#include "ArrayAuditors.hpp"
-#include "DataOfAuditors.hpp"
+#include "Auditor/ArrayAuditors.hpp"
+#include "Auditor/DataOfAuditors.hpp"
 #include "DataOfDepartments.hpp"
 
 MainWindow::~MainWindow(){}

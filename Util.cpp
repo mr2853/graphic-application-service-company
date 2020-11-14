@@ -92,7 +92,7 @@ vector<int> getDate(string &t)
     int month = stoi(t.substr(0, index));
     t.erase(0, index+1);
 
-    int year = stoi(t.substr(0, index));
+    int year = stoi(t.substr(0, t.length()));
     t.erase(0, t.length());
 
     date.push_back(hour);
@@ -100,7 +100,6 @@ vector<int> getDate(string &t)
     date.push_back(day);
     date.push_back(month);
     date.push_back(year);
-    
     return date;
 }
 /*void inputStrings(string &in, int &index, vector<string> &text)

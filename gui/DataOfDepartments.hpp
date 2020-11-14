@@ -12,30 +12,47 @@
 #include "ArrayDepartments.hpp"
 #include "DepartmentTable.hpp"
 
-class DataOfDepartments : public Fl_Group{
+class DataOfDepartments : public Fl_Group, protected AbstractDisplay<Department *>{
 protected:
     ArrayDepartments *departments;
     DisplayDepartment *displayDepartment;
     DepartmentTable *departmentTable;
     Company &company;
+    int current = 0;
 
     Fl_Button *btnChange;
     Fl_Button *btnRemove;
     Fl_Button *btnGoBack;
     Fl_Button *btnDetails;
+    Fl_Button *btnNext;
+    Fl_Button *btnPrevious;
+    Fl_Button *btnAdd;
 
     Fl_Choice *chDepartment;
     Fl_Choice *chWorkerType;
 
-public:
-    DataOfDepartments(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l=0);
-    virtual ~DataOfDepartments();
+    void updateLabel();
+    void checkButtons();
+    void setDisplay(int indeks);
+    
+    static void nextElement(Fl_Widget *widget, void *data);
+    static void previousElement(Fl_Widget *widget, void *data);
+    static void add(Fl_Widget *widget, void *data);
     static void removeElem(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
+
+    void elementPushed(int indeks, Department *element);
+    void elementRemoved(int indeks);
+    void updateChDepart();
+
+public:
+    DataOfDepartments(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l=0);
+    virtual ~DataOfDepartments();
     //static void view(Fl_Widget *widget, void *data);
     void addDepartment(Fl_Widget *widget, void *data);
+    int getCurrent();
     Company& getCompany();
     void refreshTable();
     DepartmentTable* getDepartmentTable();

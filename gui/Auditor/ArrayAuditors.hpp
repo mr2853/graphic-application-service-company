@@ -6,8 +6,8 @@
 #include <sstream>
 #include <string>
 
-#include "AbstractTableModel.hpp"
-#include "../Class/Auditor.hpp"
+#include "../AbstractTableModel.hpp"
+#include "../../Class/Auditor.hpp"
 
 class ArrayAuditors : public AbstractTableModel<Auditor *>{
 private:

@@ -1,6 +1,5 @@
 #include "DisplayAccountant.hpp"
 #include "DataOfAccountants.hpp"
-#include "../../Util.hpp"
 
 DisplayAccountant::DisplayAccountant(int x, int y, int w, int h, ArrayAccountants *accountants, void* data, const char *l)
 : DisplayWorker(x, y, 200, 190, ""), accountants(accountants)

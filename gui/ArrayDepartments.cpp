@@ -35,10 +35,7 @@ void ArrayDepartments::pushRow(int row, Department* elem){
 
 void ArrayDepartments::removeRow(int index)
 {
-    // cout << "line38" << endl;
-    // cout << "size:" << departments->size() << endl;
     departments->erase(departments->begin() + index);
-    // cout << "line40" << endl;
     AbstractTableModel::removeRow(index);
 }
 

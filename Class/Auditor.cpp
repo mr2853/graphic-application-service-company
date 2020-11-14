@@ -54,6 +54,9 @@ Auditor::Auditor(string text)
 Auditor::Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting)
     : AbstractWorker(name, lastname, dateBirth, salary), datesVisiting(datesVisiting){}
 
+Auditor::Auditor(string name, string lastname, Date *dateBirth, double salary)
+    : AbstractWorker(name, lastname, dateBirth, salary), datesVisiting(new vector<Date*>()){}
+    
 void Auditor::pushDateVisiting(Date *date)
 {
     datesVisiting->push_back(date);
@@ -102,7 +105,7 @@ string Auditor::verticalHeader(int row)
     }
     else if (row == 2)
     {
-        return this->getDateBirth().getDateWithTime();
+        return this->getDateBirth()->getDateWithTime();
     }
     else if (row == 3)
     {

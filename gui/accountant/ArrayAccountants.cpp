@@ -81,7 +81,7 @@ string ArrayAccountants::getText(int row, int column)
     }
     else if (column == 2)
     {
-        return o->getDateBirth().getDateWithTime();
+        return o->getDateBirth()->getDateWithTime();
     }
     else if (column == 3)
     {

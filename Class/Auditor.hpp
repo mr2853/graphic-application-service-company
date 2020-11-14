@@ -17,6 +17,7 @@ public:
     Auditor();
     ~Auditor();
     Auditor(string text);
+    Auditor(string name, string lastname, Date *dateBirth, double salary);
     Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting);
 
     virtual string getType();

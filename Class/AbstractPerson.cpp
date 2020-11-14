@@ -24,8 +24,8 @@ void AbstractPerson::setDateBirth(Date *dateBirth) {
 	this->dateBirth = dateBirth;
 }
 
-Date AbstractPerson::getDateBirth() {
-	return *dateBirth;
+Date* AbstractPerson::getDateBirth() {
+	return dateBirth;
 }
 string AbstractPerson::getType()
 {

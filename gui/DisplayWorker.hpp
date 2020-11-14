@@ -1,7 +1,7 @@
 #ifndef DISPLAY_ABSTRACT_HPP
 #define DISPLAY_ABSTRACT_HPP
 #include <iostream>
-#include "AuditorTable.hpp"
+#include "Auditor/AuditorTable.hpp"
 #include "../Class/Auditor.hpp"
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Button.H>
@@ -20,7 +20,7 @@ public:
     DisplayWorker(int x, int y, int w, int h, const char *l);
     virtual ~DisplayWorker();
     virtual void displayWorker(AbstractWorker *worker);
-    virtual void setDisplay(int indeks) = 0;
+    // virtual void setDisplay(int indeks);
     string getValueName();
     string getValueLastName();
     Date* getValueDateBirth();

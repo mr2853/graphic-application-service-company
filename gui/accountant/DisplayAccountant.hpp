@@ -8,11 +8,11 @@
 
 #include "AccountantTable.hpp"
 #include "../../Class/Accountant.hpp"
+#include "../../Class/AbstractWorker.hpp"
 #include "../DisplayWorker.hpp"
 #include "../AbstractModel.hpp"
 #include "../AbstractDisplay.hpp"
 #include "ArrayAccountants.hpp"
-#include "../../Class/AbstractWorker.hpp"
 
 class DisplayAccountant : public DisplayWorker, protected AbstractDisplay<Accountant *>{
 protected:
