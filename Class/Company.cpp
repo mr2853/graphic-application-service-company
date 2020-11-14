@@ -94,9 +94,9 @@ vector<Commercialist*>* Company::getCompanyCommercialists()
     vector<Commercialist*>* ret;
     for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments->at(i)->getCommercialists().size(); j++)
+        for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
         {
-            ret->push_back(departments->at(i)->getCommercialists().at(j));
+            ret->push_back(departments->at(i)->getCommercialists()->at(j));
         }
     }
     return ret;
@@ -118,9 +118,9 @@ vector<Accountant*>* Company::getCompanyAccountants()
     vector<Accountant*>* ret;
     for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments->at(i)->getAccountants().size(); j++)
+        for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
         {
-            ret->push_back(departments->at(i)->getAccountants().at(j));
+            ret->push_back(departments->at(i)->getAccountants()->at(j));
         }
     }
     return ret;

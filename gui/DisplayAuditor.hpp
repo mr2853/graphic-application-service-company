@@ -33,13 +33,15 @@ protected:
     void elementRemoved(int indeks);
 public:
     virtual void setDisplay(int indeks);
-    DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l);
+    DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l=0);
+    DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, const char *l=0);
     virtual ~DisplayAuditor();
     vector<Date*>* getDatesVisiting();
-    // virtual void displayWorker(Auditor *worker);
+    virtual void displayWorker(Auditor *worker);
     virtual void hide();
     void unhide();
     int getCurrent();
+    string getType();
 };
 
 

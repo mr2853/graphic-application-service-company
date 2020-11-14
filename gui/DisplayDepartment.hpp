@@ -10,11 +10,12 @@
 #include "DisplayWorker.hpp"
 #include "../Class/Department.hpp"
 #include "ArrayDepartments.hpp"
+#include "AbstractDisplay.hpp"
 
-class DisplayDepartment : public DisplayWorker, protected AbstractDisplay<Department *>{
+class DisplayDepartment : public Fl_Group, protected AbstractDisplay<Department *>{
 protected:
     Fl_Input *name;
-    //DisplayWorker *headOfDepartment;
+    DisplayWorker *headOfDepartment;
     Fl_Choice *chTypeOfHead;
     Fl_Button *btnNext;
     Fl_Button *btnPrevious;
@@ -37,6 +38,8 @@ public:
     int getCurrent();
     void hideGroup();
     void unhide();
+    string getName();
+    AbstractWorker* getHeadOfDepartment() const;
 };
 
 #endif

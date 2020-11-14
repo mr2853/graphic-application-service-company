@@ -105,8 +105,8 @@ vector<Audit*> Department::getAudits() {
 void Department::setAudits(vector<Audit*> audits) {
     this->audits = audits;
 }
-vector<Commercialist*> Department::getCommercialists() {
-    return commercialists;
+vector<Commercialist*>* Department::getCommercialists() {
+    return &commercialists;
 }
 
 void Department::setCommercialists(vector<Commercialist*> commercialists) {
@@ -121,8 +121,8 @@ void Department::setAuditors(vector<Auditor*> auditors) {
     this->auditors = auditors;
 }
 
-vector<Accountant*> Department::getAccountants() {
-    return accountants;
+vector<Accountant*>* Department::getAccountants() {
+    return &accountants;
 }
 
 void Department::setAccountants(vector<Accountant*> accountants) {

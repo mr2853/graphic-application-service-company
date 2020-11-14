@@ -2,7 +2,7 @@
 #include "DataOfAuditors.hpp"
 #include "../Util.hpp"
 
-DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l=0)
+DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, void* data, const char *l)
 : DisplayWorker(x, y, 200, 190, ""), auditors(auditors)
 {
     datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
@@ -26,11 +26,38 @@ DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *audito
 
     if(auditors->numberOfElement() != 0){
         this->setDisplay(current);
-        this->checkButtons();
     }
-
+    this->checkButtons();
+    
     auditors->subscribeListener(this);
     this->end();
+}
+DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, ArrayAuditors *auditors, const char *l)
+: DisplayWorker(x, y, 200, 190, ""), auditors(auditors)
+{
+    datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
+
+    /*for(int i = 0; i < auditors->getElement(0)->getNumberOfVisits(); i++)
+    {
+        datesVisiting->insert(auditor->getDateVisiting(i)->getDateWithTime().c_str());
+    }*/
+    btnPrevious = new Fl_Button(x+220, y, 45, 70, "@<-");
+    btnNext = new Fl_Button(x + 270, y, 45, 70, "@->");
+
+    btnNext->callback(nextElement, this);
+    btnPrevious->callback(previousElement, this);
+
+    if(auditors->numberOfElement() != 0){
+        this->setDisplay(current);
+    }
+    this->checkButtons();
+    
+    auditors->subscribeListener(this);
+    this->end();
+}
+string DisplayAuditor::getType()
+{
+    return "DisplayAuditor";
 }
 DisplayAuditor::~DisplayAuditor()
 {
@@ -191,14 +218,14 @@ void DisplayAuditor::add(Fl_Widget *widget, void *data)
                     
     auditorTable->add(novaOsoba);
 }
-// void DisplayAuditor::displayWorker(Auditor *worker)
-// {
-//     //this->worker = worker;
-//     DisplayWorker::displayWorker(worker);
-//     // datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
-//     datesVisiting->value("");
-//     for(int i = 0; i < worker->getNumberOfVisits(); i++){
-//         datesVisiting->insert(worker->getDateVisiting(i)->getDateWithTime().c_str());
-//         datesVisiting->insert(",\n");
-//     }
-// }
+void DisplayAuditor::displayWorker(Auditor *worker)
+{
+    //this->worker = worker;
+    DisplayWorker::displayWorker(worker);
+    // datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
+    datesVisiting->value("");
+    for(int i = 0; i < worker->getNumberOfVisits(); i++){
+        datesVisiting->insert(worker->getDateVisiting(i)->getDateWithTime().c_str());
+        datesVisiting->insert(",\n");
+    }
+}

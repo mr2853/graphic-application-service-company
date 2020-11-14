@@ -3,6 +3,9 @@
 #include "MainWindow.hpp"
 #include "DataOfAuditors.hpp"
 #include "ArrayDepartments.hpp"
+#include "DisplayDepartment.hpp"
+#include "accountant/DataOfAccountants.hpp"
+#include "accountant/ArrayAccountants.hpp"
 
 using namespace std;
 
@@ -73,8 +76,22 @@ void DataOfDepartments::change(Fl_Widget *widget, void *d)
     DisplayDepartment *displayDepartment = (DisplayDepartment*)v->at(1);
     DepartmentTable *departmentTable = (DepartmentTable*)v->at(2);
     Department *a = data->departments->getRow(displayDepartment->getCurrent());
-    a->setName(displayDepartment->getValueName());
-    //a->setHeadOfDepartment(); odraditi
+    a->setName(displayDepartment->getName());
+    string type = displayDepartment->getHeadOfDepartment()->getType();
+    // AbstractWorker* head = displayDepartment->getHeadOfDepartment();
+    // if(type == "Accountant") //Accountant
+    // {
+    //     a->setHeadOfDepartment(new Accountant(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary(),
+    //                 head->))
+    // }
+    // else if(type == "Auditor") //Auditor
+    // {
+    //     headOfDepartment = new DisplayAuditor(x, y+60, 100, 190, new ArrayAuditors(departments->getDepartment(current)->getAuditors()),"Head of Department");
+    // }
+    // else if(type == "Commercialist") //Commercialist
+    // {
+    //     //headOfDepartment = new DisplayCommercialist(x, y+60, 100, 190, "Head of Department");
+    // }
     departmentTable->redraw();
 }
 
@@ -112,7 +129,10 @@ void DataOfDepartments::details(Fl_Widget *widget, void *d)
     int workerType = data->chWorkerType->value();
     Department *department = data->company.getDepartment(intDep);
     if(workerType == 0){
-
+        DataOfAccountants *dataOfAccountants = new DataOfAccountants(data->x(),
+                        data->y(), data->w(), data->h(), new ArrayAccountants(department->getAccountants()), v);
+        data->hideGroup();
+        mainWindow->add(dataOfAccountants);
     }
     else if(workerType == 1){
         DataOfAuditors *dataOfAuditors = new DataOfAuditors(data->x(),

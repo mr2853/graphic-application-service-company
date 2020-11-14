@@ -32,7 +32,7 @@ DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *audito
     MainWindow *main = (MainWindow*)data->at(0);
     DataOfDepartments *parent = (DataOfDepartments*)data->at(1);
     displayAuditor = new DisplayAuditor(x+50, y, 300, 390, auditors, this, "");
-    auditorTable = new AuditorTable(x+50, y+340, 400, 280, auditors);
+    auditorTable = new AuditorTable(x+200, y+340, 400, 280, auditors);
     
     btnChange = new Fl_Button(x+220, y+300, 70, 30, "Change");
     btnRemove = new Fl_Button(x+370, y+300, 70, 30, "Remove");

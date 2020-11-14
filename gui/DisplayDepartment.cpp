@@ -1,16 +1,32 @@
 #include "DisplayDepartment.hpp"
 #include "DataOfDepartments.hpp"
+#include "DisplayAuditor.hpp"
+#include "accountant/DisplayAccountant.hpp"
 #include "../Util.hpp"
 
 DisplayDepartment::DisplayDepartment(int x, int y, int w, int h, ArrayDepartments *departments, void* data, const char *l=0)
-: DisplayWorker(x, y, w, h, l), departments(departments)
+: Fl_Group(x,y,w,h,l), departments(departments)
 {
     DataOfDepartments *d = (DataOfDepartments*)data;
+    string type = departments->getDepartment(current)->getHeadOfDepartment()->getType();
     name = new Fl_Input(x, y, 100, 40, "Name:");
-    //headOfDepartment = new DisplayWorker(x, y+60, 100, 190, "Head of Department");
-    chTypeOfHead = new Fl_Choice(x+20, y+200, 100, 50, "Type of HeadOD:");
+    if(type == "Accountant") //Accountant
+    {
+        headOfDepartment = new DisplayAccountant(x, y+60, 100, 190, new ArrayAccountants(departments->getDepartment(current)->getAccountants()), "Head of Department");
+    }
+    else if(type == "Auditor") //Auditor
+    {
+        headOfDepartment = new DisplayAuditor(x, y+60, 100, 190, new ArrayAuditors(departments->getDepartment(current)->getAuditors()),"Head of Department");
+    }
+    else if(type == "Commercialist") //Commercialist
+    {
+        //headOfDepartment = new DisplayCommercialist(x, y+60, 100, 190, "Head of Department");
+    }
+    
+    chTypeOfHead = new Fl_Choice(x+90, y+250, 100, 50, "Type of HeadOD:");
     chTypeOfHead->add("Accountant|Auditor|Commercialist");
     chTypeOfHead->value(0);
+    // chTypeOfHead->callback();
     btnAdd = new Fl_Button(x+250, y+300, 70, 30, "Add");
 
     btnPrevious = new Fl_Button(x+120, y, 45, 70, "@<-");
@@ -33,6 +49,10 @@ DisplayDepartment::DisplayDepartment(int x, int y, int w, int h, ArrayDepartment
 
     departments->subscribeListener(this);
     this->end();
+}
+AbstractWorker* DisplayDepartment::getHeadOfDepartment() const
+{
+    return departments->getElement(current)->getHeadOfDepartment();
 }
 DisplayDepartment::~DisplayDepartment(){}
 void DisplayDepartment::updateLabel()
@@ -62,6 +82,10 @@ void DisplayDepartment::checkButtons()
     }
 }
 
+string DisplayDepartment::getName()
+{
+    return name->value();
+}
 void DisplayDepartment::setDisplay(int indeks)
 {
     if (indeks >= 0 && indeks < departments->numberOfElement())
@@ -72,11 +96,11 @@ void DisplayDepartment::setDisplay(int indeks)
         name->value(departments->getDepartment(indeks)->getName().c_str());
         if(type == "Accountant") //Accountant
         {
-            
+            headOfDepartment->displayWorker(departments->getDepartment(indeks)->getHeadOfDepartment());
         }
         else if(type == "Auditor") //Auditor
         {
-            this->displayWorker(departments->getDepartment(indeks)->getHeadOfDepartment());
+            headOfDepartment->displayWorker(departments->getDepartment(indeks)->getHeadOfDepartment());
         }
         else if(type == "Commercialist") //Commercialist
         {
@@ -128,18 +152,20 @@ int DisplayDepartment::getCurrent()
 void DisplayDepartment::hideGroup() {
     this->label("");
     this->name->hide();
-    DisplayWorker::hide();
+    headOfDepartment->hide();
     
     this->btnNext->hide();
     this->btnPrevious->hide();
     this->btnAdd->hide();
+    this->chTypeOfHead->hide();
 }
 void DisplayDepartment::unhide() {
     this->name->show();
-    DisplayWorker::unhide();
+    headOfDepartment->unhide();
     this->btnNext->show();
     this->btnPrevious->show();
     this->btnAdd->show();
+    this->chTypeOfHead->show();
     if(this->departments->numberOfElement() != 0){
         this->setDisplay(current);
         this->checkButtons();

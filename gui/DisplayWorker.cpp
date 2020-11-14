@@ -9,6 +9,11 @@ DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
 
     this->end();
 }
+
+string DisplayWorker::getType()
+{
+    return "DisplayWorker";
+}
 DisplayWorker::~DisplayWorker()
 {
     delete name;

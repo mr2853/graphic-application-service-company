@@ -27,6 +27,7 @@ public:
     string getValueSalary();
     virtual void hide();
     void unhide();
+    virtual string getType();
 };
 
 
