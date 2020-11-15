@@ -25,17 +25,17 @@ AbstractWorker* DisplayDepartment::getNewHeadOfDepartment()
     if(type == "Accountant")
     {
         return new Accountant(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
-                stod(headOfDepartment->getValueSalary()));
+                headOfDepartment->getValueSalary());
     }
     else if(type == "Auditor")
     {
         return new Auditor(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
-                stod(headOfDepartment->getValueSalary()));
+                headOfDepartment->getValueSalary());
     }
     else if(type == "Commercialist")
     {
         return new Commercialist(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
-                stod(headOfDepartment->getValueSalary()));
+                headOfDepartment->getValueSalary());
     }
     return nullptr;
 }

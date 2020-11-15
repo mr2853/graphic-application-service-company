@@ -33,6 +33,7 @@ protected:
     static void nextElement(Fl_Widget *widget, void *data);
     static void previousElement(Fl_Widget *widget, void *data);
     static void add(Fl_Widget *widget, void *data);
+    void isArrayEmpty();
 
     void elementPushed(int indeks, Accountant *element);
     void elementRemoved(int indeks);

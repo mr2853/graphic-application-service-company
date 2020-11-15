@@ -57,9 +57,10 @@ DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayComm
     if(commercialists->numberOfElement() != 0){
         this->setDisplay(current);
     }
-    this->checkButtons();
     
     commercialists->subscribeListener(this);
+    this->isArrayEmpty();
+    this->checkButtons();
     this->end();
 }
 void DataOfCommercialists::updateLabel()
@@ -156,19 +157,37 @@ DataOfCommercialists::~DataOfCommercialists()
     delete btnRemove;
     delete btnGoBack;
 }
+void DataOfCommercialists::isArrayEmpty()
+{
+    if(commercialists->numberOfElement() == 0)
+    {
+        btnChange->deactivate();
+        btnRemove->deactivate();
+        btnNext->deactivate();
+        btnPrevious->deactivate();
+    }
+    else
+    {
+        btnChange->activate();
+        btnRemove->activate();
+        btnNext->activate();
+        btnPrevious->activate();
+    }
+}
 void DataOfCommercialists::add(Fl_Widget *widget, void *data)
 {
     DataOfCommercialists *d = (DataOfCommercialists*)data;
     CommercialistTable *commercialistTable = d->getCommercialistTable();
 
     Commercialist *novaOsoba = new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
-                    d->displayCommercialist->getValueDateBirth(), stod(d->displayCommercialist->getValueSalary()));
+                    d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary());
     
     novaOsoba->setBusinessContact(d->displayCommercialist->getBusinessContacts());                
     commercialistTable->add(novaOsoba);
     d->setDisplay(d->commercialists->numberOfElement()-1);
-    d->checkButtons();
     d->updateLabel();
+    d->isArrayEmpty();
+    d->checkButtons();
 }
 void DataOfCommercialists::hideGroup()
 {
@@ -189,7 +208,7 @@ void DataOfCommercialists::change(Fl_Widget *widget, void *d)
     Commercialist *a = data->commercialists->getRow(data->getCurrent());
     a->setName(data->displayCommercialist->getValueName());
     a->setLastname(data->displayCommercialist->getValueLastName());
-    a->setSalary(stod(data->displayCommercialist->getValueSalary()));
+    a->setSalary(data->displayCommercialist->getValueSalary());
     a->setDateBirth(data->displayCommercialist->getValueDateBirth());
     a->setBusinessContact(data->displayCommercialist->getBusinessContacts());
     data->commercialistTable->redraw();
@@ -235,8 +254,9 @@ void DataOfCommercialists::removeElem(Fl_Widget *widget, void *data)
     else{
         e->setDisplay(e->commercialists->numberOfElement()-1);
     }
-    e->checkButtons();
     e->updateLabel();
+    e->isArrayEmpty();
+    e->checkButtons();
 }
 
 // Company& DataOfCommercialists::getCompany()

@@ -1,14 +1,13 @@
 #include "DisplayWorker.hpp"
+#include "../Util.hpp"
 DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
  : Fl_Group(x,y,w,h,l){
 
     name = new Fl_Input(x, y, 100, 40, "Name:");
     lastName = new Fl_Input(x, y+50, 100, 40, "Last name:");
     dateBirth = new Fl_Input(x, y+100, 100, 40, "Date birth:");
-    salary = new Fl_Input(x, y+150, 100, 40, "Salary:");
-
-    salary->input_type(0.0);
-    salary->redraw();
+    salary = new Fl_Value_Input(x, y+150, 100, 40, "Salary:");
+    salary->precision(2);
     this->end();
 }
 
@@ -44,7 +43,7 @@ void DisplayWorker::displayWorker(AbstractWorker *worker)
     name->value(worker->getName().c_str());
     lastName->value(worker->getLastname().c_str());
     dateBirth->value(worker->getDateBirth()->getDateWithTime().c_str());
-    salary->value(to_string(worker->getSalary()).c_str());
+    salary->value(worker->getSalary());
 }
 
 string DisplayWorker::getValueName()
@@ -58,31 +57,39 @@ string DisplayWorker::getValueLastName()
 Date* DisplayWorker::getValueDateBirth()
 {
     string t = dateBirth->value();
-    
+    if(!correctDate(t)){
+        return new Date(); // exception
+    }
     int index = t.find("-");
-    int hour = stoi(t.substr(0, index));
+    int a = stoi(t.substr(0, index));
     t.erase(0, index+1);
     
     index = t.find("-");
-    int minute = stoi(t.substr(0, index));
+    int b = stoi(t.substr(0, index));
     t.erase(0, index+1);
+    int c = -1;
+    int d = -1;
+    if(t.find("-") != string::npos){
+        index = t.find("-");
+        c = stoi(t.substr(0, index));
+        t.erase(0, index+1);
+        
+        index = t.find("-");
+        d = stoi(t.substr(0, index));
+        t.erase(0, index+1);
+    }
     
-    index = t.find("-");
-    int day = stoi(t.substr(0, index));
-    t.erase(0, index+1);
+    int e = stoi(t);
     
-    index = t.find("-");
-    int month = stoi(t.substr(0, index));
-    t.erase(0, index+1);
+    Date *date = new Date(a,b,e);
+    if(c != -1)
+    {
+        date = new Date(a,b,c,d,e);
+    }
     
-    //index = t.find("-");
-    int year = stoi(t);
-    //t.erase(0, index);
-    
-    Date *d = new Date(hour, minute, day, month, year);
-    return d;
+    return date;
 }
-string DisplayWorker::getValueSalary()
+double DisplayWorker::getValueSalary()
 {
     return salary->value();
 }

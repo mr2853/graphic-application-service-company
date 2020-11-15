@@ -22,7 +22,23 @@ int DataOfAuditors::numberOfAuditors()
 {
     return auditors->numberOfElement();
 }
-
+void DataOfAuditors::isArrayEmpty()
+{
+    if(auditors->numberOfElement() == 0)
+    {
+        btnChange->deactivate();
+        btnRemove->deactivate();
+        btnNext->deactivate();
+        btnPrevious->deactivate();
+    }
+    else
+    {
+        btnChange->activate();
+        btnRemove->activate();
+        btnNext->activate();
+        btnPrevious->activate();
+    }
+}
 DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *auditors, void *d, const char *l)
  : Fl_Group(x , y ,w ,h ,l), auditors(auditors)
  {
@@ -57,9 +73,10 @@ DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *audito
     if(auditors->numberOfElement() != 0){
         this->setDisplay(current);
     }
-    this->checkButtons();
     
     auditors->subscribeListener(this);
+    this->isArrayEmpty();
+    this->checkButtons();
     this->end();
 }
 void DataOfAuditors::updateLabel()
@@ -162,12 +179,13 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
     AuditorTable *auditorTable = d->getAuditorTable();
 
     Auditor *novaOsoba = new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
-                    d->displayAuditor->getValueDateBirth(), stod(d->displayAuditor->getValueSalary()), d->displayAuditor->getDatesVisiting());
+                    d->displayAuditor->getValueDateBirth(), d->displayAuditor->getValueSalary(), d->displayAuditor->getDatesVisiting());
                     
     auditorTable->add(novaOsoba);
     d->setDisplay(d->auditors->numberOfElement()-1);
-    d->checkButtons();
     d->updateLabel();
+    d->isArrayEmpty();
+    d->checkButtons();
 }
 void DataOfAuditors::hideGroup()
 {
@@ -188,7 +206,7 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
     Auditor *a = data->auditors->getRow(data->getCurrent());
     a->setName(data->displayAuditor->getValueName());
     a->setLastname(data->displayAuditor->getValueLastName());
-    a->setSalary(stod(data->displayAuditor->getValueSalary()));
+    a->setSalary(data->displayAuditor->getValueSalary());
     a->setDateBirth(data->displayAuditor->getValueDateBirth());
     a->setDatesVisiting(data->displayAuditor->getDatesVisiting());
     data->auditorTable->redraw();
@@ -234,8 +252,9 @@ void DataOfAuditors::removeElem(Fl_Widget *widget, void *data)
     else{
         e->setDisplay(e->auditors->numberOfElement()-1);
     }
-    e->checkButtons();
     e->updateLabel();
+    e->isArrayEmpty();
+    e->checkButtons();
 }
 
 // Company& DataOfAuditors::getCompany()

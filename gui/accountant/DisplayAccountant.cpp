@@ -5,11 +5,8 @@ DisplayAccountant::DisplayAccountant(int x, int y, int w, int h, const char *l)
 : DisplayWorker(x, y, 200, 190, "")
 {
     bodyIssuedPermit = new Fl_Input(x, y+200, 100, 40, "Issued Permit:");
-    maxAmountCompanyIncome = new Fl_Input(x, y+280, 100, 40, "Max Income:");
-    
-    maxAmountCompanyIncome->input_type(0.0);
-    maxAmountCompanyIncome->redraw();
-
+    maxAmountCompanyIncome = new Fl_Value_Input(x, y+280, 100, 40, "Max Income:");
+    maxAmountCompanyIncome->precision(2);
     this->end();
 }
 string DisplayAccountant::getType()
@@ -41,7 +38,7 @@ void DisplayAccountant::setBodyIssuedPermit(string t)
 }
 void DisplayAccountant::setMaxAmountCompanyIncome(string t)
 {
-    maxAmountCompanyIncome->value(t.c_str());
+    maxAmountCompanyIncome->value(stod(t));
 }
 /*void DisplayAccountant::displayAccountant(Accountant *auditor)
 {
@@ -63,7 +60,7 @@ string DisplayAccountant::getBodyIssuedPermit()
 {
     return bodyIssuedPermit->value();
 }
-string DisplayAccountant::getMaxAmountCompanyIncome()
+double DisplayAccountant::getMaxAmountCompanyIncome()
 {
     return maxAmountCompanyIncome->value();
 }

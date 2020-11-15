@@ -46,6 +46,7 @@ protected:
     void elementPushed(int indeks, Department *element);
     void elementRemoved(int indeks);
     void updateChDepart();
+    void isDepartmentsEmpty();
 
 public:
     DataOfDepartments(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l=0);

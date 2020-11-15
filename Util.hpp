@@ -22,6 +22,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
 vector<string> tokenization(string &line, string delimiter1, string delimiter2);
 vector<int> getDate(string &line);
 std::string trim(const std::string &s);
+bool correctDate(string t);
 /*template<class T>
 vector<T*> readAbstractArray(string in)
 {

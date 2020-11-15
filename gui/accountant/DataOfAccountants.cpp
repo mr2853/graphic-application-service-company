@@ -16,6 +16,23 @@ AccountantTable* DataOfAccountants::getAccountantTable()
 {
     return accountantTable;
 }
+void DataOfAccountants::isArrayEmpty()
+{
+    if(accountants->numberOfElement() == 0)
+    {
+        btnChange->deactivate();
+        btnRemove->deactivate();
+        btnNext->deactivate();
+        btnPrevious->deactivate();
+    }
+    else
+    {
+        btnChange->activate();
+        btnRemove->activate();
+        btnNext->activate();
+        btnPrevious->activate();
+    }
+}
 void DataOfAccountants::addAccountant(Accountant* a)
 {
     accountants->add(a);
@@ -48,7 +65,6 @@ DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayAccountant
     if(accountants->numberOfElement() != 0){
         this->setDisplay(current);
     }
-    this->checkButtons();
 
     accountants->subscribeListener(this);
 
@@ -66,6 +82,8 @@ DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayAccountant
     v1->push_back(displayAccountant);
     v1->push_back(accountantTable);
     btnChange->callback(change, v1);
+    this->isArrayEmpty();
+    this->checkButtons();
     this->end();
 }
 void DataOfAccountants::updateLabel()
@@ -153,13 +171,14 @@ void DataOfAccountants::add(Fl_Widget *widget, void *data)
 {
     DataOfAccountants *d = (DataOfAccountants*)data;
     Accountant *novaOsoba = new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
-                    d->displayAccountant->getValueDateBirth(), stod(d->displayAccountant->getValueSalary()),
-                     d->displayAccountant->getBodyIssuedPermit(), stod(d->displayAccountant->getMaxAmountCompanyIncome()));
+                    d->displayAccountant->getValueDateBirth(), d->displayAccountant->getValueSalary(),
+                     d->displayAccountant->getBodyIssuedPermit(), d->displayAccountant->getMaxAmountCompanyIncome());
                     
     d->accountantTable->add(novaOsoba);
     d->setDisplay(d->accountants->numberOfElement()-1);
-    d->checkButtons();
     d->updateLabel();
+    d->isArrayEmpty();
+    d->checkButtons();
 }
 DataOfAccountants::~DataOfAccountants()
 {
@@ -187,10 +206,10 @@ void DataOfAccountants::change(Fl_Widget *widget, void *d)
     Accountant *a = data->accountants->getRow(data->getCurrent());
     a->setName(displayAccountant->getValueName());
     a->setLastname(displayAccountant->getValueLastName());
-    a->setSalary(stod(displayAccountant->getValueSalary()));
+    a->setSalary(displayAccountant->getValueSalary());
     a->setDateBirth(displayAccountant->getValueDateBirth());
     a->setBodyIssuedPermit(displayAccountant->getBodyIssuedPermit());
-    a->setMaxAmountCompanyIncome(stod(displayAccountant->getMaxAmountCompanyIncome()));
+    a->setMaxAmountCompanyIncome(displayAccountant->getMaxAmountCompanyIncome());
     accountantTable->redraw();
 }
 void DataOfAccountants::goBack(Fl_Widget *widget, void *d)
@@ -234,8 +253,9 @@ void DataOfAccountants::removeElem(Fl_Widget *widget, void *data)
     else{
         e->setDisplay(e->accountants->numberOfElement()-1);
     }
-    e->checkButtons();
     e->updateLabel();
+    e->isArrayEmpty();
+    e->checkButtons();
 }
 
 // Company& DataOfAccountants::getCompany()

@@ -42,11 +42,17 @@ vector<Date*>* DisplayAuditor::getDatesVisiting(){
     while(t.find(",") != string::npos){
         index = t.find(",");
         string subs = t.substr(0, index);
+        if(!correctDate(subs)){
+            return dates; // exception
+        }
         vector<int> d = getDate(subs);
         t.erase(0, index + 1);
         dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
     }
     if(t.find(",") == string::npos){
+        if(!correctDate(t)){
+            return dates; // exception
+        }
         vector<int> d = getDate(t);
         t.erase(0, index + 1);
         dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));

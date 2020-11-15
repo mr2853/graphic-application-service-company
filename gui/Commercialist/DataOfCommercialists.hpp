@@ -36,6 +36,7 @@ protected:
     static void add(Fl_Widget *widget, void *data);
     void elementPushed(int indeks, Commercialist *element);
     void elementRemoved(int indeks);
+    void isArrayEmpty();
 
     void updateLabel();
     void checkButtons();

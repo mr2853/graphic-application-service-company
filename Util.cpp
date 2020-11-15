@@ -8,13 +8,13 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2)
     while(true)
     {
         pos = line.find(delimiter1);
-        if(pos == -1){
+        if(pos == string::npos){
             break;
         }
         line.erase(0,pos+delimiter1.length());
     
         pos = line.find(delimiter2);
-        if(pos == -1){
+        if(pos == string::npos){
             break;
         }
         string part = line.substr(0, pos);
@@ -32,11 +32,11 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
     vector<string> parts = vector<string>();
     int pos;
     pos = line.find(delimiter1);
-    if(pos == -1){ return parts; }
+    if(pos == string::npos){ return parts; }
 
     line.erase(0,pos+delimiter1.length());
     pos = line.find(delimiter2);
-    if(pos == -1){ return parts; }
+    if(pos == string::npos){ return parts; }
 
     string part = line.substr(0, pos);
     line.erase(0,pos+delimiter2.length());
@@ -46,13 +46,13 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
         if(del3 == "Audit")
         {
             pos = line.find("Auditor[");
-            if(pos == -1){
+            if(pos == string::npos){
                 break;
             }
             line.erase(0,pos);
 
             pos = line.find(",date:Date[");
-            if(pos == -1){
+            if(pos == string::npos){
                 break;
             }
             
@@ -68,7 +68,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
         if(parts.size() == 2 && del3 == "Commercialist")
         { //salary:300,businessContact<contact:contact 1$contact:contact 2$contact:contact 3>]#Auditor[d
             pos = line.find(",salary:");
-            if(pos == -1){
+            if(pos == string::npos){
                 break;
             }
             part = line.substr(0, pos);
@@ -76,7 +76,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
             line.erase(0,pos+8);
              
             pos = line.find(delimiter2);
-            if(pos == -1){
+            if(pos == string::npos){
                 break;
             }
             part = line.substr(0, pos);
@@ -92,7 +92,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
         if(parts.size() == 2 && del3 != "")
         {
             pos = line.find("],");
-            if(pos == -1){
+            if(pos == string::npos){
                 break;
             }
             
@@ -103,13 +103,13 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
         }
 
         pos = line.find(delimiter1);
-        if(pos == -1){
+        if(pos == string::npos){
             break;
         }
         line.erase(0,pos+delimiter1.length());
     
         pos = line.find(delimiter2);
-        if(pos == -1){
+        if(pos == string::npos){
             break;
         }
         string part = line.substr(0, pos);
@@ -127,18 +127,22 @@ vector<int> getDate(string &t)
     vector<int> date = vector<int>();
 
     int index = t.find("-");
+    if(index == string::npos){return date;} // exception
     int hour = stoi(t.substr(0, index));
     t.erase(0, index+1);
     
     index = t.find("-");
+    if(index == string::npos){return date;}
     int minute = stoi(t.substr(0, index));
     t.erase(0, index+1);
 
     index = t.find("-");
+    if(index == string::npos){return date;}
     int day = stoi(t.substr(0, index));
     t.erase(0, index+1);
 
     index = t.find("-");
+    if(index == string::npos){return date;}
     int month = stoi(t.substr(0, index));
     t.erase(0, index+1);
 
@@ -165,6 +169,49 @@ std::string trim(const std::string &s)
 	} while (std::distance(start, end) > 0 && std::isspace(*end));
 
 	return std::string(start, end + 1);
+}
+bool correctDate(string t)
+{
+    int index = t.find("-");
+    if(index == string::npos){return false;}
+    string hour = t.substr(0, index);
+    t.erase(0, index+1);
+    if(!std::all_of(hour.begin(), hour.end(), ::isdigit)){
+        return false;
+    }
+    
+    index = t.find("-");
+    if(index == string::npos){return false;}
+    string minute = t.substr(0, index);
+    t.erase(0, index+1);
+    if(!std::all_of(minute.begin(), minute.end(), ::isdigit)){
+        return false;
+    }
+
+    if(t.find("-") != string::npos){
+        index = t.find("-");
+        if(index == string::npos){return false;}
+        string day = t.substr(0, index);
+        t.erase(0, index+1);
+        if(!std::all_of(day.begin(), day.end(), ::isdigit)){
+            return false;
+        }
+
+        index = t.find("-");
+        if(index == string::npos){return false;}
+        string month = t.substr(0, index);
+        t.erase(0, index+1);
+        if(!std::all_of(month.begin(), month.end(), ::isdigit)){
+            return false;
+        }
+    }
+
+    string year = t.substr(0, t.length());
+    t.erase(0, t.length());
+    if(!std::all_of(year.begin(), year.end(), ::isdigit)){
+        return false;
+    }
+    return true;
 }
 /*void inputStrings(string &in, int &index, vector<string> &text)
 {

@@ -65,11 +65,11 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Company &compan
 
     if(departments->numberOfElement() != 0){
         this->setDisplay(current);
-        this->checkButtons();
     }
 
     departments->subscribeListener(this);
-
+    this->isDepartmentsEmpty();
+    this->checkButtons();
     this->end();
 }
 void DataOfDepartments::updateChDepart(){
@@ -171,6 +171,24 @@ void DataOfDepartments::checkButtons()
     else
     {
         btnNext->activate();
+    }
+}
+void DataOfDepartments::isDepartmentsEmpty()
+{
+    if(departments->numberOfElement() == 0){
+        btnChange->deactivate();
+        btnRemove->deactivate();
+        btnDetails->deactivate();
+        btnNext->deactivate();
+        btnPrevious->deactivate();
+    }
+    else
+    {
+        btnChange->activate();
+        btnRemove->activate();
+        btnDetails->activate();
+        btnNext->activate();
+        btnPrevious->activate();
     }
 }
 void DataOfDepartments::change(Fl_Widget *widget, void *d)
@@ -285,8 +303,9 @@ void DataOfDepartments::removeElem(Fl_Widget *widget, void *data)
         e->setDisplay(e->departments->numberOfElement()-1);
     }
     e->updateChDepart();
-    e->checkButtons();
     e->updateLabel();
+    e->isDepartmentsEmpty();
+    e->checkButtons();
 }
 
 Company& DataOfDepartments::getCompany()
@@ -306,6 +325,7 @@ void DataOfDepartments::add(Fl_Widget *widget, void *data)
     d->departmentTable->add(department);
     d->updateChDepart();
     d->setDisplay(d->departments->numberOfElement()-1);
-    d->checkButtons();
     d->updateLabel();
+    d->isDepartmentsEmpty();
+    d->checkButtons();
 }
