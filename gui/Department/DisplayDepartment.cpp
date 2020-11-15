@@ -1,7 +1,7 @@
 #include "DisplayDepartment.hpp"
-#include "../Class/Auditor.hpp"
-#include "../Class/Accountant.hpp"
-#include "../Class/Commercialist.hpp"
+#include "../../Class/Auditor.hpp"
+#include "../../Class/Accountant.hpp"
+#include "../../Class/Commercialist.hpp"
 
 DisplayDepartment::DisplayDepartment(int x, int y, int w, int h, const char *l)
 : Fl_Group(x,y,w,h,l)

@@ -5,8 +5,8 @@
 #include <sstream>
 #include <string>
 
-#include "AbstractTableModel.hpp"
-#include "../Class/Department.hpp"
+#include "../AbstractTableModel.hpp"
+#include "../../Class/Department.hpp"
 
 class ArrayDepartments : public AbstractTableModel<Department *>{
 private:

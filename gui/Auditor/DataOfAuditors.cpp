@@ -1,5 +1,5 @@
 #include "DataOfAuditors.hpp"
-#include "../DataOfDepartments.hpp"
+#include "../Department/DataOfDepartments.hpp"
 #include <sstream>
 
 using namespace std;
@@ -42,10 +42,7 @@ DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayAuditors *audito
     btnNext->callback(nextElement, this);
     btnPrevious->callback(previousElement, this);
 
-    vector<Fl_Widget*> *widgets = new vector<Fl_Widget*>();
-    widgets->push_back(displayAuditor);
-    widgets->push_back(this);
-    btnAdd->callback(add, widgets);
+    btnAdd->callback(add, this);
     //btnView->callback(DataOfAuditors::view, ev);
     btnRemove->callback(DataOfAuditors::removeElem, this);
 
@@ -161,16 +158,16 @@ DataOfAuditors::~DataOfAuditors()
 }
 void DataOfAuditors::add(Fl_Widget *widget, void *data)
 {
-    vector<Fl_Widget*> *widgets = (vector<Fl_Widget*>*)data;
-    Fl_Multiline_Input *datesVisiting = (Fl_Multiline_Input*)widgets->at(0);
-    DisplayAuditor *displayAuditor = (DisplayAuditor*)widgets->at(1);
-    DataOfAuditors *d = (DataOfAuditors*)widgets->at(2);
+    DataOfAuditors *d = (DataOfAuditors*)data;
     AuditorTable *auditorTable = d->getAuditorTable();
 
-    Auditor *novaOsoba = new Auditor(displayAuditor->getValueName(), displayAuditor->getValueLastName(),
-                    displayAuditor->getValueDateBirth(), stod(displayAuditor->getValueSalary()), displayAuditor->getDatesVisiting());
+    Auditor *novaOsoba = new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
+                    d->displayAuditor->getValueDateBirth(), stod(d->displayAuditor->getValueSalary()), d->displayAuditor->getDatesVisiting());
                     
     auditorTable->add(novaOsoba);
+    d->setDisplay(d->auditors->numberOfElement()-1);
+    d->checkButtons();
+    d->updateLabel();
 }
 void DataOfAuditors::hideGroup()
 {
@@ -227,15 +224,18 @@ void DataOfAuditors::removeElem(Fl_Widget *widget, void *data)
     int colLeft;
     int colRight;
     e->auditorTable->get_selection(startRow, colLeft, endRow, colRight);
-    // cout << "Dodje" << endl;
-    // cout << "size1:" << e->auditors->numberOfElement() << endl;
     for (int i = endRow; i >= startRow; i--)
     {
         e->auditors->removeRow(i);
-        // e->auditorTable->rows(e->auditors->numberOfRows());
-        // e->auditorTable->cols(e->auditors->numberOfColumns());
     }
-    // cout << "prodje" << endl;
+    if(e->auditors->numberOfElement() == 0){
+        e->setDisplay(0);
+    }
+    else{
+        e->setDisplay(e->auditors->numberOfElement()-1);
+    }
+    e->checkButtons();
+    e->updateLabel();
 }
 
 // Company& DataOfAuditors::getCompany()

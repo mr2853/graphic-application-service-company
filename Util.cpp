@@ -1,9 +1,35 @@
 #include "Util.hpp"
 #include "Class/Company.hpp"
 
+vector<string> tokenization(string &line, string delimiter1, string delimiter2)
+{
+    vector<string> parts = vector<string>();
+    int pos;
+    while(true)
+    {
+        pos = line.find(delimiter1);
+        if(pos == -1){
+            break;
+        }
+        line.erase(0,pos+delimiter1.length());
+    
+        pos = line.find(delimiter2);
+        if(pos == -1){
+            break;
+        }
+        string part = line.substr(0, pos);
+        line.erase(0,pos+delimiter2.length());
+        parts.push_back(part);
+    }
+    
+    if(line.empty())
+        return parts;
+
+    parts.push_back(line);
+    return parts;
+}
 vector<string> tokenization(string &line, string delimiter1, string delimiter2, string del3){
     vector<string> parts = vector<string>();
-    //cout << "all: " << line << "\n\n" << endl;
     int pos;
     pos = line.find(delimiter1);
     if(pos == -1){ return parts; }
@@ -17,18 +43,6 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
     if(part == "true"){ return parts; }
 
     while(true){
-        if(parts.size() == 2 && del3 != "")
-        {
-            pos = line.find("],");
-            if(pos == -1){
-                break;
-            }
-            
-            string part = line.substr(0, pos);
-            parts.push_back(part);
-            line.erase(0,pos+2);
-            continue;
-        }
         if(del3 == "Audit")
         {
             pos = line.find("Auditor[");
@@ -50,6 +64,42 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
             parts.push_back(part);
             line.erase(0,line.length());
             break;
+        }
+        if(parts.size() == 2 && del3 == "Commercialist")
+        { //salary:300,businessContact<contact:contact 1$contact:contact 2$contact:contact 3>]#Auditor[d
+            pos = line.find(",salary:");
+            if(pos == -1){
+                break;
+            }
+            part = line.substr(0, pos);
+            parts.push_back(part);
+            line.erase(0,pos+8);
+             
+            pos = line.find(delimiter2);
+            if(pos == -1){
+                break;
+            }
+            part = line.substr(0, pos);
+            parts.push_back(part);
+            line.erase(0,pos+1);
+
+            part = line.substr(0, line.length());
+            parts.push_back(part);
+            line.erase(0,line.length());
+            break;
+        }
+        
+        if(parts.size() == 2 && del3 != "")
+        {
+            pos = line.find("],");
+            if(pos == -1){
+                break;
+            }
+            
+            string part = line.substr(0, pos);
+            parts.push_back(part);
+            line.erase(0,pos+2);
+            continue;
         }
 
         pos = line.find(delimiter1);
@@ -101,6 +151,20 @@ vector<int> getDate(string &t)
     date.push_back(month);
     date.push_back(year);
     return date;
+}
+std::string trim(const std::string &s)
+{
+	auto start = s.begin();
+	while (start != s.end() && std::isspace(*start)) {
+		start++;
+	}
+
+	auto end = s.end();
+	do {
+		end--;
+	} while (std::distance(start, end) > 0 && std::isspace(*end));
+
+	return std::string(start, end + 1);
 }
 /*void inputStrings(string &in, int &index, vector<string> &text)
 {

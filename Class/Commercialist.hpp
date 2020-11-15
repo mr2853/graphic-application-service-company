@@ -10,7 +10,7 @@ using namespace std;
 
 class Commercialist : public AbstractWorker{
 private:
-    vector<string> *businessContact;
+    vector<string*> *businessContact;
     const string type = "Commercialist";
 public:
     Commercialist();
@@ -19,9 +19,11 @@ public:
     Commercialist(string name, string lastname, Date *dateBirth, double salary);
 
     virtual string getType();
-    string getContact(int indeks);
-    void pushContact(string contact);
-    void setBusinessContact(vector<string> *businessContact);
+    string* getContact(int indeks);
+    void pushContact(string* contact);
+    void setBusinessContact(vector<string*> *businessContact);
+    int getNumberOfBusinessContact();
+    string getBusinessContact(int index);
 };
 
 #endif

@@ -4,7 +4,7 @@
 #include "../Class/Auditor.hpp"
 #include "Auditor/ArrayAuditors.hpp"
 #include "Auditor/DataOfAuditors.hpp"
-#include "DataOfDepartments.hpp"
+#include "Department/DataOfDepartments.hpp"
 
 MainWindow::~MainWindow(){}
 MainWindow::MainWindow(int x, int y, int w, int h, const char *label, Company &company)

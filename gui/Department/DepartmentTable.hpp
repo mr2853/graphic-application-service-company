@@ -13,10 +13,10 @@
 #include <FL/Fl_Table_Row.H>
 #include <FL/Fl_Spinner.H>
 
-#include "../Class/Department.hpp"
+#include "../../Class/Department.hpp"
 #include "ArrayDepartments.hpp"
-#include "AbstractDisplay.hpp"
-#include "../Class/Company.hpp"
+#include "../AbstractDisplay.hpp"
+#include "../../Class/Company.hpp"
 
 class DepartmentTable : public Fl_Table_Row, protected AbstractDisplay<Department *>
 {

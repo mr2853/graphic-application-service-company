@@ -7,6 +7,8 @@ DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
     dateBirth = new Fl_Input(x, y+100, 100, 40, "Date birth:");
     salary = new Fl_Input(x, y+150, 100, 40, "Salary:");
 
+    salary->input_type(0.0);
+    salary->redraw();
     this->end();
 }
 

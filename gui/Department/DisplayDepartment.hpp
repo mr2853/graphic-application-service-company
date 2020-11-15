@@ -7,7 +7,7 @@
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Multiline_Input.H>
 
-#include "DisplayWorker.hpp"
+#include "../DisplayWorker.hpp"
 
 class DisplayDepartment : public Fl_Group{
 protected:

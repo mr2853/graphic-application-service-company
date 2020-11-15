@@ -14,35 +14,21 @@
 #include "../AbstractDisplay.hpp"
 #include "ArrayAccountants.hpp"
 
-class DisplayAccountant : public DisplayWorker, protected AbstractDisplay<Accountant *>{
+class DisplayAccountant : public DisplayWorker{
 protected:
     Fl_Input *bodyIssuedPermit;
     Fl_Input *maxAmountCompanyIncome;
-    Fl_Button *btnNext;
-    Fl_Button *btnPrevious;
-    Fl_Button *btnAdd;
     
-    int current = 0;
-    ArrayAccountants *accountants;
-
-    void updateLabel();
-    void checkButtons();
-    static void nextElement(Fl_Widget *widget, void *data);
-    static void previousElement(Fl_Widget *widget, void *data);
-    static void add(Fl_Widget *widget, void *data);
-    void elementPushed(int indeks, Accountant *element);
-    void elementRemoved(int indeks);
 public:
-    virtual void setDisplay(int indeks);
-    DisplayAccountant(int x, int y, int w, int h, ArrayAccountants *accountants, void* data, const char *l=0);
-    DisplayAccountant(int x, int y, int w, int h, ArrayAccountants *accountants, const char *l=0);
+    DisplayAccountant(int x, int y, int w, int h, const char *l=0);
     virtual ~DisplayAccountant();
     string getBodyIssuedPermit();
     string getMaxAmountCompanyIncome();
+    void setBodyIssuedPermit(string t);
+    void setMaxAmountCompanyIncome(string t);
     // virtual void displayWorker(Accountant *worker);
     virtual void hide();
     void unhide();
-    int getCurrent();
     string getType();
 };
 

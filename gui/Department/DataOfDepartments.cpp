@@ -1,11 +1,13 @@
 #include "DataOfDepartments.hpp"
-#include "../Class/Department.hpp"
-#include "MainWindow.hpp"
-#include "Auditor/DataOfAuditors.hpp"
+#include "../../Class/Department.hpp"
 #include "ArrayDepartments.hpp"
 #include "DisplayDepartment.hpp"
-#include "Accountant/DataOfAccountants.hpp"
-#include "Accountant/ArrayAccountants.hpp"
+
+#include "../MainWindow.hpp"
+
+#include "../Auditor/DataOfAuditors.hpp"
+#include "../Accountant/DataOfAccountants.hpp"
+#include "../Commercialist/DataOfCommercialists.hpp"
 
 using namespace std;
 
@@ -100,33 +102,33 @@ void DataOfDepartments::setDisplay(int indeks)
         }
         else if(type == "Commercialist") //Commercialist
         {
-            
+            displayDepartment->displayHeadOfDepartment(departments->getDepartment(indeks)->getHeadOfDepartment());
         }
     }
     updateLabel();
 }
 
-void DataOfDepartments::nextElement(Fl_Widget *widget, void *data){
-    DataOfDepartments *displayDepartment = (DataOfDepartments *) data;
-    if (displayDepartment->current + 1 < displayDepartment->departments->numberOfElement())
+void DataOfDepartments::nextElement(Fl_Widget *widget, void *d){
+    DataOfDepartments *data = (DataOfDepartments *) d;
+    if (data->current + 1 < data->departments->numberOfElement())
     {
-        displayDepartment->current++;
-        displayDepartment->setDisplay(displayDepartment->current);
+        data->current++;
+        data->setDisplay(data->current);
     }
 
-    displayDepartment->checkButtons();
+    data->checkButtons();
 }
 
-void DataOfDepartments::previousElement(Fl_Widget *widget, void *data)
+void DataOfDepartments::previousElement(Fl_Widget *widget, void *d)
 {
-    DataOfDepartments *displayDepartment = (DataOfDepartments *) data;
-    if (displayDepartment->current - 1 >= 0)
+    DataOfDepartments *data = (DataOfDepartments *) d;
+    if (data->current - 1 >= 0)
     {
-        displayDepartment->current--;
-        displayDepartment->setDisplay(displayDepartment->current);
+        data->current--;
+        data->setDisplay(data->current);
     }
 
-    displayDepartment->checkButtons();
+    data->checkButtons();
 }
 
 void DataOfDepartments::elementPushed(int indeks, Department *element) {
@@ -248,7 +250,10 @@ void DataOfDepartments::details(Fl_Widget *widget, void *d)
         mainWindow->add(dataOfAuditors);
     }
     else if(workerType == 2){
-        
+        DataOfCommercialists *dataOfCommercialists = new DataOfCommercialists(data->x(),
+                        data->y(), data->w(), data->h(), new ArrayCommercialists(department->getCommercialists()), v);
+        data->hideGroup();
+        mainWindow->add(dataOfCommercialists);
     }
 }
 void DataOfDepartments::goBack(Fl_Widget *widget, void *d)

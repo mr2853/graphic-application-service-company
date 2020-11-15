@@ -6,8 +6,8 @@
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Widget.H>
-#include "../Class/Company.hpp"
-#include "../Class/Department.hpp"
+#include "../../Class/Company.hpp"
+#include "../../Class/Department.hpp"
 #include "DisplayDepartment.hpp"
 #include "ArrayDepartments.hpp"
 #include "DepartmentTable.hpp"

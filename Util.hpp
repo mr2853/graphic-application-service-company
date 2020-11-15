@@ -19,8 +19,9 @@ using namespace std;
 
 
 vector<string> tokenization(string &line, string delimiter1, string delimiter2, string del3);
+vector<string> tokenization(string &line, string delimiter1, string delimiter2);
 vector<int> getDate(string &line);
-
+std::string trim(const std::string &s);
 /*template<class T>
 vector<T*> readAbstractArray(string in)
 {

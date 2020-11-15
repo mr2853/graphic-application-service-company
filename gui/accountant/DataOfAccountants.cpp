@@ -1,6 +1,6 @@
 #include "DataOfAccountants.hpp"
 #include "../../Class/Accountant.hpp"
-#include "../DataOfDepartments.hpp"
+#include "../Department/DataOfDepartments.hpp"
 #include "../MainWindow.hpp"
 #include <sstream>
 
@@ -31,12 +31,26 @@ DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayAccountant
     vector<Fl_Widget*> *data = (vector<Fl_Widget*>*)d;
     MainWindow *main = (MainWindow*)data->at(0);
     DataOfDepartments *parent = (DataOfDepartments*)data->at(1);
-    displayAccountant = new DisplayAccountant(x+50, y, 300, 390, accountants, this, "");
+    displayAccountant = new DisplayAccountant(x+50, y, 300, 390, "");
     accountantTable = new AccountantTable(x+200, y+340, 400, 280, accountants);
     
     btnChange = new Fl_Button(x+220, y+300, 70, 30, "Change");
-    btnRemove = new Fl_Button(x+370, y+300, 70, 30, "Remove");
+    btnAdd = new Fl_Button(x+300, y+300, 70, 30, "Add");
+    btnRemove = new Fl_Button(x+380, y+300, 70, 30, "Remove");
     btnGoBack = new Fl_Button(x+460, y+300, 70, 30, "Go back");
+    btnPrevious = new Fl_Button(x+170, y, 45, 70, "@<-");
+    btnNext = new Fl_Button(x+220, y, 45, 70, "@->");
+
+    btnNext->callback(nextElement, this);
+    btnPrevious->callback(previousElement, this);
+    btnAdd->callback(add, this);
+
+    if(accountants->numberOfElement() != 0){
+        this->setDisplay(current);
+    }
+    this->checkButtons();
+
+    accountants->subscribeListener(this);
 
     //btnView->callback(DataOfAccountants::view, ev);
     btnRemove->callback(DataOfAccountants::removeElem, this);
@@ -53,6 +67,99 @@ DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayAccountant
     v1->push_back(accountantTable);
     btnChange->callback(change, v1);
     this->end();
+}
+void DataOfAccountants::updateLabel()
+{
+    stringstream sstream;
+    sstream << "Accountant " << current + 1 << "/" << accountants->numberOfElement();
+    this->copy_label(sstream.str().c_str());
+}
+
+void DataOfAccountants::checkButtons()
+{
+    if (current <= 0)
+    {
+        btnPrevious->deactivate();
+    }
+    else
+    {
+        btnPrevious->activate();
+    }
+    if (current >= accountants->numberOfElement() - 1)
+    {
+        btnNext->deactivate();
+    }
+    else
+    {
+        btnNext->activate();
+    }
+}
+
+void DataOfAccountants::setDisplay(int indeks)
+{
+    if (indeks >= 0 && indeks < accountants->numberOfElement())
+    {
+        current = indeks;
+        this->displayAccountant->displayWorker(accountants->getElement(indeks));
+        // this->displayAccountant->bodyIssuedPermit = new Fl_Input(this->x(), this->y()+200, 200, 70, "Issued Permit:");
+        // this->displayAccountant->maxAmountCompanyIncome = new Fl_Input(this->x(), this->y()+280, 200, 70, "Max Income:");
+        this->displayAccountant->setBodyIssuedPermit(accountants->getElement(indeks)->getBodyIssuedPermit().c_str());
+        this->displayAccountant->setMaxAmountCompanyIncome(to_string(accountants->getElement(indeks)->getMaxAmountCompanyIncome()).c_str());
+    }
+    updateLabel();
+}
+
+void DataOfAccountants::nextElement(Fl_Widget *widget, void *data){
+    DataOfAccountants *dataOf = (DataOfAccountants *) data;
+    if (dataOf->current + 1 < dataOf->accountants->numberOfElement())
+    {
+        dataOf->current++;
+        dataOf->setDisplay(dataOf->current);
+    }
+
+    dataOf->checkButtons();
+}
+
+void DataOfAccountants::previousElement(Fl_Widget *widget, void *data)
+{
+    DataOfAccountants *dataOf = (DataOfAccountants *) data;
+    if (dataOf->current - 1 >= 0)
+    {
+        dataOf->current--;
+        dataOf->setDisplay(dataOf->current);
+    }
+
+    dataOf->checkButtons();
+}
+
+void DataOfAccountants::elementPushed(int indeks, Accountant *element) {
+    if(current == -1) {
+        current = 0;
+        setDisplay(current);
+    }
+    checkButtons();
+    updateLabel();
+}
+void DataOfAccountants::elementRemoved(int indeks) {
+    checkButtons();
+    updateLabel();
+}
+int DataOfAccountants::getCurrent()
+{
+    return current;
+}
+
+void DataOfAccountants::add(Fl_Widget *widget, void *data)
+{
+    DataOfAccountants *d = (DataOfAccountants*)data;
+    Accountant *novaOsoba = new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
+                    d->displayAccountant->getValueDateBirth(), stod(d->displayAccountant->getValueSalary()),
+                     d->displayAccountant->getBodyIssuedPermit(), stod(d->displayAccountant->getMaxAmountCompanyIncome()));
+                    
+    d->accountantTable->add(novaOsoba);
+    d->setDisplay(d->accountants->numberOfElement()-1);
+    d->checkButtons();
+    d->updateLabel();
 }
 DataOfAccountants::~DataOfAccountants()
 {
@@ -77,7 +184,7 @@ void DataOfAccountants::change(Fl_Widget *widget, void *d)
     DataOfAccountants *data = (DataOfAccountants*)v->at(0);
     DisplayAccountant *displayAccountant = (DisplayAccountant*)v->at(1);
     AccountantTable *accountantTable = (AccountantTable*)v->at(2);
-    Accountant *a = data->accountants->getRow(displayAccountant->getCurrent());
+    Accountant *a = data->accountants->getRow(data->getCurrent());
     a->setName(displayAccountant->getValueName());
     a->setLastname(displayAccountant->getValueLastName());
     a->setSalary(stod(displayAccountant->getValueSalary()));
@@ -117,15 +224,18 @@ void DataOfAccountants::removeElem(Fl_Widget *widget, void *data)
     int colLeft;
     int colRight;
     e->accountantTable->get_selection(startRow, colLeft, endRow, colRight);
-    // cout << "Dodje" << endl;
-    // cout << "size1:" << e->accountants->numberOfElement() << endl;
     for (int i = endRow; i >= startRow; i--)
     {
         e->accountants->removeRow(i);
-        // e->accountantTable->rows(e->accountants->numberOfRows());
-        // e->accountantTable->cols(e->accountants->numberOfColumns());
     }
-    // cout << "prodje" << endl;
+    if(e->accountants->numberOfElement() == 0){
+        e->setDisplay(0);
+    }
+    else{
+        e->setDisplay(e->accountants->numberOfElement()-1);
+    }
+    e->checkButtons();
+    e->updateLabel();
 }
 
 // Company& DataOfAccountants::getCompany()
