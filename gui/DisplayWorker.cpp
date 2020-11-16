@@ -1,5 +1,6 @@
 #include "DisplayWorker.hpp"
 #include "../Util.hpp"
+
 DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
  : Fl_Group(x,y,w,h,l){
 
@@ -48,17 +49,22 @@ void DisplayWorker::displayWorker(AbstractWorker *worker)
 
 string DisplayWorker::getValueName()
 {
-    return name->value();
+    string s = name->value();
+    ltrim(s);
+    return s;
 }
 string DisplayWorker::getValueLastName()
 {
-    return lastName->value();
+    string s = lastName->value();
+    ltrim(s);
+    return s;
 }
 Date* DisplayWorker::getValueDateBirth()
 {
     string t = dateBirth->value();
+    ltrim(t);
     if(!correctDate(t)){
-        return new Date(); // exception
+        throw WrongDate();
     }
     int index = t.find("-");
     int a = stoi(t.substr(0, index));

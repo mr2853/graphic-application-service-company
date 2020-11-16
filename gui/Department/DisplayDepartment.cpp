@@ -2,6 +2,7 @@
 #include "../../Class/Auditor.hpp"
 #include "../../Class/Accountant.hpp"
 #include "../../Class/Commercialist.hpp"
+#include "../../Util.hpp"
 
 DisplayDepartment::DisplayDepartment(int x, int y, int w, int h, const char *l)
 : Fl_Group(x,y,w,h,l)
@@ -49,7 +50,9 @@ void DisplayDepartment::setName(string t)
 
 string DisplayDepartment::getName()
 {
-    return name->value();
+    string s = name->value();
+    ltrim(s);
+    return s;
 }
 
 void DisplayDepartment::hideGroup() {

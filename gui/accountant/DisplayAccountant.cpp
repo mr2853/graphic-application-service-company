@@ -1,5 +1,6 @@
 #include "DisplayAccountant.hpp"
 #include "DataOfAccountants.hpp"
+#include "../../Util.hpp"
 
 DisplayAccountant::DisplayAccountant(int x, int y, int w, int h, const char *l)
 : DisplayWorker(x, y, 200, 190, "")
@@ -58,7 +59,9 @@ void DisplayAccountant::setMaxAmountCompanyIncome(string t)
 
 string DisplayAccountant::getBodyIssuedPermit()
 {
-    return bodyIssuedPermit->value();
+    string s = bodyIssuedPermit->value();
+    ltrim(s);
+    return s;
 }
 double DisplayAccountant::getMaxAmountCompanyIncome()
 {

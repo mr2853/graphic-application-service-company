@@ -14,6 +14,8 @@
 #include "gui/auditor/ArrayAuditors.hpp"
 #include "gui/auditor/AuditorTable.hpp"
 #include "gui/auditor/DisplayAuditor.hpp"
+#include <exception>
+
 
 using namespace std;
 
@@ -21,8 +23,26 @@ using namespace std;
 vector<string> tokenization(string &line, string delimiter1, string delimiter2, string del3);
 vector<string> tokenization(string &line, string delimiter1, string delimiter2);
 vector<int> getDate(string &line);
-std::string trim(const std::string &s);
-bool correctDate(string t);
+// std::string trim(const std::string &s);
+bool correctDate(string t, int time=0);
+
+static inline std::string &ltrim(std::string &s) {
+    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int c) {return !std::isspace(c);}));
+    return s;
+}
+
+struct WrongDate : public exception {
+   const char * what (string name) const throw () {
+        name += " is not correct.\nInsert in format day-month-year or hour-minute-day-month-year!";
+        return name.c_str();
+   }
+};
+struct WrongDateWithTime : public exception {
+   const char * what (string name) const throw () {
+        name += " is not correct.\nInsert in format hour-minute-day-month-year!";
+        return name.c_str();
+   }
+};
 /*template<class T>
 vector<T*> readAbstractArray(string in)
 {

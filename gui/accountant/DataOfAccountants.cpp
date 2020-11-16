@@ -2,7 +2,9 @@
 #include "../../Class/Accountant.hpp"
 #include "../Department/DataOfDepartments.hpp"
 #include "../MainWindow.hpp"
+#include "../../Util.hpp"
 #include <sstream>
+#include <FL/fl_message.H>
 
 using namespace std;
 
@@ -170,9 +172,17 @@ int DataOfAccountants::getCurrent()
 void DataOfAccountants::add(Fl_Widget *widget, void *data)
 {
     DataOfAccountants *d = (DataOfAccountants*)data;
-    Accountant *novaOsoba = new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
-                    d->displayAccountant->getValueDateBirth(), d->displayAccountant->getValueSalary(),
-                     d->displayAccountant->getBodyIssuedPermit(), d->displayAccountant->getMaxAmountCompanyIncome());
+    Accountant *novaOsoba;
+    try{
+        novaOsoba = new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
+                        d->displayAccountant->getValueDateBirth(), d->displayAccountant->getValueSalary(),
+                        d->displayAccountant->getBodyIssuedPermit(), d->displayAccountant->getMaxAmountCompanyIncome());
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
                     
     d->accountantTable->add(novaOsoba);
     d->setDisplay(d->accountants->numberOfElement()-1);
@@ -204,13 +214,20 @@ void DataOfAccountants::change(Fl_Widget *widget, void *d)
     DisplayAccountant *displayAccountant = (DisplayAccountant*)v->at(1);
     AccountantTable *accountantTable = (AccountantTable*)v->at(2);
     Accountant *a = data->accountants->getRow(data->getCurrent());
-    a->setName(displayAccountant->getValueName());
-    a->setLastname(displayAccountant->getValueLastName());
-    a->setSalary(displayAccountant->getValueSalary());
-    a->setDateBirth(displayAccountant->getValueDateBirth());
-    a->setBodyIssuedPermit(displayAccountant->getBodyIssuedPermit());
-    a->setMaxAmountCompanyIncome(displayAccountant->getMaxAmountCompanyIncome());
-    accountantTable->redraw();
+    try{
+        a->setName(displayAccountant->getValueName());
+        a->setLastname(displayAccountant->getValueLastName());
+        a->setSalary(displayAccountant->getValueSalary());
+        a->setDateBirth(displayAccountant->getValueDateBirth());
+        a->setBodyIssuedPermit(displayAccountant->getBodyIssuedPermit());
+        a->setMaxAmountCompanyIncome(displayAccountant->getMaxAmountCompanyIncome());
+        accountantTable->redraw();
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
 }
 void DataOfAccountants::goBack(Fl_Widget *widget, void *d)
 {

@@ -1,5 +1,7 @@
 #include "DataOfAuditors.hpp"
 #include "../Department/DataOfDepartments.hpp"
+#include "../../Util.hpp"
+#include <FL/fl_message.H>
 #include <sstream>
 
 using namespace std;
@@ -177,9 +179,21 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
 {
     DataOfAuditors *d = (DataOfAuditors*)data;
     AuditorTable *auditorTable = d->getAuditorTable();
-
-    Auditor *novaOsoba = new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
-                    d->displayAuditor->getValueDateBirth(), d->displayAuditor->getValueSalary(), d->displayAuditor->getDatesVisiting());
+    Auditor* novaOsoba;
+    try{
+        novaOsoba = new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
+                        d->displayAuditor->getValueDateBirth(), d->displayAuditor->getValueSalary(), d->displayAuditor->getDatesVisiting());
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
+    catch(WrongDateWithTime e)
+    {
+        fl_message(e.what("Dates visiting"));
+        return;
+    }
                     
     auditorTable->add(novaOsoba);
     d->setDisplay(d->auditors->numberOfElement()-1);
@@ -204,12 +218,24 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
 {
     DataOfAuditors *data = (DataOfAuditors*)d;
     Auditor *a = data->auditors->getRow(data->getCurrent());
-    a->setName(data->displayAuditor->getValueName());
-    a->setLastname(data->displayAuditor->getValueLastName());
-    a->setSalary(data->displayAuditor->getValueSalary());
-    a->setDateBirth(data->displayAuditor->getValueDateBirth());
-    a->setDatesVisiting(data->displayAuditor->getDatesVisiting());
-    data->auditorTable->redraw();
+    try{
+        a->setName(data->displayAuditor->getValueName());
+        a->setLastname(data->displayAuditor->getValueLastName());
+        a->setSalary(data->displayAuditor->getValueSalary());
+        a->setDateBirth(data->displayAuditor->getValueDateBirth());
+        a->setDatesVisiting(data->displayAuditor->getDatesVisiting());
+        data->auditorTable->redraw();
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
+    catch(WrongDateWithTime e)
+    {
+        fl_message(e.what("Dates visiting"));
+        return;
+    }
 }
 void DataOfAuditors::goBack(Fl_Widget *widget, void *d)
 {

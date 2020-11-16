@@ -1,5 +1,7 @@
 #include "DataOfCommercialists.hpp"
 #include "../Department/DataOfDepartments.hpp"
+#include "../../Util.hpp"
+#include <FL/fl_message.H>
 #include <sstream>
 
 using namespace std;
@@ -178,9 +180,16 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
 {
     DataOfCommercialists *d = (DataOfCommercialists*)data;
     CommercialistTable *commercialistTable = d->getCommercialistTable();
-
-    Commercialist *novaOsoba = new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
-                    d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary());
+    Commercialist *novaOsoba;
+    try{
+        novaOsoba = new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
+                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary());
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
     
     novaOsoba->setBusinessContact(d->displayCommercialist->getBusinessContacts());                
     commercialistTable->add(novaOsoba);
@@ -206,11 +215,18 @@ void DataOfCommercialists::change(Fl_Widget *widget, void *d)
 {
     DataOfCommercialists *data = (DataOfCommercialists*)d;
     Commercialist *a = data->commercialists->getRow(data->getCurrent());
-    a->setName(data->displayCommercialist->getValueName());
-    a->setLastname(data->displayCommercialist->getValueLastName());
-    a->setSalary(data->displayCommercialist->getValueSalary());
-    a->setDateBirth(data->displayCommercialist->getValueDateBirth());
-    a->setBusinessContact(data->displayCommercialist->getBusinessContacts());
+    try{
+        a->setName(data->displayCommercialist->getValueName());
+        a->setLastname(data->displayCommercialist->getValueLastName());
+        a->setSalary(data->displayCommercialist->getValueSalary());
+        a->setDateBirth(data->displayCommercialist->getValueDateBirth());
+        a->setBusinessContact(data->displayCommercialist->getBusinessContacts());
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
     data->commercialistTable->redraw();
 }
 void DataOfCommercialists::goBack(Fl_Widget *widget, void *d)

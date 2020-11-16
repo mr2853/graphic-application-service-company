@@ -34,6 +34,7 @@ void DisplayCommercialist::setBusinessContact(string t)
 }
 vector<string*>* DisplayCommercialist::getBusinessContacts(){
     string t = this->businessContact->value();
+    ltrim(t);
     vector<string*> *contacts = new vector<string*>(0);
     if(t.empty()){
         return contacts;
@@ -41,12 +42,14 @@ vector<string*>* DisplayCommercialist::getBusinessContacts(){
     int index;
     while(t.find(",") != string::npos){
         index = t.find(",");
-        string s = trim(t.substr(0, index));
+        string t1 = t.substr(0, index);
+        string s = ltrim(t1);
         contacts->push_back(new string(s));
         t.erase(0, index + 1);
     } 
     if(t.find(",") == string::npos){
-        string s = trim(t.substr(0, t.length()));
+        string t1 = t.substr(0, t.length());
+        string s = ltrim(t1);
         contacts->push_back(new string(s));
         t.erase(0, t.length());
         return contacts;

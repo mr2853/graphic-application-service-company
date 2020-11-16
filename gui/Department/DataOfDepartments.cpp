@@ -8,6 +8,8 @@
 #include "../Auditor/DataOfAuditors.hpp"
 #include "../Accountant/DataOfAccountants.hpp"
 #include "../Commercialist/DataOfCommercialists.hpp"
+#include "../../Util.hpp"
+#include <FL/fl_message.H>
 
 using namespace std;
 
@@ -197,7 +199,15 @@ void DataOfDepartments::change(Fl_Widget *widget, void *d)
     Department *dep = data->departments->getRow(data->getCurrent());
     dep->setName(data->displayDepartment->getName());
     string type = data->departments->getDepartment(data->getCurrent())->getHeadOfDepartment()->getType();
-    AbstractWorker* head = data->displayDepartment->getNewHeadOfDepartment();
+    AbstractWorker* head;
+    try{
+        head = data->displayDepartment->getNewHeadOfDepartment();
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
     if(type == "Accountant")
     {
         dep->setHeadOfDepartment(new Accountant(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
@@ -320,7 +330,15 @@ void DataOfDepartments::refreshTable()
 void DataOfDepartments::add(Fl_Widget *widget, void *data)
 {
     DataOfDepartments *d = (DataOfDepartments*)data;
-    AbstractWorker *worker = d->displayDepartment->getNewHeadOfDepartment();
+    AbstractWorker* worker;
+    try{
+        worker = d->displayDepartment->getNewHeadOfDepartment();
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date birth"));
+        return;
+    }
     Department *department = new Department(worker, d->displayDepartment->getName());
     d->departmentTable->add(department);
     d->updateChDepart();

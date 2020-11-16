@@ -3,6 +3,7 @@
 
 vector<string> tokenization(string &line, string delimiter1, string delimiter2)
 {
+    ltrim(line);
     vector<string> parts = vector<string>();
     int pos;
     while(true)
@@ -29,6 +30,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2)
     return parts;
 }
 vector<string> tokenization(string &line, string delimiter1, string delimiter2, string del3){
+    ltrim(line);
     vector<string> parts = vector<string>();
     int pos;
     pos = line.find(delimiter1);
@@ -124,6 +126,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
 };
 vector<int> getDate(string &t)
 {
+    ltrim(t);
     vector<int> date = vector<int>();
 
     int index = t.find("-");
@@ -156,22 +159,23 @@ vector<int> getDate(string &t)
     date.push_back(year);
     return date;
 }
-std::string trim(const std::string &s)
-{
-	auto start = s.begin();
-	while (start != s.end() && std::isspace(*start)) {
-		start++;
-	}
+// std::string trim(const std::string &s)
+// {
+// 	auto start = s.begin();
+// 	while (start != s.end() && std::isspace(*start)) {
+// 		start++;
+// 	}
 
-	auto end = s.end();
-	do {
-		end--;
-	} while (std::distance(start, end) > 0 && std::isspace(*end));
+// 	auto end = s.end();
+// 	do {
+// 		end--;
+// 	} while (std::distance(start, end) > 0 && std::isspace(*end));
 
-	return std::string(start, end + 1);
-}
-bool correctDate(string t)
+// 	return std::string(start, end + 1);
+// }
+bool correctDate(string t, int time)
 {
+    ltrim(t);
     int index = t.find("-");
     if(index == string::npos){return false;}
     string hour = t.substr(0, index);
@@ -188,7 +192,7 @@ bool correctDate(string t)
         return false;
     }
 
-    if(t.find("-") != string::npos){
+    if(t.find("-") != string::npos || time == 1){
         index = t.find("-");
         if(index == string::npos){return false;}
         string day = t.substr(0, index);
