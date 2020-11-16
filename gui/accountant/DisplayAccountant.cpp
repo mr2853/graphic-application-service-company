@@ -6,7 +6,7 @@ DisplayAccountant::DisplayAccountant(int x, int y, int w, int h, const char *l)
 : DisplayWorker(x, y, 200, 190, "")
 {
     bodyIssuedPermit = new Fl_Input(x, y+200, 100, 40, "Issued Permit:");
-    maxAmountCompanyIncome = new Fl_Value_Input(x, y+280, 100, 40, "Max Income:");
+    maxAmountCompanyIncome = new Fl_Value_Input(x, y+280, 100, 40, "Max company Income:");
     maxAmountCompanyIncome->precision(2);
     this->end();
 }

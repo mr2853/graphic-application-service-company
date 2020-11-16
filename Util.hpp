@@ -43,6 +43,11 @@ struct WrongDateWithTime : public exception {
         return name.c_str();
    }
 };
+struct UnselectedDataToRemove : public exception {
+   const char * what () const throw () {
+        return "No data is selected for removing in table!";
+   }
+};
 /*template<class T>
 vector<T*> readAbstractArray(string in)
 {

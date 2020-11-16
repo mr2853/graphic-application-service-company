@@ -17,22 +17,13 @@
 #include "ArrayAuditors.hpp"
 #include "../AbstractDisplay.hpp"
 #include "../../Class/Company.hpp"
+#include "../WorkerTable.hpp"
 
-class AuditorTable : public Fl_Table_Row, protected AbstractDisplay<Auditor *>
+class AuditorTable : public WorkerTable<Auditor>
 {
-protected:
-    ArrayAuditors *auditors;
-    virtual void draw_cell(TableContext context, int red = 0, int kolona = 0, int x = 0, int y = 0, int w = 0, int h = 0);
-    virtual void elementPushed(int red, Auditor* element);
-    virtual void elementRemoved(int red);
-
 public:
     AuditorTable(int x, int y, int w, int h, ArrayAuditors *auditors);
     virtual ~AuditorTable();
-    AuditorTable();
-    void add(Auditor *p);
-    void refreshTable();
-    //void AuditorTable::removeAuditor(Auditor *r);
 };
 
 #endif

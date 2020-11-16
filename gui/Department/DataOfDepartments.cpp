@@ -79,7 +79,8 @@ void DataOfDepartments::updateChDepart(){
     chDepartment->clear();
     for(int i = 0; i < company.getDepartmentsSize(); i++)
     {
-        depart.append(company.getDepartment(i)->getName());
+        string s = to_string(i+1).append(".").append(company.getDepartment(i)->getName());
+        depart.append(s);
         depart.append("|");
     }
     chDepartment->add(depart.c_str());
@@ -92,17 +93,16 @@ void DataOfDepartments::setDisplay(int indeks)
     {
         current = indeks;
         string type = departments->getDepartment(current)->getHeadOfDepartment()->getType();
-        //this->displayWorker(departments->getDepartment(indeks)->getHeadOfDepartment());
         displayDepartment->setName(departments->getDepartment(indeks)->getName().c_str());
-        if(type == "Accountant") //Accountant
+        if(type == "Accountant")
         {
             displayDepartment->displayHeadOfDepartment(departments->getDepartment(indeks)->getHeadOfDepartment());
         }
-        else if(type == "Auditor") //Auditor
+        else if(type == "Auditor")
         {
             displayDepartment->displayHeadOfDepartment(departments->getDepartment(indeks)->getHeadOfDepartment());
         }
-        else if(type == "Commercialist") //Commercialist
+        else if(type == "Commercialist")
         {
             displayDepartment->displayHeadOfDepartment(departments->getDepartment(indeks)->getHeadOfDepartment());
         }
@@ -301,7 +301,19 @@ void DataOfDepartments::removeElem(Fl_Widget *widget, void *data)
     int endRow;
     int colLeft;
     int colRight;
-    e->departmentTable->get_selection(startRow, colLeft, endRow, colRight);
+    try{
+        e->departmentTable->get_selection(startRow, colLeft, endRow, colRight);
+        if(startRow == -1 || endRow == -1 || colLeft == -1 || colRight == -1)
+        {
+            throw UnselectedDataToRemove();
+        }
+    }
+    catch(UnselectedDataToRemove e)
+    {
+        fl_message(e.what());
+        return;
+    }
+
     for (int i = endRow; i >= startRow; i--)
     {
         e->departments->removeRow(i);

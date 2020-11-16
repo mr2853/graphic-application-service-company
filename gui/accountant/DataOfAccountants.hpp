@@ -13,48 +13,21 @@
 #include "DisplayAccountant.hpp"
 #include "ArrayAccountants.hpp"
 #include "../MainWindow.hpp"
+#include "../DataOfWorker.hpp"
+#include "../ArrayWorkers.hpp"
 
-class DataOfAccountants : public Fl_Group, protected AbstractDisplay<Accountant *>{
+class DataOfAccountants : public DataOfWorker<Accountant>{
 protected:
-    ArrayAccountants *accountants;
     DisplayAccountant *displayAccountant;
-    AccountantTable *accountantTable;
-    int current = 0;
-
-    Fl_Button *btnChange;
-    Fl_Button *btnRemove;
-    Fl_Button *btnGoBack;
-    Fl_Button *btnNext;
-    Fl_Button *btnPrevious;
-    Fl_Button *btnAdd;
-    //Company &company;
-    void updateLabel();
-    void checkButtons();
-    static void nextElement(Fl_Widget *widget, void *data);
-    static void previousElement(Fl_Widget *widget, void *data);
-    static void add(Fl_Widget *widget, void *data);
-    void isArrayEmpty();
-
-    void elementPushed(int indeks, Accountant *element);
-    void elementRemoved(int indeks);
-
-public:
-    DataOfAccountants(int x, int y, int w, int h, ArrayAccountants *accountants, void *mainWindow, const char *l=0);
-    virtual ~DataOfAccountants();
     
-    static void removeElem(Fl_Widget *widget, void *data);
-    static void goBack(Fl_Widget *widget, void *data);
+    static void add(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
 
-    void addAccountant(Fl_Widget *widget, void *data);
+public:
+    DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *array, void *mainWindow, const char *l=0);
+    virtual ~DataOfAccountants();
     virtual void setDisplay(int indeks);
-    //Company& getCompany();
-    void refreshTable();
-    AccountantTable* getAccountantTable();
-    void addAccountant(Accountant* a);
-    int numberOfAccountants();
     void hideGroup();
-    int getCurrent();
 };
 
 

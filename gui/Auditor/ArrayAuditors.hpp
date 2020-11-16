@@ -8,28 +8,13 @@
 
 #include "../AbstractTableModel.hpp"
 #include "../../Class/Auditor.hpp"
+#include "../ArrayWorkers.hpp"
 
-class ArrayAuditors : public AbstractTableModel<Auditor *>{
-private:
-    vector<Auditor *> *auditors;
+class ArrayAuditors : public ArrayWorkers<Auditor>{
 public:
-    virtual int numberOfRows();
-    virtual int numberOfColumns();
-    virtual void pushElement(int red, Auditor* element);
-    virtual Auditor* getRow(int red);
-    virtual string getText(int red, int kolona);
-    virtual string horizontalHeader(int kolona);
-    virtual string verticalHeader(int red);
-    virtual void pushRow(int red, Auditor* element);
-    virtual void removeRow(int red);
-    void write(ostream &output);
-    void read(istream &input);
     ArrayAuditors();
-    ArrayAuditors(vector<Auditor*> *auditors);
+    ArrayAuditors(vector<Auditor*> *array);
     virtual ~ArrayAuditors();
-    void add(Auditor *p);
-    Auditor* getAuditor(int in);
 };
-
 
 #endif
