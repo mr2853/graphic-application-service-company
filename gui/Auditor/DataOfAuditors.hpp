@@ -12,7 +12,6 @@
 #include "../DisplayWorker.hpp"
 #include "DisplayAuditor.hpp"
 #include "ArrayAuditors.hpp"
-#include "../MainWindow.hpp"
 #include "../DataOfWorker.hpp"
 #include "../ArrayWorkers.hpp"
 

@@ -1,7 +1,6 @@
 #include "DataOfAccountants.hpp"
 #include "../../Class/Accountant.hpp"
 #include "../Department/DataOfDepartments.hpp"
-#include "../MainWindow.hpp"
 #include "../../Util.hpp"
 #include <sstream>
 #include <FL/fl_message.H>
@@ -58,6 +57,7 @@ DataOfAccountants::~DataOfAccountants()
 }
 void DataOfAccountants::hideGroup()
 {
+    DataOfWorker<Accountant>::hideGroup();
     this->label("");
     this->displayAccountant->hide();
 }

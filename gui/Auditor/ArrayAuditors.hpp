@@ -15,6 +15,7 @@ public:
     ArrayAuditors();
     ArrayAuditors(vector<Auditor*> *array);
     virtual ~ArrayAuditors();
+    string getText(int row, int column);
 };
 
 #endif

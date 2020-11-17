@@ -19,6 +19,7 @@ private:
 public:
     Company();
     ~Company();
+    Company(string name, string taxIdentificationNumber, string identificationNumber);
     Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments);
     
     string getName();

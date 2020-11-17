@@ -1,9 +1,8 @@
 #include "DataOfDepartments.hpp"
 #include "../../Class/Department.hpp"
-#include "ArrayDepartments.hpp"
 #include "DisplayDepartment.hpp"
 
-#include "../MainWindow.hpp"
+#include "../Company/DataOfCompanies.hpp"
 
 #include "../Auditor/DataOfAuditors.hpp"
 #include "../Accountant/DataOfAccountants.hpp"
@@ -13,73 +12,52 @@
 
 using namespace std;
 
-DepartmentTable* DataOfDepartments::getDepartmentTable()
-{
-    return departmentTable;
-}
-void DataOfDepartments::addDepartment(Department* a)
-{
-    departments->add(a);
-}
-int DataOfDepartments::numberOfDepartments()
-{
-    return departments->numberOfElement();
-}
-
-DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Company &company, void *mainWindow, const char *l) : Fl_Group(x , y ,w ,h ,l), company(company){
-
-    this->departments = new ArrayDepartments(company.getDepartments());
+DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *array, void *mainWindow, const char *l)
+ : DataOf(x , y ,w ,h , array, mainWindow, l){
+    cout << "ovde" << endl;
     
     displayDepartment = new DisplayDepartment(x+50, y, 200, 300, "");
-    departmentTable = new DepartmentTable(x+190, y+340, 400, 280, departments);
 
     chDepartment = new Fl_Choice(x+450, y, 100, 40, "Departments:");
+    cout << "ovde1" << endl;
     this->updateChDepart();
+    cout << "ovde2" << endl;
     chWorkerType = new Fl_Choice(x+450, y+50, 100, 40, "Worker type:");
     chWorkerType->add("Accountant|Auditor|Commercialist");
     chWorkerType->value(0);
     btnDetails = new Fl_Button(x+450, y+100, 150, 50, "Data of worker type");
-    
-    btnRemove = new Fl_Button(x+190, y+300, 70, 30, "Remove");
-    btnChange = new Fl_Button(x+270, y+300, 70, 30, "Change");
-    btnAdd = new Fl_Button(x+350, y+300, 70, 30, "Add");
-    btnGoBack = new Fl_Button(x+430, y+300, 70, 30, "Go back");
-
-    btnPrevious = new Fl_Button(x+170, y, 45, 70, "@<-");
-    btnNext = new Fl_Button(x+220, y, 45, 70, "@->");
-
-    //btnView->callback(DataOfDepartments::view, ev);
-    btnRemove->callback(DataOfDepartments::removeElem, this);
+    cout << "ovde3" << endl;
 
     vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
-    MainWindow *main = (MainWindow*)mainWindow;
+    DataOfCompanies *main = (DataOfCompanies*)mainWindow;
     v->push_back(main);
     v->push_back(this);
-
-    btnGoBack->callback(DataOfDepartments::goBack, v);
     btnDetails->callback(details, v);
+    cout << "ovde4" << endl;
 
     btnChange->callback(change, this);
-
-    btnNext->callback(nextElement, this);
-    btnPrevious->callback(previousElement, this);
     btnAdd->callback(add, this);
-
-    if(departments->numberOfElement() != 0){
-        this->setDisplay(current);
-    }
-
-    departments->subscribeListener(this);
-    this->isDepartmentsEmpty();
-    this->checkButtons();
+    cout << "ovde5" << endl;
     this->end();
 }
+void DataOfDepartments::goBack(Fl_Widget *widget, void *d)
+{
+    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
+    DataOfDepartments *data = (DataOfDepartments*)v->at(1);
+    DataOfCompanies *parent = (DataOfCompanies*)v->at(0);
+    
+    data->hideGroup();
+    data->hide();
+    parent->remove(data);
+    parent->unhideGroup();
+}
+
 void DataOfDepartments::updateChDepart(){
     string depart = "";
     chDepartment->clear();
-    for(int i = 0; i < company.getDepartmentsSize(); i++)
+    for(int i = 0; i < this->sizeOfArray(); i++)
     {
-        string s = to_string(i+1).append(".").append(company.getDepartment(i)->getName());
+        string s = to_string(i+1).append(".").append(this->getElement(i)->getName());
         depart.append(s);
         depart.append("|");
     }
@@ -89,116 +67,45 @@ void DataOfDepartments::updateChDepart(){
 }
 void DataOfDepartments::setDisplay(int indeks)
 {
-    if (indeks >= 0 && indeks < departments->numberOfElement())
+    if (indeks >= 0 && indeks < this->sizeOfArray())
     {
         current = indeks;
-        string type = departments->getDepartment(current)->getHeadOfDepartment()->getType();
-        displayDepartment->setName(departments->getDepartment(indeks)->getName().c_str());
+        string type = this->getElement(current)->getHeadOfDepartment()->getType();
+        displayDepartment->setName(this->getElement(indeks)->getName().c_str());
         if(type == "Accountant")
         {
-            displayDepartment->displayHeadOfDepartment(departments->getDepartment(indeks)->getHeadOfDepartment());
+            displayDepartment->displayHeadOfDepartment(this->getElement(indeks)->getHeadOfDepartment());
         }
         else if(type == "Auditor")
         {
-            displayDepartment->displayHeadOfDepartment(departments->getDepartment(indeks)->getHeadOfDepartment());
+            displayDepartment->displayHeadOfDepartment(this->getElement(indeks)->getHeadOfDepartment());
         }
         else if(type == "Commercialist")
         {
-            displayDepartment->displayHeadOfDepartment(departments->getDepartment(indeks)->getHeadOfDepartment());
+            displayDepartment->displayHeadOfDepartment(this->getElement(indeks)->getHeadOfDepartment());
         }
     }
     updateLabel();
 }
 
-void DataOfDepartments::nextElement(Fl_Widget *widget, void *d){
-    DataOfDepartments *data = (DataOfDepartments *) d;
-    if (data->current + 1 < data->departments->numberOfElement())
-    {
-        data->current++;
-        data->setDisplay(data->current);
-    }
-
-    data->checkButtons();
-}
-
-void DataOfDepartments::previousElement(Fl_Widget *widget, void *d)
-{
-    DataOfDepartments *data = (DataOfDepartments *) d;
-    if (data->current - 1 >= 0)
-    {
-        data->current--;
-        data->setDisplay(data->current);
-    }
-
-    data->checkButtons();
-}
-
-void DataOfDepartments::elementPushed(int indeks, Department *element) {
-    if(current == -1) {
-        current = 0;
-        setDisplay(current);
-    }
-    checkButtons();
-    updateLabel();
-}
-void DataOfDepartments::elementRemoved(int indeks) {
-    checkButtons();
-    updateLabel();
-}
-int DataOfDepartments::getCurrent()
-{
-    return current;
-}
-void DataOfDepartments::updateLabel()
-{
-    stringstream sstream;
-    sstream << "Department " << current + 1 << "/" << departments->numberOfElement();
-    this->copy_label(sstream.str().c_str());
-}
-
-void DataOfDepartments::checkButtons()
-{
-    if (current <= 0)
-    {
-        btnPrevious->deactivate();
-    }
-    else
-    {
-        btnPrevious->activate();
-    }
-    if (current >= departments->numberOfElement() - 1)
-    {
-        btnNext->deactivate();
-    }
-    else
-    {
-        btnNext->activate();
-    }
-}
 void DataOfDepartments::isDepartmentsEmpty()
 {
-    if(departments->numberOfElement() == 0){
+    if(this->sizeOfArray() == 0){
         btnChange->deactivate();
-        btnRemove->deactivate();
         btnDetails->deactivate();
-        btnNext->deactivate();
-        btnPrevious->deactivate();
     }
     else
     {
         btnChange->activate();
-        btnRemove->activate();
         btnDetails->activate();
-        btnNext->activate();
-        btnPrevious->activate();
     }
 }
 void DataOfDepartments::change(Fl_Widget *widget, void *d)
 {
     DataOfDepartments *data = (DataOfDepartments*)d;
-    Department *dep = data->departments->getRow(data->getCurrent());
+    Department *dep = data->array->getRow(data->getCurrent());
     dep->setName(data->displayDepartment->getName());
-    string type = data->departments->getDepartment(data->getCurrent())->getHeadOfDepartment()->getType();
+    string type = data->array->getElement(data->getCurrent())->getHeadOfDepartment()->getType();
     AbstractWorker* head;
     try{
         head = data->displayDepartment->getNewHeadOfDepartment();
@@ -220,38 +127,30 @@ void DataOfDepartments::change(Fl_Widget *widget, void *d)
     {
         dep->setHeadOfDepartment(new Commercialist(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
     }
-    data->departmentTable->redraw();
+    data->table->redraw();
     data->updateChDepart();
 }
 
 void DataOfDepartments::hideGroup(){
+    DataOf<Department>::hideGroup();
     this->label("");
     this->displayDepartment->hideGroup();
-    this->departmentTable->hide();
 
-    this->btnRemove->hide();
-    this->btnGoBack->hide();
     this->btnDetails->hide();
     this->btnChange->hide();
-    this->btnNext->hide();
-    this->btnPrevious->hide();
     this->btnAdd->hide();
 
     this->chDepartment->hide();
     this->chWorkerType->hide();
 }
-void DataOfDepartments::unhide(){
+void DataOfDepartments::unhideGroup(){
+    DataOf<Department>::unhideGroup();
     this->redraw_label();
     this->updateLabel();
     this->displayDepartment->unhide();
-    this->departmentTable->show();
 
-    this->btnRemove->show();
-    this->btnGoBack->show();
     this->btnDetails->show();
     this->btnChange->show();
-    this->btnNext->show();
-    this->btnPrevious->show();
     this->btnAdd->show();
     
     this->chDepartment->show();
@@ -260,84 +159,32 @@ void DataOfDepartments::unhide(){
 void DataOfDepartments::details(Fl_Widget *widget, void *d)
 {
     vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
-    MainWindow *mainWindow = (MainWindow*)v->at(0);
+    DataOfCompanies *mainWindow = (DataOfCompanies*)v->at(0);
     DataOfDepartments *data = (DataOfDepartments*)v->at(1);
     int intDep = data->chDepartment->value();
     int workerType = data->chWorkerType->value();
-    Department *department = data->company.getDepartment(intDep);
+    Department *department = data->array->getElement(intDep);
     if(workerType == 0){
         DataOfAccountants *dataOfAccountants = new DataOfAccountants(data->x(),
                         data->y(), data->w(), data->h(), new ArrayAccountants(department->getAccountants()), v);
         data->hideGroup();
-        mainWindow->add(dataOfAccountants);
+        mainWindow->Fl_Group::add(dataOfAccountants);
     }
     else if(workerType == 1){
         DataOfAuditors *dataOfAuditors = new DataOfAuditors(data->x(),
                         data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), v);
         data->hideGroup();
-        mainWindow->add(dataOfAuditors);
+        mainWindow->Fl_Group::add(dataOfAuditors);
     }
     else if(workerType == 2){
         DataOfCommercialists *dataOfCommercialists = new DataOfCommercialists(data->x(),
                         data->y(), data->w(), data->h(), new ArrayCommercialists(department->getCommercialists()), v);
         data->hideGroup();
-        mainWindow->add(dataOfCommercialists);
+        mainWindow->Fl_Group::add(dataOfCommercialists);
     }
 }
-void DataOfDepartments::goBack(Fl_Widget *widget, void *d)
-{
-    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
-    MainWindow *main = (MainWindow*)v->at(0);
-    DataOfDepartments *data = (DataOfDepartments*)v->at(1);
-    data->hideGroup();
-    main->unhide();
-}
+
 DataOfDepartments::~DataOfDepartments(){}
-
-void DataOfDepartments::removeElem(Fl_Widget *widget, void *data)
-{
-    DataOfDepartments *e = (DataOfDepartments *)data;
-    int startRow;
-    int endRow;
-    int colLeft;
-    int colRight;
-    try{
-        e->departmentTable->get_selection(startRow, colLeft, endRow, colRight);
-        if(startRow == -1 || endRow == -1 || colLeft == -1 || colRight == -1)
-        {
-            throw UnselectedDataToRemove();
-        }
-    }
-    catch(UnselectedDataToRemove e)
-    {
-        fl_message(e.what());
-        return;
-    }
-
-    for (int i = endRow; i >= startRow; i--)
-    {
-        e->departments->removeRow(i);
-    }
-    if(e->departments->numberOfElement() == 0){
-        e->setDisplay(0);
-    }
-    else{
-        e->setDisplay(e->departments->numberOfElement()-1);
-    }
-    e->updateChDepart();
-    e->updateLabel();
-    e->isDepartmentsEmpty();
-    e->checkButtons();
-}
-
-Company& DataOfDepartments::getCompany()
-{
-    return company;
-}
-void DataOfDepartments::refreshTable()
-{
-    departmentTable->refreshTable();
-}
 
 void DataOfDepartments::add(Fl_Widget *widget, void *data)
 {
@@ -352,9 +199,9 @@ void DataOfDepartments::add(Fl_Widget *widget, void *data)
         return;
     }
     Department *department = new Department(worker, d->displayDepartment->getName());
-    d->departmentTable->add(department);
+    d->table->add(department);
     d->updateChDepart();
-    d->setDisplay(d->departments->numberOfElement()-1);
+    d->setDisplay(d->array->numberOfElement()-1);
     d->updateLabel();
     d->isDepartmentsEmpty();
     d->checkButtons();

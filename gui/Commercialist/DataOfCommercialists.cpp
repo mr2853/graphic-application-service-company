@@ -1,5 +1,6 @@
 #include "DataOfCommercialists.hpp"
 #include "../Department/DataOfDepartments.hpp"
+#include "../Company/DataOfCompanies.hpp"
 #include "../../Util.hpp"
 #include <FL/fl_message.H>
 #include <sstream>
@@ -61,6 +62,7 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
 }
 void DataOfCommercialists::hideGroup()
 {
+    DataOfWorker<Commercialist>::hideGroup();
     this->label("");
     this->displayCommercialist->hide();
 }
@@ -82,14 +84,14 @@ void DataOfCommercialists::change(Fl_Widget *widget, void *d)
     }
     data->table->redraw();
 }
-void DataOfCommercialists::goBack(Fl_Widget *widget, void *d)
-{
-    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
-    DataOfDepartments *parent = (DataOfDepartments*)v->at(0);
-    DataOfCommercialists *data = (DataOfCommercialists*)v->at(1);
-    MainWindow *main = (MainWindow*)v->at(2);
-    data->hideGroup();
-    data->hide();
-    main->remove(data);
-    parent->unhide();
-}
+// void DataOfCommercialists::goBack(Fl_Widget *widget, void *d)
+// {
+//     vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
+//     DataOfDepartments *parent = (DataOfDepartments*)v->at(0);
+//     DataOfCommercialists *data = (DataOfCommercialists*)v->at(1);
+//     DataOfCompanies *main = (DataOfCompanies*)v->at(2);
+//     data->hideGroup();
+//     data->hide();
+//     main->remove(data);
+//     parent->unhide();
+// }

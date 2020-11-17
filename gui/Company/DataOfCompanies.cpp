@@ -1,0 +1,133 @@
+#include "DataOfCompanies.hpp"
+#include "../../Class/Company.hpp"
+#include "../Department/ArrayDepartments.hpp"
+#include "DisplayCompany.hpp"
+
+#include "../Auditor/DataOfAuditors.hpp"
+#include "../Accountant/DataOfAccountants.hpp"
+#include "../Commercialist/DataOfCommercialists.hpp"
+#include "../../Util.hpp"
+#include <FL/fl_message.H>
+#include "../Department/DataOfDepartments.hpp"
+
+using namespace std;
+
+DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *array, void *data, const char *l)
+ : DataOf(x , y ,w ,h , array, data, l){
+    
+    display = new DisplayCompany(x+50, y, 200, 300, "");
+
+    chCompany = new Fl_Choice(x+450, y, 100, 40, "Companies:");
+    this->updateChCompany();
+    btnDetails = new Fl_Button(x+450, y+50, 150, 50, "Data of company");
+
+    btnDetails->callback(details, this);
+    btnChange->callback(change, this);
+    btnAdd->callback(add, this);
+
+    // remove(btnGoBack);
+    btnGoBack->hide();
+    this->end();
+}
+
+void DataOfCompanies::updateChCompany(){
+    string depart = "";
+    chCompany->clear();
+    for(int i = 0; i < this->sizeOfArray(); i++)
+    {
+        string s = to_string(i+1).append(".").append(this->getElement(i)->getName());
+        depart.append(s);
+        depart.append("|");
+    }
+    chCompany->add(depart.c_str());
+    chCompany->redraw();
+    chCompany->value(0);
+}
+
+void DataOfCompanies::setDisplay(int indeks)
+{
+    if (indeks >= 0 && indeks < this->sizeOfArray())
+    {
+        current = indeks;
+        display->setName(this->getElement(indeks)->getName().c_str());
+        display->setTaxIdentificationNumber(this->getElement(indeks)->getTaxIdentificationNumber().c_str());
+        display->setIdentificationNumber(this->getElement(indeks)->getIdentificationNumber().c_str());
+    }
+    updateLabel();
+}
+
+void DataOfCompanies::isCompaniesEmpty()
+{
+    this->isArrayEmpty();
+    if(this->sizeOfArray() == 0){
+        btnChange->deactivate();
+        btnDetails->deactivate();
+    }
+    else
+    {
+        btnChange->activate();
+        btnDetails->activate();
+    }
+}
+void DataOfCompanies::change(Fl_Widget *widget, void *d)
+{
+    DataOfCompanies *data = (DataOfCompanies*)d;
+    Company *dep = data->array->getRow(data->getCurrent());
+
+    dep->setName(data->display->getName());
+    dep->setTaxIdentificationNumber(data->display->getTaxIdentificationNumber());
+    dep->setIdentificationNumber(data->display->getIdentificationNumber());
+
+    data->table->redraw();
+    data->updateChCompany();
+}
+
+void DataOfCompanies::hideGroup(){
+    DataOf<Company>::hideGroup();
+    this->label("");
+    this->display->hideGroup();
+
+    this->btnDetails->hide();
+    this->btnChange->hide();
+    this->btnAdd->hide();
+
+    this->chCompany->hide();
+}
+void DataOfCompanies::unhideGroup(){
+    DataOf<Company>::unhideGroup();
+    this->redraw_label();
+    this->updateLabel();
+    this->display->unhide();
+
+    this->btnDetails->show();
+    this->btnChange->show();
+    this->btnAdd->show();
+    
+    this->chCompany->show();
+}
+void DataOfCompanies::details(Fl_Widget *widget, void *d)
+{
+    DataOfCompanies *data = (DataOfCompanies*)d;
+    int intDep = data->chCompany->value();
+    Company *company = data->array->getElement(intDep);
+    
+    DataOfDepartments *dataOfDepartments = new DataOfDepartments(data->x(),
+                    data->y(), data->w(), data->h(), new ArrayDepartments(company->getDepartments()), data);
+
+    data->hideGroup();
+    data->Fl_Group::add(dataOfDepartments);
+}
+
+DataOfCompanies::~DataOfCompanies(){}
+
+void DataOfCompanies::add(Fl_Widget *widget, void *data)
+{
+    DataOfCompanies *d = (DataOfCompanies*)data;
+    Company *company = new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber());
+    d->table->add(company);
+    d->updateChCompany();
+    d->setDisplay(d->array->numberOfElement()-1);
+    d->updateLabel();
+    d->isCompaniesEmpty();
+    d->checkButtons();
+}

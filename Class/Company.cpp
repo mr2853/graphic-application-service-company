@@ -7,6 +7,9 @@
 
 Company::Company(){}
 Company::~Company(){}
+Company::Company(string name, string taxIdentificationNumber, string identificationNumber)
+    : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(new vector<Department*>()){}
+
 Company::Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments)
     : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments){}
 

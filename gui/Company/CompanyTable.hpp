@@ -1,5 +1,5 @@
-#ifndef DEPARTMENT_TABLE_HPP
-#define DEPARTMENT_TABLE_HPP
+#ifndef COMPANY_TABLE_HPP
+#define COMPANY_TABLE_HPP
 
 #include <vector>
 #include <string>
@@ -13,17 +13,17 @@
 #include <FL/Fl_Table_Row.H>
 #include <FL/Fl_Spinner.H>
 
-#include "../../Class/Department.hpp"
-#include "ArrayDepartments.hpp"
+#include "../../Class/Company.hpp"
+#include "../Department/ArrayDepartments.hpp"
 #include "../AbstractDisplay.hpp"
 #include "../../Class/Company.hpp"
 #include "../WorkerTable.hpp"
 
-class DepartmentTable : public WorkerTable<Department>
+class CompanyTable : public WorkerTable<Company>
 {
 public:
-    DepartmentTable(int x, int y, int w, int h, ArrayDepartments *departments);
-    virtual ~DepartmentTable();
+    CompanyTable(int x, int y, int w, int h, ArrayWorkers<Company> *departments);
+    virtual ~CompanyTable();
 };
 
 #endif

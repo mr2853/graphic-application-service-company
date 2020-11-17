@@ -12,6 +12,7 @@ public:
     ArrayCommercialists();
     ArrayCommercialists(vector<Commercialist*> *array);
     virtual ~ArrayCommercialists();
+    string getText(int row, int column);
 };
 
 

@@ -12,7 +12,6 @@
 #include "../DisplayWorker.hpp"
 #include "DisplayAccountant.hpp"
 #include "ArrayAccountants.hpp"
-#include "../MainWindow.hpp"
 #include "../DataOfWorker.hpp"
 #include "../ArrayWorkers.hpp"
 

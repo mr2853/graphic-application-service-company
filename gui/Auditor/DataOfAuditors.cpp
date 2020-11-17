@@ -65,6 +65,7 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
 }
 void DataOfAuditors::hideGroup()
 {
+    DataOfWorker<Auditor>::hideGroup();
     this->label("");
     this->displayAuditor->hide();
 }

@@ -48,6 +48,12 @@ struct UnselectedDataToRemove : public exception {
         return "No data is selected for removing in table!";
    }
 };
+struct EmptyInput : public exception {
+   const char * what (string name) const throw () {
+        name += " input is empty!";
+        return name.c_str();
+   }
+};
 /*template<class T>
 vector<T*> readAbstractArray(string in)
 {

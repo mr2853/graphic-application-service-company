@@ -83,37 +83,3 @@ string DisplayDepartment::getChTypeOfHead()
     }
     return nullptr;
 }
-// void DisplayDepartment::DisplayDepartment(Auditor *auditor)
-// {
-//     cout << "DisplayDepartment ovde" <<endl;
-//     //this->auditor = auditor;
-//     cout << "DisplayDepartment ovde1" <<endl;
-//     headOfDepartment->headOfDepartment(auditor);
-//     cout << "DisplayDepartment ovde2" <<endl;
-//     datesVisiting->value("");
-//     for(int i = 0; i < auditor->getNumberOfVisits(); i++)
-//     {
-//         datesVisiting->insert(auditor->getDateVisiting(i)->getDateWithTime().c_str());
-//     }
-//     cout << "DisplayDepartment ovde3" <<endl;
-// }
-
-// vector<Date*>* DisplayDepartment::getDatesVisiting(){
-//     string t = datesVisiting->value();
-//     vector<Date*> *dates = new vector<Date*>();
-//     int index;
-
-//     while(t.find(",")){
-//         index = t.find(",");
-//         string subs = t.substr(0, index);
-//         vector<int> d = getDate(subs);
-//         t.erase(0, index + 1);
-//         dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
-//     }
-
-//     vector<int> d = getDate(t);
-//     t.erase(0, index + 1);
-//     dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
-    
-//     return dates;
-// }

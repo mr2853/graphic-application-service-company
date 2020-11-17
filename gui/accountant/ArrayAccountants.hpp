@@ -16,8 +16,8 @@ public:
     ArrayAccountants();
     ArrayAccountants(vector<Accountant*> *array);
     virtual ~ArrayAccountants();
-    virtual int numberOfColumns();
-    virtual string getText(int red, int kolona);
+    int numberOfColumns();
+    string getText(int red, int kolona);
     string horizontalHeader(int column);
 };
 

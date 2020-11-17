@@ -2,6 +2,7 @@
 ArrayAccountants::ArrayAccountants() : ArrayWorkers(){}
 ArrayAccountants::ArrayAccountants(vector<Accountant*> *array) : ArrayWorkers(array){}
 ArrayAccountants::~ArrayAccountants(){}
+
 int ArrayAccountants::numberOfColumns()
 {
     return 6;

@@ -1,11 +1,12 @@
-#ifndef ARRAY_WORKERS
-#define ARRAY_WORKERS
+#ifndef ARRAY_WORKERS_HPP
+#define ARRAY_WORKERS_HPP
 #include <iostream>
 #include <vector>
 #include <sstream>
 #include <string>
 
 #include "AbstractTableModel.hpp"
+#include "../Class/AbstractWorker.hpp"
 
 template<typename T>
 class ArrayWorkers : public AbstractTableModel<T *>{
@@ -16,7 +17,7 @@ public:
     virtual int numberOfColumns();
     virtual void pushElement(int red, T* element);
     virtual T* getRow(int red);
-    virtual string getText(int red, int kolona);
+    string getText(int red, int kolona)=0;
     virtual string horizontalHeader(int kolona);
     virtual string verticalHeader(int red);
     virtual void pushRow(int red, T* element);
@@ -91,35 +92,15 @@ void ArrayWorkers<T>::read(istream &input)
     {
         T *novaOsoba;
         input >> tip;
-        if (tip == typeid(T).name())
+        string type = typeid(T).name();
+        type = type.substr(1,type.length());
+        cout << "Type: " << type << endl;
+        if (tip == type)
         {
             novaOsoba = new T();
         }
         pushElement(array->size(), novaOsoba);
     }
-}
-
-template<typename T>
-string ArrayWorkers<T>::getText(int row, int column)
-{
-    T *o = array->at(row);
-    if (column == 0)
-    {
-        return o->getName();
-    }
-    else if (column == 1)
-    {
-        return o->getLastname();
-    }
-    else if (column == 2)
-    {
-        return o->getDateBirth()->getDateWithTime();
-    }
-    else if (column == 3)
-    {
-        return to_string(o->getSalary());
-    }
-    return "";
 }
 
 template<typename T>

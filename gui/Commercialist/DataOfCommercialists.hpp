@@ -12,7 +12,6 @@
 #include "../DisplayWorker.hpp"
 #include "DisplayCommercialist.hpp"
 #include "ArrayCommercialists.hpp"
-#include "../MainWindow.hpp"
 #include "../DataOfWorker.hpp"
 
 class DataOfCommercialists : public DataOfWorker<Commercialist>{
@@ -21,7 +20,7 @@ protected:
 
     void add(Fl_Widget *widget, void *data);
     void change(Fl_Widget *widget, void *d);
-    void goBack(Fl_Widget *widget, void *d);
+    // void goBack(Fl_Widget *widget, void *d);
 public:
     DataOfCommercialists(int x, int y, int w, int h, ArrayCommercialists *array, void *mainWindow, const char *l=0);
     virtual ~DataOfCommercialists();
