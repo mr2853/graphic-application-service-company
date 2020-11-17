@@ -14,30 +14,25 @@ using namespace std;
 
 DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *array, void *mainWindow, const char *l)
  : DataOf(x , y ,w ,h , array, mainWindow, l){
-    cout << "ovde" << endl;
     
     displayDepartment = new DisplayDepartment(x+50, y, 200, 300, "");
 
     chDepartment = new Fl_Choice(x+450, y, 100, 40, "Departments:");
-    cout << "ovde1" << endl;
     this->updateChDepart();
-    cout << "ovde2" << endl;
     chWorkerType = new Fl_Choice(x+450, y+50, 100, 40, "Worker type:");
     chWorkerType->add("Accountant|Auditor|Commercialist");
     chWorkerType->value(0);
     btnDetails = new Fl_Button(x+450, y+100, 150, 50, "Data of worker type");
-    cout << "ovde3" << endl;
 
     vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
     DataOfCompanies *main = (DataOfCompanies*)mainWindow;
     v->push_back(main);
     v->push_back(this);
     btnDetails->callback(details, v);
-    cout << "ovde4" << endl;
+    btnGoBack->callback(DataOfDepartments::goBack,v);
 
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
-    cout << "ovde5" << endl;
     this->end();
 }
 void DataOfDepartments::goBack(Fl_Widget *widget, void *d)
@@ -103,6 +98,10 @@ void DataOfDepartments::isDepartmentsEmpty()
 void DataOfDepartments::change(Fl_Widget *widget, void *d)
 {
     DataOfDepartments *data = (DataOfDepartments*)d;
+    if(!data->displayDepartment->isInputsEmpty())
+    {
+        return;
+    }
     Department *dep = data->array->getRow(data->getCurrent());
     dep->setName(data->displayDepartment->getName());
     string type = data->array->getElement(data->getCurrent())->getHeadOfDepartment()->getType();
@@ -166,19 +165,19 @@ void DataOfDepartments::details(Fl_Widget *widget, void *d)
     Department *department = data->array->getElement(intDep);
     if(workerType == 0){
         DataOfAccountants *dataOfAccountants = new DataOfAccountants(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayAccountants(department->getAccountants()), v);
+                        data->y(), data->w(), data->h(), new ArrayAccountants(department->getAccountants()), data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfAccountants);
     }
     else if(workerType == 1){
         DataOfAuditors *dataOfAuditors = new DataOfAuditors(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), v);
+                        data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfAuditors);
     }
     else if(workerType == 2){
         DataOfCommercialists *dataOfCommercialists = new DataOfCommercialists(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayCommercialists(department->getCommercialists()), v);
+                        data->y(), data->w(), data->h(), new ArrayCommercialists(department->getCommercialists()), data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfCommercialists);
     }
@@ -189,6 +188,10 @@ DataOfDepartments::~DataOfDepartments(){}
 void DataOfDepartments::add(Fl_Widget *widget, void *data)
 {
     DataOfDepartments *d = (DataOfDepartments*)data;
+    if(!d->displayDepartment->isInputsEmpty())
+    {
+        return;
+    }
     AbstractWorker* worker;
     try{
         worker = d->displayDepartment->getNewHeadOfDepartment();

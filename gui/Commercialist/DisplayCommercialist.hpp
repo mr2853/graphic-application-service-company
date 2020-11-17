@@ -25,6 +25,7 @@ public:
     virtual void hide();
     void unhide();
     string getType();
+    bool isInputsEmpty();
 };
 
 

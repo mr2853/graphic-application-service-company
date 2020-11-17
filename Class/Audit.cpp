@@ -39,9 +39,9 @@ vector<Audit*> Audit::readArray(string in)
             in.erase(0, index + 2);
         }
         else if(in.find("Audit[") != std::string::npos){
-            index = in.find_last_of(">");
-            text.push_back(in.substr(0, index));
-            in.erase(0, index + 2);
+            index = in.find("]]]");
+            text.push_back(in.substr(0, index+1));
+            in.erase(0, index + 4);
         }
         else{
             break;
@@ -50,7 +50,7 @@ vector<Audit*> Audit::readArray(string in)
     for(string &s : text)
     {
         index = s.find("[");
-        type1 = s.substr(0, index);
+        s = s.substr(index, s.length());
         Audit *d = new Audit(s);
         array.push_back(d);
     }

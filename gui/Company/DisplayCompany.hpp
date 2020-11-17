@@ -26,7 +26,7 @@ public:
     void setTaxIdentificationNumber(string t);
     string getIdentificationNumber();
     void setIdentificationNumber(string t);
-    void isInputsEmpty();
+    bool isInputsEmpty();
 };
 
 #endif

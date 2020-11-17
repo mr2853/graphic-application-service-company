@@ -41,6 +41,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
     if(pos == string::npos){ return parts; }
 
     string part = line.substr(0, pos);
+    
     line.erase(0,pos+delimiter2.length());
     if(part == "true"){ return parts; }
 
@@ -60,7 +61,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
             
             string part = line.substr(0, pos);
             parts.push_back(part);
-            line.erase(0,pos+7);
+            line.erase(0,pos+6);
 
             part = line.substr(0, line.length());
             parts.push_back(part);

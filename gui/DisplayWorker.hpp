@@ -29,6 +29,7 @@ public:
     virtual void hide();
     void unhide();
     virtual string getType();
+    bool isInputsEmpty();
 };
 
 

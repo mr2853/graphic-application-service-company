@@ -1,5 +1,6 @@
 #include "DisplayWorker.hpp"
 #include "../Util.hpp"
+#include <FL/fl_message.H>
 
 DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
  : Fl_Group(x,y,w,h,l){
@@ -10,6 +11,32 @@ DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
     salary = new Fl_Value_Input(x, y+150, 100, 40, "Salary:");
     salary->precision(2);
     this->end();
+}
+bool DisplayWorker::isInputsEmpty()
+{
+    string a = name->value();
+    string b = lastName->value();
+    try{
+        if(a.empty()){
+            throw EmptyInput();
+        }
+    }
+    catch(EmptyInput e)
+    {
+        fl_message(e.what("Name of worker"));
+        return false;
+    }
+    try{
+        if(b.empty()){
+            throw EmptyInput();
+        }
+    }
+    catch(EmptyInput e)
+    {
+        fl_message(e.what("Lastname of worker"));
+        return false;
+    }
+    return true;
 }
 
 string DisplayWorker::getType()

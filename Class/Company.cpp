@@ -116,6 +116,18 @@ vector<Auditor*>* Company::getCompanyAuditors()
     }
     return ret;
 }
+vector<Audit*>* Company::getCompanyAudits()
+{
+    vector<Audit*> *ret = new vector<Audit*>();
+    for(int i = 0; i < departments->size(); i++)
+    {
+        for(int j = 0; j < departments->at(i)->getAudits().size(); j++)
+        {
+            ret->push_back(departments->at(i)->getAudits().at(j));
+        }
+    }
+    return ret;
+}
 vector<Accountant*>* Company::getCompanyAccountants()
 {
     vector<Accountant*>* ret;

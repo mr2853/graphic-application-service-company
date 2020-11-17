@@ -24,7 +24,13 @@ public:
 
 template<typename T>
 DataOfWorker<T>::DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *array, void *d, const char *l) 
-: DataOf<T>(x, y, w, h, array, d, l){}
+: DataOf<T>(x, y, w, h, array, d, l)
+{
+    vector<void*> *v = new vector<void*>();
+    v->push_back(d);
+    v->push_back(this);
+    this->btnGoBack->callback(DataOfWorker<T>::goBack, v);
+}
 
 template<typename T>
 DataOfWorker<T>::~DataOfWorker<T>(){}
@@ -33,8 +39,8 @@ template<typename T>
 void DataOfWorker<T>::goBack(Fl_Widget *widget, void *d)
 {
     vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
-    DataOfWorker<T> *data = (DataOfWorker<T>*)v->at(1);
     DataOfDepartments *parent = (DataOfDepartments*)v->at(0);
+    DataOfWorker<T> *data = (DataOfWorker<T>*)v->at(1);
     
     data->hideGroup();
     data->hide();

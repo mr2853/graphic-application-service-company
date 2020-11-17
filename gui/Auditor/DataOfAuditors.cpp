@@ -10,6 +10,9 @@ DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor>
  : DataOfWorker(x , y , w, h, array, d, l)
  {
     displayAuditor = new DisplayAuditor(x+50, y, 300, 390, "");
+    
+    btnChange->callback(change, this);
+    btnAdd->callback(add, this);
     this->end();
 }
 
@@ -40,6 +43,10 @@ DataOfAuditors::~DataOfAuditors()
 void DataOfAuditors::add(Fl_Widget *widget, void *data)
 {
     DataOfAuditors *d = (DataOfAuditors*)data;
+    if(!d->displayAuditor->isInputsEmpty())
+    {
+        return;
+    }
     WorkerTable<Auditor> *auditorTable = d->table;
     Auditor* novaOsoba;
     try{
@@ -72,6 +79,10 @@ void DataOfAuditors::hideGroup()
 void DataOfAuditors::change(Fl_Widget *widget, void *d)
 {
     DataOfAuditors *data = (DataOfAuditors*)d;
+    if(!data->displayAuditor->isInputsEmpty())
+    {
+        return;
+    }
     Auditor *a = data->array->getRow(data->getCurrent());
     try{
         a->setName(data->displayAuditor->getValueName());

@@ -11,6 +11,9 @@ DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayComm
  : DataOfWorker(x , y ,w ,h ,array, d) 
  {
     displayCommercialist = new DisplayCommercialist(x+100, y, 300, 390, "");
+    
+    btnChange->callback(change, this);
+    btnAdd->callback(add, this);
     this->end();
  }
 
@@ -41,6 +44,10 @@ DataOfCommercialists::~DataOfCommercialists()
 void DataOfCommercialists::add(Fl_Widget *widget, void *data)
 {
     DataOfCommercialists *d = (DataOfCommercialists*)data;
+    if(!d->displayCommercialist->isInputsEmpty())
+    {
+        return;
+    }
     WorkerTable<Commercialist> *table = d->table;
     Commercialist *novaOsoba;
     try{
@@ -69,6 +76,10 @@ void DataOfCommercialists::hideGroup()
 void DataOfCommercialists::change(Fl_Widget *widget, void *d)
 {
     DataOfCommercialists *data = (DataOfCommercialists*)d;
+    if(!data->displayCommercialist->isInputsEmpty())
+    {
+        return;
+    }
     Commercialist *a = data->array->getRow(data->getCurrent());
     try{
         a->setName(data->displayCommercialist->getValueName());
@@ -84,14 +95,3 @@ void DataOfCommercialists::change(Fl_Widget *widget, void *d)
     }
     data->table->redraw();
 }
-// void DataOfCommercialists::goBack(Fl_Widget *widget, void *d)
-// {
-//     vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
-//     DataOfDepartments *parent = (DataOfDepartments*)v->at(0);
-//     DataOfCommercialists *data = (DataOfCommercialists*)v->at(1);
-//     DataOfCompanies *main = (DataOfCompanies*)v->at(2);
-//     data->hideGroup();
-//     data->hide();
-//     main->remove(data);
-//     parent->unhide();
-// }

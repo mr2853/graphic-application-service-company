@@ -19,6 +19,25 @@ DisplayAccountant::~DisplayAccountant()
     delete bodyIssuedPermit;
     delete maxAmountCompanyIncome;
 }
+bool DisplayAccountant::isInputsEmpty()
+{
+    if(!DisplayWorker::isInputsEmpty())
+    {
+        return false;
+    }
+    string a = bodyIssuedPermit->value();
+    try{
+        if(a.empty()){
+            throw EmptyInput();
+        }
+    }
+    catch(EmptyInput e)
+    {
+        fl_message(e.what("Issued permit"));
+        return false;
+    }
+    return true;
+}
 void DisplayAccountant::hide()
 {
     this->label("");

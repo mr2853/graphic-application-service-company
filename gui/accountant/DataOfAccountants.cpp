@@ -12,6 +12,9 @@ DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Ac
  : DataOfWorker(x, y, w, h, array, d, l)
  {
     displayAccountant = new DisplayAccountant(x+50, y, 300, 390, "");
+    
+    btnChange->callback(change, this);
+    btnAdd->callback(add, this);
     this->end();
 }
 
@@ -30,6 +33,10 @@ void DataOfAccountants::setDisplay(int indeks)
 void DataOfAccountants::add(Fl_Widget *widget, void *data)
 {
     DataOfAccountants *d = (DataOfAccountants*)data;
+    if(!d->displayAccountant->isInputsEmpty())
+    {
+        return;
+    }
     Accountant *novaOsoba;
     try{
         novaOsoba = new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
@@ -63,19 +70,20 @@ void DataOfAccountants::hideGroup()
 }
 void DataOfAccountants::change(Fl_Widget *widget, void *d)
 {
-    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
-    DataOfAccountants *data = (DataOfAccountants*)v->at(0);
-    DisplayAccountant *displayAccountant = (DisplayAccountant*)v->at(1);
-    AccountantTable *accountantTable = (AccountantTable*)v->at(2);
+    DataOfAccountants *data = (DataOfAccountants*)d;
+    if(!data->displayAccountant->isInputsEmpty())
+    {
+        return;
+    }
     Accountant *a = data->array->getRow(data->getCurrent());
     try{
-        a->setName(displayAccountant->getValueName());
-        a->setLastname(displayAccountant->getValueLastName());
-        a->setSalary(displayAccountant->getValueSalary());
-        a->setDateBirth(displayAccountant->getValueDateBirth());
-        a->setBodyIssuedPermit(displayAccountant->getBodyIssuedPermit());
-        a->setMaxAmountCompanyIncome(displayAccountant->getMaxAmountCompanyIncome());
-        accountantTable->redraw();
+        a->setName(data->displayAccountant->getValueName());
+        a->setLastname(data->displayAccountant->getValueLastName());
+        a->setSalary(data->displayAccountant->getValueSalary());
+        a->setDateBirth(data->displayAccountant->getValueDateBirth());
+        a->setBodyIssuedPermit(data->displayAccountant->getBodyIssuedPermit());
+        a->setMaxAmountCompanyIncome(data->displayAccountant->getMaxAmountCompanyIncome());
+        data->table->redraw();
     }
     catch(WrongDate e)
     {

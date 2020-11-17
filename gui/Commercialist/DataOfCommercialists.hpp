@@ -18,9 +18,8 @@ class DataOfCommercialists : public DataOfWorker<Commercialist>{
 protected:
     DisplayCommercialist *displayCommercialist;
 
-    void add(Fl_Widget *widget, void *data);
-    void change(Fl_Widget *widget, void *d);
-    // void goBack(Fl_Widget *widget, void *d);
+    static void add(Fl_Widget *widget, void *data);
+    static void change(Fl_Widget *widget, void *d);
 public:
     DataOfCommercialists(int x, int y, int w, int h, ArrayCommercialists *array, void *mainWindow, const char *l=0);
     virtual ~DataOfCommercialists();

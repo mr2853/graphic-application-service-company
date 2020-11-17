@@ -25,6 +25,7 @@ public:
     void displayHeadOfDepartment(AbstractWorker* worker);
     AbstractWorker* getNewHeadOfDepartment();
     string getChTypeOfHead();
+    bool isInputsEmpty();
 };
 
 #endif

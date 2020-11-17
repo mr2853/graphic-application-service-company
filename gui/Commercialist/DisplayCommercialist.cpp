@@ -9,6 +9,25 @@ DisplayCommercialist::DisplayCommercialist(int x, int y, int w, int h, const cha
     
     this->end();
 }
+bool DisplayCommercialist::isInputsEmpty()
+{
+    if(!DisplayWorker::isInputsEmpty())
+    {
+        return false;
+    }
+    string a = businessContact->value();
+    try{
+        if(a.empty()){
+            throw EmptyInput();
+        }
+    }
+    catch(EmptyInput e)
+    {
+        fl_message(e.what("Business contact"));
+        return false;
+    }
+    return true;
+}
 string DisplayCommercialist::getType()
 {
     return "DisplayCommercialist";

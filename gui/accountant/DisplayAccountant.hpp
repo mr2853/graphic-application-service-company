@@ -27,10 +27,10 @@ public:
     double getMaxAmountCompanyIncome();
     void setBodyIssuedPermit(string t);
     void setMaxAmountCompanyIncome(string t);
-    // virtual void displayWorker(Accountant *worker);
     virtual void hide();
     void unhide();
     string getType();
+    bool isInputsEmpty();
 };
 
 

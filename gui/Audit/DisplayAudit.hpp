@@ -1,0 +1,29 @@
+#ifndef DISPLAY_AUDIT_HPP
+#define DISPLAY_AUDIT_HPP
+#include <iostream>
+#include <string>
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Multiline_Input.H>
+
+#include "../Auditor/DisplayAuditor.hpp"
+
+class DisplayAudit : public Fl_Group{
+protected:
+    DisplayAuditor *displayAuditor;
+    Fl_Input *date;
+
+public:
+    DisplayAudit(int x, int y, int w, int h, const char *l=0);
+    virtual ~DisplayAudit();
+    void hideGroup();
+    void unhide();
+    Date* getDate();
+    void setDate(string t);
+    void displayThisAuditor(Auditor* worker);
+    Auditor* getAuditor();
+    bool isInputsEmpty();
+};
+
+#endif

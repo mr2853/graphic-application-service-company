@@ -9,6 +9,8 @@
 #include "../../Util.hpp"
 #include <FL/fl_message.H>
 #include "../Department/DataOfDepartments.hpp"
+#include "../Audit/DataOfAudits.hpp"
+#include "../Audit/ArrayAudits.hpp"
 
 using namespace std;
 
@@ -19,14 +21,17 @@ DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *arr
 
     chCompany = new Fl_Choice(x+450, y, 100, 40, "Companies:");
     this->updateChCompany();
-    btnDetails = new Fl_Button(x+450, y+50, 150, 50, "Data of company");
+    btnDetails = new Fl_Button(x+450, y+50, 150, 50, "Data of Company");
+    btnAudits = new Fl_Button(x+450, y+110, 150, 50, "Data of Audits");
 
     btnDetails->callback(details, this);
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
+    btnAudits->callback(audits, this);
 
-    // remove(btnGoBack);
-    btnGoBack->hide();
+    remove(btnGoBack);
+    // this->btnGoBack->deactivate();
+    // this->btnGoBack->hide();
     this->end();
 }
 
@@ -72,6 +77,10 @@ void DataOfCompanies::isCompaniesEmpty()
 void DataOfCompanies::change(Fl_Widget *widget, void *d)
 {
     DataOfCompanies *data = (DataOfCompanies*)d;
+    if(!data->display->isInputsEmpty())
+    {
+        return;
+    }
     Company *dep = data->array->getRow(data->getCurrent());
 
     dep->setName(data->display->getName());
@@ -117,12 +126,28 @@ void DataOfCompanies::details(Fl_Widget *widget, void *d)
     data->hideGroup();
     data->Fl_Group::add(dataOfDepartments);
 }
+void DataOfCompanies::audits(Fl_Widget *widget, void *d)
+{
+    DataOfCompanies *data = (DataOfCompanies*)d;
+    int intDep = data->chCompany->value();
+    Company *company = data->array->getElement(intDep);
+    
+    DataOfAudits *dataOfAudits = new DataOfAudits(data->x(),
+                    data->y(), data->w(), data->h(), new ArrayAudits(company->getCompanyAudits()), data);
+
+    data->hideGroup();
+    data->Fl_Group::add(dataOfAudits);
+}
 
 DataOfCompanies::~DataOfCompanies(){}
 
 void DataOfCompanies::add(Fl_Widget *widget, void *data)
 {
     DataOfCompanies *d = (DataOfCompanies*)data;
+    if(!d->display->isInputsEmpty())
+    {
+        return;
+    }
     Company *company = new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber());
     d->table->add(company);
     d->updateChCompany();

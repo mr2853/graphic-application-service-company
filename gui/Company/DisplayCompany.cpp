@@ -17,7 +17,7 @@ DisplayCompany::DisplayCompany(int x, int y, int w, int h, const char *l)
 
 DisplayCompany::~DisplayCompany(){}
 
-void DisplayCompany::isInputsEmpty()
+bool DisplayCompany::isInputsEmpty()
 {
     string a = name->value();
     string b = taxIdentificationNumber->value();
@@ -30,7 +30,7 @@ void DisplayCompany::isInputsEmpty()
     catch(EmptyInput e)
     {
         fl_message(e.what("Name"));
-        return;
+        return false;
     }
     try{
         if(b.empty()){
@@ -40,7 +40,7 @@ void DisplayCompany::isInputsEmpty()
     catch(EmptyInput e)
     {
         fl_message(e.what("Tax ID"));
-        return;
+        return false;
     }
     try{
         if(c.empty()){
@@ -50,8 +50,9 @@ void DisplayCompany::isInputsEmpty()
     catch(EmptyInput e)
     {
         fl_message(e.what("ID"));
-        return;
+        return false;
     }
+    return true;
 }
 void DisplayCompany::setName(string t)
 {

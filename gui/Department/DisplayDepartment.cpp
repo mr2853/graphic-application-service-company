@@ -3,6 +3,7 @@
 #include "../../Class/Accountant.hpp"
 #include "../../Class/Commercialist.hpp"
 #include "../../Util.hpp"
+#include <FL/fl_message.H>
 
 DisplayDepartment::DisplayDepartment(int x, int y, int w, int h, const char *l)
 : Fl_Group(x,y,w,h,l)
@@ -20,6 +21,29 @@ void DisplayDepartment::displayHeadOfDepartment(AbstractWorker* worker)
 {
     headOfDepartment->displayWorker(worker);
 }
+
+bool DisplayDepartment::isInputsEmpty()
+{
+    string a = name->value();
+    string b = headOfDepartment->getValueName();
+    string c = headOfDepartment->getValueLastName();
+    try{
+        if(a.empty()){
+            throw EmptyInput();
+        }
+    }
+    catch(EmptyInput e)
+    {
+        fl_message(e.what("Name of Department"));
+        return false;
+    }
+    if(!headOfDepartment->isInputsEmpty())
+    {
+        return false;
+    }
+    return true;
+}
+
 AbstractWorker* DisplayDepartment::getNewHeadOfDepartment()
 {
     string type = this->getChTypeOfHead();

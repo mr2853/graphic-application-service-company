@@ -9,6 +9,25 @@ DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, const char *l)
     
     this->end();
 }
+bool DisplayAuditor::isInputsEmpty()
+{
+    if(!DisplayWorker::isInputsEmpty())
+    {
+        return false;
+    }
+    string a = datesVisiting->value();
+    try{
+        if(a.empty()){
+            throw EmptyInput();
+        }
+    }
+    catch(EmptyInput e)
+    {
+        fl_message(e.what("Dates visiting"));
+        return false;
+    }
+    return true;
+}
 string DisplayAuditor::getType()
 {
     return "DisplayAuditor";

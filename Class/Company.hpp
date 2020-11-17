@@ -37,6 +37,7 @@ public:
     string toString() const;
     vector<Commercialist*>* getCompanyCommercialists();
     vector<Auditor*>* getCompanyAuditors();
+    vector<Audit*>* getCompanyAudits();
     vector<Accountant*>* getCompanyAccountants();
     void removeDepartment(int index);
 
