@@ -33,7 +33,7 @@ public:
     void setDepartments(vector<Department*>* departments);
     vector<Department*>* getDepartments();
     int getDepartmentsSize();
-    void readData1(string path);
+    static vector<Company*>* readData1(string path);
     string toString() const;
     vector<Commercialist*>* getCompanyCommercialists();
     vector<Auditor*>* getCompanyAuditors();

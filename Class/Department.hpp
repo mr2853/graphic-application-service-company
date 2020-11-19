@@ -37,7 +37,7 @@ public:
     void setHeadOfDepartment(AbstractWorker *headOfDepartment);
     string getName();
     void setName(string name);
-    vector<Audit*> getAudits();
+    vector<Audit*>* getAudits();
     void setAudits(vector<Audit*> audits);
     vector<Commercialist*>* getCommercialists();
 	void setCommercialists(vector<Commercialist*> commercialists);

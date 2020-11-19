@@ -18,7 +18,7 @@
 template<typename T>
 class DataOf : public Fl_Group, protected AbstractDisplay<T*>{
 protected:
-    ArrayWorkers<T> *array;
+    ArrayWorkers<T> *array = new ArrayWorkers<T>();
     WorkerTable<T> *table;
 
     int current = 0;

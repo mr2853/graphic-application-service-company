@@ -13,7 +13,8 @@
 using namespace std;
 
 DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, ArrayAuditors *auditors, void *mainWindow, const char *l)
- : DataOf(x , y ,w ,h , array, mainWindow, l), auditors(auditors){
+ : DataOf(x, y, w, h, array, mainWindow, l), auditors(auditors)
+ {
     chAuditor = new Fl_Choice(x+50, y, 100, 50, "");
     displayAudit = new DisplayAudit(x+50, y+60, 200, 300, "");
 
@@ -69,18 +70,13 @@ void DataOfAudits::goBack(Fl_Widget *widget, void *d)
 
 void DataOfAudits::setDisplay(int indeks)
 {
-    cout << "dovde1" << endl;
     if (indeks >= 0 && indeks < this->sizeOfArray())
     {
         current = indeks;
-        cout << "dovde1.1" << endl;
-        displayAudit->setDate(this->array->getElement(current)->getDate()->getDateWithTime().c_str());
-        cout << "dovde1.2" << endl;
-        displayAudit->displayThisAudit(this->array->getElement(current));
+        displayAudit->setDate(this->getElement(current)->getDate()->getDateWithTime().c_str());
+        displayAudit->displayThisAudit(this->getElement(current));
     }
-    cout << "dovde2" << endl;
     updateLabel();
-    cout << "dovde3" << endl;
 }
 
 void DataOfAudits::isAuditsEmpty()
@@ -131,29 +127,18 @@ DataOfAudits::~DataOfAudits(){}
 
 void DataOfAudits::add(Fl_Widget *widget, void *data)
 {
-    cout << "ovde" << endl;
     DataOfAudits *d = (DataOfAudits*)data;
-    cout << "ovde1" << endl;
     if(!d->displayAudit->isInputsEmpty())
     {
         return;
     }
-    cout << "ovde2" << endl;
     
-    d->displayAudit->getAudit()->setAuditor(d->array->getElement(d->getCurrent())->getAuditor());
-    cout << "ovde3" << endl;
-    Auditor* worker = d->displayAudit->getAudit()->getAuditor();
-    cout << "ovde4" << endl;
-    Audit *department = new Audit(worker, d->displayAudit->getDate());
-    cout << "ovde5" << endl;
-    d->table->add(department);
-    cout << "ovde6" << endl;
-    d->setDisplay(d->array->numberOfElement()-1);
-    cout << "ovde7" << endl;
+    d->displayAudit->getAudit()->setAuditor(d->getElement(d->getCurrent())->getAuditor());
+    Auditor* worker = d->auditors->getElement(d->chAuditor->value());
+    Audit *audit = new Audit(worker, d->displayAudit->getDate());
+    d->table->add(audit);
+    d->setDisplay(d->sizeOfArray()-1);
     d->updateLabel();
-    cout << "ovde8" << endl;
     d->isAuditsEmpty();
-    cout << "ovde9" << endl;
     d->checkButtons();
-    cout << "ovde10" << endl;
 }

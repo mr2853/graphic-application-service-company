@@ -15,14 +15,8 @@ DisplayAudit::DisplayAudit(int x, int y, int w, int h, const char *l)
 }
 void DisplayAudit::displayThisAudit(Audit* worker)
 {
-    cout << "uslo" << endl;
-    cout << worker->getAuditor()->getName() << endl;
-    cout << "uslo" << endl;
     displayAuditor->displayWorker(worker->getAuditor());
-    cout << "uslo1" << endl;
     date->value(worker->getDate()->getDateWithTime().c_str());
-    cout << "uslo2" << endl;
-
 }
 
 bool DisplayAudit::isInputsEmpty()

@@ -19,13 +19,11 @@ using namespace std;
 
 int main()
 {
-    Company *company = new Company();
-    company->readData1("podaci.txt");
-    vector<Company*>* companies = new vector<Company*>();
-    companies->push_back(company);
-    ArrayCompanies *array = new ArrayCompanies(companies);
+    ArrayCompanies *original = new ArrayCompanies(Company::readData1("podaci.txt"));
+    ArrayCompanies *changed = new ArrayCompanies(Company::readData1("podaci.txt"));
+
     Fl_Window *window = new Fl_Window(900, 700, "Projekat");
-    DataOfCompanies *dataOfCompanies = new DataOfCompanies(50, 50, 900, 700, array, window, "");
+    DataOfCompanies *dataOfCompanies = new DataOfCompanies(50, 50, 900, 700, original, window, "");
     window->resizable(dataOfCompanies);
     window->end();
     window->show(); 

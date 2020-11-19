@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 #include "Department.hpp"
-
+using namespace std;
 Company::Company(){}
 Company::~Company(){}
 Company::Company(string name, string taxIdentificationNumber, string identificationNumber)
@@ -118,9 +118,9 @@ int Company::getDepartmentsSize()
     return departments->size();
 }
 
-void Company::readData1(string path)
+vector<Company*>* Company::readData1(string path)
 {
-    Company *company = this;
+    vector<Company*>* ret = new vector<Company*>();
     ifstream in(path);
     string str;
     path = "";
@@ -131,29 +131,54 @@ void Company::readData1(string path)
     string comma = ",";
     string lessThan = "<";
     string twoDots = ":";
-    int index = path.find(twoDots);
-    path.erase(0,index+1);
-    index = path.find(comma);
-    string name = path.substr(0, index);
+    while(path.find("$Company[") != string::npos)
+    {
+        int index = path.find(twoDots);
+        path.erase(0,index+1);
+        index = path.find(comma);
+        string deleted = path.substr(0, index);
+        if(deleted == "true")
+        {
+            continue;
+        }
+        Company *company = new Company();
 
-    index = path.find(twoDots);
-    path.erase(0,index+1);
-    index = path.find(comma);
-    string taxIdentificationNumber = path.substr(0, index);
+        index = path.find(twoDots);
+        path.erase(0,index+1);
+        index = path.find(comma);
+        string name = path.substr(0, index);
 
-    index = path.find(twoDots);
-    path.erase(0,index+1);
-    index = path.find(comma);
-    string identificationNumber = path.substr(0, index);
-    index = path.find(lessThan);
-    path.erase(0,index+1);
-    vector<Department*>* departments = new vector<Department*>();
-    departments = Department::readArray(path); 
-    company->setName(name);
-    company->setTaxIdentificationNumber(taxIdentificationNumber);
-    company->setIdentificationNumber(identificationNumber);
-    company->setDepartments(departments);
+        index = path.find(twoDots);
+        path.erase(0,index+1);
+        index = path.find(comma);
+        string taxIdentificationNumber = path.substr(0, index);
+
+        index = path.find(twoDots);
+        path.erase(0,index+1);
+        index = path.find(comma);
+        string identificationNumber = path.substr(0, index);
+        index = path.find(lessThan);
+        path.erase(0,index+1);
+        vector<Department*>* departments = new vector<Department*>();
+        if(path.find("$Company[") != string::npos)
+        {
+            index = path.find("$Company[");
+            departments = Department::readArray(path.substr(0, index));
+            path.erase(0,index);
+        }
+        else
+        {
+            departments = Department::readArray(path); 
+            path.erase(0, path.length());
+        }
+        company->setName(name);
+        company->setTaxIdentificationNumber(taxIdentificationNumber);
+        company->setIdentificationNumber(identificationNumber);
+        company->setDepartments(departments);
+        ret->push_back(company);
+    }
     in.close();
+    return ret;
 }
 
 string Company::toString() const
@@ -192,9 +217,9 @@ vector<Audit*>* Company::getCompanyAudits()
     vector<Audit*> *ret = new vector<Audit*>();
     for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments->at(i)->getAudits().size(); j++)
+        for(int j = 0; j < departments->at(i)->getAudits()->size(); j++)
         {
-            ret->push_back(departments->at(i)->getAudits().at(j));
+            ret->push_back(departments->at(i)->getAudits()->at(j));
         }
     }
     return ret;

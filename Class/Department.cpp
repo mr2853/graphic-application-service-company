@@ -163,8 +163,8 @@ void Department::setName(string name) {
     this->name = name;
 }
 
-vector<Audit*> Department::getAudits() {
-    return audits;
+vector<Audit*>* Department::getAudits() {
+    return &audits;
 }
 
 void Department::setAudits(vector<Audit*> audits) {
