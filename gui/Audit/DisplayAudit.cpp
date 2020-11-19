@@ -8,14 +8,21 @@
 DisplayAudit::DisplayAudit(int x, int y, int w, int h, const char *l)
 : Fl_Group(x,y,w,h,l)
 {
+    date = new Fl_Input(x, y, 100, 40, "Date:");
     displayAuditor = new DisplayAuditor(x, y+60, 100, 190, "Auditor:");
-    date = new Fl_Input(x, y, 100, 40, "Name:");
-
+    displayAuditor->deactivate();
     this->end();
 }
-void DisplayAudit::displayThisAuditor(Auditor* worker)
+void DisplayAudit::displayThisAudit(Audit* worker)
 {
-    displayAuditor->displayWorker(worker);
+    cout << "uslo" << endl;
+    cout << worker->getAuditor()->getName() << endl;
+    cout << "uslo" << endl;
+    displayAuditor->displayWorker(worker->getAuditor());
+    cout << "uslo1" << endl;
+    date->value(worker->getDate()->getDateWithTime().c_str());
+    cout << "uslo2" << endl;
+
 }
 
 bool DisplayAudit::isInputsEmpty()
@@ -38,12 +45,11 @@ bool DisplayAudit::isInputsEmpty()
     return true;
 }
 
-Auditor* DisplayAudit::getAuditor()
+Audit* DisplayAudit::getAudit()
 {
     
     try{
-        return new Auditor(displayAuditor->getValueName(), displayAuditor->getValueLastName(),displayAuditor->getValueDateBirth(),
-            displayAuditor->getValueSalary(), displayAuditor->getDatesVisiting());
+        return new Audit(nullptr, this->getDate());
     }
     catch(WrongDate e)
     {

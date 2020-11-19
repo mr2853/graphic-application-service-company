@@ -22,7 +22,7 @@
 class AccountantTable : public WorkerTable<Accountant>
 {
 public:
-    AccountantTable(int x, int y, int w, int h, ArrayAccountants *array);
+    AccountantTable(int x, int y, int w, int h, ArrayAccountants *array, const char* l=0);
     virtual ~AccountantTable();
 };
 

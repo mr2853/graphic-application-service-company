@@ -5,9 +5,14 @@
 DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, const char *l)
 : DisplayWorker(x, y, 200, 190, "")
 {
-    datesVisiting = new Fl_Multiline_Input(x, y+200, 200, 70, "Dates visiting:");
+    datesVisiting = new Fl_Multiline_Input(x, y+200, 100, 70, "Dates visiting:");
     
     this->end();
+}
+void DisplayAuditor::deactivate()
+{
+    DisplayWorker::deactivate();
+    datesVisiting->deactivate();
 }
 bool DisplayAuditor::isInputsEmpty()
 {

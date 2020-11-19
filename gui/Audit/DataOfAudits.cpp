@@ -12,8 +12,8 @@
 
 using namespace std;
 
-DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, void *mainWindow, const char *l)
- : DataOf(x , y ,w ,h , array, mainWindow, l){
+DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, ArrayAuditors *auditors, void *mainWindow, const char *l)
+ : DataOf(x , y ,w ,h , array, mainWindow, l), auditors(auditors){
     chAuditor = new Fl_Choice(x+50, y, 100, 50, "");
     displayAudit = new DisplayAudit(x+50, y+60, 200, 300, "");
 
@@ -25,25 +25,29 @@ DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, void 
 
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
-    this->insertDataInChAuditor(array);
+
+    this->insertDataInChAuditor();
     this->chAuditor->value(0);
-    this->displayAuditor();
+    chAuditor->callback(display, this);
+    displayAudit->displayThisAudit(array->getElement(chAuditor->value()));
     this->end();
 }
 
-void DataOfAudits::displayAuditor()
+void DataOfAudits::display(Fl_Widget *widget, void *d)
 {
-    displayAudit->displayThisAuditor(this->array->getElement(chAuditor->value())->getAuditor());
+    DataOfAudits *data = (DataOfAudits*)d;
+    data->displayAudit->displayThisAudit(data->array->getElement(data->chAuditor->value()));
 }
-void DataOfAudits::insertDataInChAuditor(ArrayAudits *array)
+
+void DataOfAudits::insertDataInChAuditor()
 {
     string aud = "";
     chAuditor->clear();
-    for(int i = 0; i < this->sizeOfArray(); i++)
+    for(int i = 0; i < auditors->numberOfElement(); i++)
     {
         string s = to_string(i+1).append(".");
-        s.append(this->array->getElement(i)->getAuditor()->getName()).append(" ");
-        s.append(this->array->getElement(i)->getAuditor()->getName());
+        s.append(auditors->getElement(i)->getName()).append(" ");
+        s.append(auditors->getElement(i)->getName());
         aud.append(s);
         aud.append("|");
     }
@@ -65,14 +69,18 @@ void DataOfAudits::goBack(Fl_Widget *widget, void *d)
 
 void DataOfAudits::setDisplay(int indeks)
 {
+    cout << "dovde1" << endl;
     if (indeks >= 0 && indeks < this->sizeOfArray())
     {
         current = indeks;
-        string type = this->getElement(current)->getAuditor()->getType();
-        displayAudit->setDate(this->getElement(indeks)->getDate()->getDateWithTime().c_str());
-        displayAudit->displayThisAuditor(this->getElement(indeks)->getAuditor());
+        cout << "dovde1.1" << endl;
+        displayAudit->setDate(this->array->getElement(current)->getDate()->getDateWithTime().c_str());
+        cout << "dovde1.2" << endl;
+        displayAudit->displayThisAudit(this->array->getElement(current));
     }
+    cout << "dovde2" << endl;
     updateLabel();
+    cout << "dovde3" << endl;
 }
 
 void DataOfAudits::isAuditsEmpty()
@@ -96,16 +104,8 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
     Audit *dep = data->array->getRow(data->getCurrent());
     dep->setDate(data->displayAudit->getDate());
     string type = data->array->getElement(data->getCurrent())->getAuditor()->getType();
-    Auditor* head;
-    try{
-        head = data->displayAudit->getAuditor();
-    }
-    catch(WrongDate e)
-    {
-        fl_message(e.what("Date birth"));
-        return;
-    }
-    dep->setAuditor(new Auditor(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+    Auditor* head = data->auditors->getElement(data->chAuditor->value());
+    dep->setAuditor(head);
     data->table->redraw();
 }
 
@@ -131,24 +131,29 @@ DataOfAudits::~DataOfAudits(){}
 
 void DataOfAudits::add(Fl_Widget *widget, void *data)
 {
+    cout << "ovde" << endl;
     DataOfAudits *d = (DataOfAudits*)data;
+    cout << "ovde1" << endl;
     if(!d->displayAudit->isInputsEmpty())
     {
         return;
     }
-    Auditor* worker;
-    try{
-        worker = d->displayAudit->getAuditor();
-    }
-    catch(WrongDate e)
-    {
-        fl_message(e.what("Date birth"));
-        return;
-    }
+    cout << "ovde2" << endl;
+    
+    d->displayAudit->getAudit()->setAuditor(d->array->getElement(d->getCurrent())->getAuditor());
+    cout << "ovde3" << endl;
+    Auditor* worker = d->displayAudit->getAudit()->getAuditor();
+    cout << "ovde4" << endl;
     Audit *department = new Audit(worker, d->displayAudit->getDate());
+    cout << "ovde5" << endl;
     d->table->add(department);
+    cout << "ovde6" << endl;
     d->setDisplay(d->array->numberOfElement()-1);
+    cout << "ovde7" << endl;
     d->updateLabel();
+    cout << "ovde8" << endl;
     d->isAuditsEmpty();
+    cout << "ovde9" << endl;
     d->checkButtons();
+    cout << "ovde10" << endl;
 }

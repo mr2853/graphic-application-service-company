@@ -22,7 +22,7 @@
 class CommercialistTable : public WorkerTable<Commercialist>
 {
 public:
-    CommercialistTable(int x, int y, int w, int h, ArrayCommercialists *array);
+    CommercialistTable(int x, int y, int w, int h, ArrayCommercialists *array, const char* l=0);
     virtual ~CommercialistTable();
 };
 

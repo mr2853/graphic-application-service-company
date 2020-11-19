@@ -40,16 +40,14 @@ public:
     vector<Audit*> getAudits();
     void setAudits(vector<Audit*> audits);
     vector<Commercialist*>* getCommercialists();
-
 	void setCommercialists(vector<Commercialist*> commercialists);
 	vector<Auditor*>* getAuditors();
-
 	void setAuditors(vector<Auditor*> auditors);
-
 	vector<Accountant*>* getAccountants();
-
 	void setAccountants(vector<Accountant*> accountants);
     static vector<Department*>* readArray(string in);
+    double getMaxSalary();
+    double getMinSalary();
 };
 
 #endif

@@ -14,6 +14,78 @@ Company::Company(string name, string taxIdentificationNumber, string identificat
     : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments){}
 
 
+double Company::getMaxSalary()
+{
+    double max = -1;
+    for(int j = 0; j < this->getCompanyAccountants()->size(); j++)
+    {
+        if(max < this->getCompanyAccountants()->at(j)->getSalary() || max == -1)
+        {
+            max = this->getCompanyAccountants()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getCompanyCommercialists()->size(); j++)
+    {
+        if(max < this->getCompanyCommercialists()->at(j)->getSalary() || max == -1)
+        {
+            max = this->getCompanyCommercialists()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getCompanyAuditors()->size(); j++)
+    {
+        if(max < this->getCompanyAuditors()->at(j)->getSalary() || max == -1)
+        {
+            max = this->getCompanyAuditors()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->departments->size(); j++)
+    {
+        if(max < this->departments->at(j)->getHeadOfDepartment()->getSalary() || max == -1)
+        {
+            max = this->departments->at(j)->getHeadOfDepartment()->getSalary();
+        }
+    }
+    return max;
+}
+double Company::getMinSalary()
+{
+    double min = -1;
+    for(int j = 0; j < this->getCompanyAccountants()->size(); j++)
+    {
+        if(min > this->getCompanyAccountants()->at(j)->getSalary() || min == -1)
+        {
+            min = this->getCompanyAccountants()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getCompanyCommercialists()->size(); j++)
+    {
+        if(min > this->getCompanyCommercialists()->at(j)->getSalary() || min == -1)
+        {
+            min = this->getCompanyCommercialists()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getCompanyAuditors()->size(); j++)
+    {
+        if(min > this->getCompanyAuditors()->at(j)->getSalary() || min == -1)
+        {
+            min = this->getCompanyAuditors()->at(j)->getSalary();
+        }
+    }
+    
+    for(int j = 0; j < this->departments->size(); j++)
+    {
+        if(min > this->departments->at(j)->getHeadOfDepartment()->getSalary() || min == -1)
+        {
+            min = this->departments->at(j)->getHeadOfDepartment()->getSalary();
+        }
+    }
+    return min;
+}
 string Company::getName() {
     return name;
 }
@@ -56,7 +128,6 @@ void Company::readData1(string path)
         getline(in, str);
         path += str;
     }
-    //cout << "\n\nPathStart:" << path << "\n" << endl;
     string comma = ",";
     string lessThan = "<";
     string twoDots = ":";
@@ -94,7 +165,7 @@ string Company::toString() const
 
 vector<Commercialist*>* Company::getCompanyCommercialists()
 {
-    vector<Commercialist*>* ret;
+    vector<Commercialist*>* ret = new vector<Commercialist*>();
     for(int i = 0; i < departments->size(); i++)
     {
         for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
@@ -130,7 +201,7 @@ vector<Audit*>* Company::getCompanyAudits()
 }
 vector<Accountant*>* Company::getCompanyAccountants()
 {
-    vector<Accountant*>* ret;
+    vector<Accountant*>* ret = new vector<Accountant*>();
     for(int i = 0; i < departments->size(); i++)
     {
         for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)

@@ -6,6 +6,70 @@
 
 Department::Department(){}
 Department::~Department(){}
+double Department::getMaxSalary()
+{
+    double max = -1;
+    for(int j = 0; j < this->getAccountants()->size(); j++)
+    {
+        if(max < this->getAccountants()->at(j)->getSalary() || max == -1)
+        {
+            max = this->getAccountants()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getCommercialists()->size(); j++)
+    {
+        if(max < this->getCommercialists()->at(j)->getSalary() || max == -1)
+        {
+            max = this->getCommercialists()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getAuditors()->size(); j++)
+    {
+        if(max < this->getAuditors()->at(j)->getSalary() || max == -1)
+        {
+            max = this->getAuditors()->at(j)->getSalary();
+        }
+    }
+    if(max < this->headOfDepartment->getSalary() || max == -1)
+    {
+        max = this->headOfDepartment->getSalary();
+    }
+    return max;
+}
+double Department::getMinSalary()
+{
+    double min = -1;
+    for(int j = 0; j < this->getAccountants()->size(); j++)
+    {
+        if(min > this->getAccountants()->at(j)->getSalary() || min == -1)
+        {
+            min = this->getAccountants()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getCommercialists()->size(); j++)
+    {
+        if(min > this->getCommercialists()->at(j)->getSalary() || min == -1)
+        {
+            min = this->getCommercialists()->at(j)->getSalary();
+        }
+    }
+
+    for(int j = 0; j < this->getAuditors()->size(); j++)
+    {
+        if(min > this->getAuditors()->at(j)->getSalary() || min == -1)
+        {
+            min = this->getAuditors()->at(j)->getSalary();
+        }
+    }
+    if(min > this->headOfDepartment->getSalary() || min == -1)
+    {
+        min = this->headOfDepartment->getSalary();
+    }
+    return min;
+}
 Department::Department(string &in)
 {
     string twoDots = ":";
@@ -175,7 +239,6 @@ vector<Department*>* Department::readArray(string in)
     }
     for(string &s : text)
     {
-        //cout << "\n\n" << s << "\n\n" << endl;
         index = s.find("[");
         type1 = s.substr(0, index);
         Department *d = new Department(s);

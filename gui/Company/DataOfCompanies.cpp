@@ -12,6 +12,7 @@
 #include "../Audit/DataOfAudits.hpp"
 #include "../Audit/ArrayAudits.hpp"
 
+
 using namespace std;
 
 DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *array, void *data, const char *l)
@@ -23,15 +24,21 @@ DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *arr
     this->updateChCompany();
     btnDetails = new Fl_Button(x+450, y+50, 150, 50, "Data of Company");
     btnAudits = new Fl_Button(x+450, y+110, 150, 50, "Data of Audits");
+    // btnWorkers = new Fl_Button(x+450, y+160, 150, 50, "Data of Workers");
 
     btnDetails->callback(details, this);
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
     btnAudits->callback(audits, this);
+    // btnWorkers->callback(workers, this);
 
     remove(btnGoBack);
     // this->btnGoBack->deactivate();
     // this->btnGoBack->hide();
+    
+    if(array->numberOfElement() != 0){
+        this->setDisplay(this->getCurrent());
+    }
     this->end();
 }
 
@@ -99,6 +106,7 @@ void DataOfCompanies::hideGroup(){
     this->btnDetails->hide();
     this->btnChange->hide();
     this->btnAdd->hide();
+    this->btnAudits->hide();
 
     this->chCompany->hide();
 }
@@ -111,6 +119,7 @@ void DataOfCompanies::unhideGroup(){
     this->btnDetails->show();
     this->btnChange->show();
     this->btnAdd->show();
+    this->btnAudits->show();
     
     this->chCompany->show();
 }
@@ -121,7 +130,7 @@ void DataOfCompanies::details(Fl_Widget *widget, void *d)
     Company *company = data->array->getElement(intDep);
     
     DataOfDepartments *dataOfDepartments = new DataOfDepartments(data->x(),
-                    data->y(), data->w(), data->h(), new ArrayDepartments(company->getDepartments()), data);
+                    data->y(), data->w(), data->h(), new ArrayDepartments(company->getDepartments()), company, data);
 
     data->hideGroup();
     data->Fl_Group::add(dataOfDepartments);
@@ -132,12 +141,13 @@ void DataOfCompanies::audits(Fl_Widget *widget, void *d)
     int intDep = data->chCompany->value();
     Company *company = data->array->getElement(intDep);
     
-    DataOfAudits *dataOfAudits = new DataOfAudits(data->x(),
-                    data->y(), data->w(), data->h(), new ArrayAudits(company->getCompanyAudits()), data);
+    DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(), 
+        new ArrayAudits(company->getCompanyAudits()), new ArrayAuditors(company->getCompanyAuditors()), data);
 
     data->hideGroup();
     data->Fl_Group::add(dataOfAudits);
 }
+
 
 DataOfCompanies::~DataOfCompanies(){}
 

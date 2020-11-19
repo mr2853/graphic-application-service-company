@@ -23,7 +23,7 @@ protected:
     static void change(Fl_Widget *widget, void *data);
 
 public:
-    DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *array, void *mainWindow, const char *l=0);
+    DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *array, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfAccountants();
     virtual void setDisplay(int indeks);
     void hideGroup();

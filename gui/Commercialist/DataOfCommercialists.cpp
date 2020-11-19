@@ -7,13 +7,17 @@
 
 using namespace std;
 
-DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayCommercialists *array, void *d, const char *l)
- : DataOfWorker(x , y ,w ,h ,array, d) 
+DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayCommercialists *array, Company *company, void *d, const char *l)
+ : DataOfWorker(x , y ,w ,h ,array, company, d, l) 
  {
     displayCommercialist = new DisplayCommercialist(x+100, y, 300, 390, "");
-    
+    btnPrevious->position(x+310,y);
+    btnNext->position(x+390,y);
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
+    if(array->numberOfElement() != 0){
+        this->setDisplay(this->getCurrent());
+    }
     this->end();
  }
 
@@ -34,6 +38,8 @@ void DataOfCommercialists::setDisplay(int indeks)
         }
         displayCommercialist->setBusinessContact(t);
     }
+    this->refreshDisplaySalary();
+    this->displaySalary->setCurrent(this->getElement(this->getCurrent())->getSalary());
     updateLabel();
 }
 

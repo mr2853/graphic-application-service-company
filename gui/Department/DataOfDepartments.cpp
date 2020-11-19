@@ -12,7 +12,7 @@
 
 using namespace std;
 
-DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *array, void *mainWindow, const char *l)
+DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *array, Company *company, void *mainWindow, const char *l)
  : DataOf(x , y ,w ,h , array, mainWindow, l){
     
     displayDepartment = new DisplayDepartment(x+50, y, 200, 300, "");
@@ -24,20 +24,25 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartment
     chWorkerType->value(0);
     btnDetails = new Fl_Button(x+450, y+100, 150, 50, "Data of worker type");
 
-    vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
-    DataOfCompanies *main = (DataOfCompanies*)mainWindow;
-    v->push_back(main);
+    vector<void*> *v = new vector<void*>();
+    // DataOfCompanies *main = (DataOfCompanies*)mainWindow;
+    v->push_back(mainWindow);
     v->push_back(this);
+    v->push_back(company);
     btnDetails->callback(details, v);
     btnGoBack->callback(DataOfDepartments::goBack,v);
 
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
+    
+    if(array->numberOfElement() != 0){
+        this->setDisplay(this->getCurrent());
+    }
     this->end();
 }
 void DataOfDepartments::goBack(Fl_Widget *widget, void *d)
 {
-    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
+    vector<void*> *v = (vector<void*>*)d;
     DataOfDepartments *data = (DataOfDepartments*)v->at(1);
     DataOfCompanies *parent = (DataOfCompanies*)v->at(0);
     
@@ -157,27 +162,28 @@ void DataOfDepartments::unhideGroup(){
 }
 void DataOfDepartments::details(Fl_Widget *widget, void *d)
 {
-    vector<Fl_Widget*> *v = (vector<Fl_Widget*>*)d;
+    vector<void*> *v = (vector<void*>*)d;
     DataOfCompanies *mainWindow = (DataOfCompanies*)v->at(0);
     DataOfDepartments *data = (DataOfDepartments*)v->at(1);
+    Company *company = (Company*)v->at(2);
     int intDep = data->chDepartment->value();
     int workerType = data->chWorkerType->value();
     Department *department = data->array->getElement(intDep);
     if(workerType == 0){
         DataOfAccountants *dataOfAccountants = new DataOfAccountants(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayAccountants(department->getAccountants()), data);
+                        data->y(), data->w(), data->h(), new ArrayAccountants(department->getAccountants()), company, data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfAccountants);
     }
     else if(workerType == 1){
         DataOfAuditors *dataOfAuditors = new DataOfAuditors(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), data);
+                        data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), company, data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfAuditors);
     }
     else if(workerType == 2){
         DataOfCommercialists *dataOfCommercialists = new DataOfCommercialists(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayCommercialists(department->getCommercialists()), data);
+                        data->y(), data->w(), data->h(), new ArrayCommercialists(department->getCommercialists()), company, data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfCommercialists);
     }

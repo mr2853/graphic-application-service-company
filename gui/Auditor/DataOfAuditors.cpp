@@ -6,13 +6,16 @@
 
 using namespace std;
 
-DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor> *array, void *d, const char *l)
- : DataOfWorker(x , y , w, h, array, d, l)
+DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor> *array, Company *company, void *d, const char *l)
+ : DataOfWorker(x , y ,w ,h ,array, company, d, l) 
  {
     displayAuditor = new DisplayAuditor(x+50, y, 300, 390, "");
     
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
+    if(array->numberOfElement() != 0){
+        this->setDisplay(this->getCurrent());
+    }
     this->end();
 }
 
@@ -33,6 +36,8 @@ void DataOfAuditors::setDisplay(int indeks)
         }
         displayAuditor->setDatesVisiting(t);
     }
+    this->refreshDisplaySalary();
+    this->displaySalary->setCurrent(this->getElement(this->getCurrent())->getSalary());
     updateLabel();
 }
 

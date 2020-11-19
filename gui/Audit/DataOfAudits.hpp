@@ -11,22 +11,24 @@
 #include "../DataOf.hpp"
 #include "../ArrayWorkers.hpp"
 #include "ArrayAudits.hpp"
+#include "../Auditor/ArrayAuditors.hpp"
 
 class DataOfAudits : public DataOf<Audit>{
 protected:
     Fl_Choice *chAuditor;
+    ArrayAuditors *auditors;
     DisplayAudit *displayAudit;
     
     static void add(Fl_Widget *widget, void *data);
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);
-    void insertDataInChAuditor(ArrayAudits *array);
+    static void display(Fl_Widget *widget, void *data);
+    void insertDataInChAuditor();
     void setDisplay(int indeks);
     void isAuditsEmpty();
-    void displayAuditor();
 public:
-    DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, void *mainWindow, const char *l=0);
+    DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, ArrayAuditors *auditors, void *mainWindow, const char *l=0);
     virtual ~DataOfAudits();
     void hideGroup();
     void unhideGroup();

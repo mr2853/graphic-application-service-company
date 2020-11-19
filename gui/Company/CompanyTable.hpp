@@ -22,7 +22,7 @@
 class CompanyTable : public WorkerTable<Company>
 {
 public:
-    CompanyTable(int x, int y, int w, int h, ArrayWorkers<Company> *departments);
+    CompanyTable(int x, int y, int w, int h, ArrayWorkers<Company> *departments, const char* l=0);
     virtual ~CompanyTable();
 };
 

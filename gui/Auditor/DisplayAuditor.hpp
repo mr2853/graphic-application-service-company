@@ -28,6 +28,7 @@ public:
     void unhide();
     string getType();
     bool isInputsEmpty();
+    void deactivate();
 };
 
 

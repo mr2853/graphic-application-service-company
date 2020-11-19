@@ -21,8 +21,8 @@ public:
     void unhide();
     Date* getDate();
     void setDate(string t);
-    void displayThisAuditor(Auditor* worker);
-    Auditor* getAuditor();
+    void displayThisAudit(Audit* worker);
+    Audit* getAudit();
     bool isInputsEmpty();
 };
 

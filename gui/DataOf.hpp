@@ -5,6 +5,7 @@
 #include <FL/fl_message.H>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Window.H>
+#include <FL/Fl_Text_Buffer.H>
 #include <string>
 #include "ArrayWorkers.hpp"
 #include "WorkerTable.hpp"
@@ -13,12 +14,13 @@
 #include "../Class/Company.hpp"
 #include "../Class/Department.hpp"
 
+
 template<typename T>
 class DataOf : public Fl_Group, protected AbstractDisplay<T*>{
 protected:
     ArrayWorkers<T> *array;
     WorkerTable<T> *table;
-    
+
     int current = 0;
 
     Fl_Button *btnChange;
@@ -89,7 +91,6 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *array, void *d, c
     data->push_back(d);
 
     table = new WorkerTable<T>(x+200, y+340, 400, 280, array);
-    
     btnChange = new Fl_Button(x+220, y+300, 70, 30, "Change");
     btnAdd = new Fl_Button(x+300, y+300, 70, 30, "Add");
     btnRemove = new Fl_Button(x+380, y+300, 70, 30, "Remove");

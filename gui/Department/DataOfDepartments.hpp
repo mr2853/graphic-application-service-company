@@ -29,7 +29,7 @@ protected:
     static void goBack(Fl_Widget *widget, void *data);
     void isDepartmentsEmpty();
 public:
-    DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *array, void *mainWindow, const char *l=0);
+    DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *array, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfDepartments();
     void hideGroup();
     void unhideGroup();

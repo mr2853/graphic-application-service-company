@@ -40,6 +40,8 @@ public:
     vector<Audit*>* getCompanyAudits();
     vector<Accountant*>* getCompanyAccountants();
     void removeDepartment(int index);
+    double getMaxSalary();
+    double getMinSalary();
 
 };
 

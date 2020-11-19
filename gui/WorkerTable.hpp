@@ -23,7 +23,7 @@ protected:
     virtual void elementRemoved(int row);
 
 public:
-    WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* array);
+    WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* array, const char* l=0);
     virtual ~WorkerTable();
     WorkerTable();
     void add(T *p);
@@ -31,7 +31,7 @@ public:
 };
 
 template<typename T>
-WorkerTable<T>::WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* array) : Fl_Table_Row(x, y, w, h),
+WorkerTable<T>::WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* array, const char* l) : Fl_Table_Row(x, y, w, h, l),
     array(array)
 {
     this->end();

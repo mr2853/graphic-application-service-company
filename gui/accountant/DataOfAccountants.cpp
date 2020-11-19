@@ -8,13 +8,16 @@
 using namespace std;
 
 
-DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *array, void *d, const char *l)
- : DataOfWorker(x, y, w, h, array, d, l)
+DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *array, Company *company, void *d, const char *l)
+ : DataOfWorker(x , y ,w ,h ,array, company, d, l) 
  {
     displayAccountant = new DisplayAccountant(x+50, y, 300, 390, "");
     
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
+    if(array->numberOfElement() != 0){
+        this->setDisplay(this->getCurrent());
+    }
     this->end();
 }
 
@@ -27,6 +30,8 @@ void DataOfAccountants::setDisplay(int indeks)
         this->displayAccountant->setBodyIssuedPermit(this->getElement(indeks)->getBodyIssuedPermit().c_str());
         this->displayAccountant->setMaxAmountCompanyIncome(to_string(this->getElement(indeks)->getMaxAmountCompanyIncome()).c_str());
     }
+    this->refreshDisplaySalary();
+    this->displaySalary->setCurrent(this->getElement(this->getCurrent())->getSalary());
     updateLabel();
 }
 
