@@ -18,7 +18,8 @@
 template<typename T>
 class DataOf : public Fl_Group, protected AbstractDisplay<T*>{
 protected:
-    ArrayWorkers<T> *array = new ArrayWorkers<T>();
+    ArrayWorkers<T> *original;
+    ArrayWorkers<T> *changed;
     WorkerTable<T> *table;
 
     int current = 0;
@@ -43,7 +44,7 @@ protected:
     void updateLabel();
     void checkButtons();
 public:
-    DataOf(int x, int y, int w, int h, ArrayWorkers<T> *array, void *mainWindow, const char *l=0);
+    DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, void *mainWindow, const char *l=0);
     virtual ~DataOf();
     virtual void setDisplay(int indeks);
     void addElement(Fl_Widget *widget, void *data);
@@ -62,7 +63,7 @@ void DataOf<T>::setDisplay(int index){}
 template<typename T>
 T* DataOf<T>::getElement(int index)
 {
-    return array->getElement(index);
+    return changed->getElement(index);
 }
 
 template<typename T>
@@ -74,23 +75,24 @@ WorkerTable<T>* DataOf<T>::getTable()
 template<typename T>
 void DataOf<T>::addElement(T* a)
 {
-    array->add(a);
+    original->add(a);
+    changed->add(a);
 }
 
 template<typename T>
 int DataOf<T>::sizeOfArray()
 {
-    return array->numberOfElement();
+    return changed->numberOfElement();
 }
 
 template<typename T>
-DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *array, void *d, const char *l)
- : Fl_Group(x , y ,w ,h ,l), array(array)
+DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, void *d, const char *l)
+ : Fl_Group(x , y ,w ,h ,l), original(original), changed(changed)
  {
     vector<void*> *data = new vector<void*>();
     data->push_back(d);
 
-    table = new WorkerTable<T>(x+200, y+340, 400, 280, array);
+    table = new WorkerTable<T>(x+200, y+340, 400, 280, original, changed);
     btnChange = new Fl_Button(x+220, y+300, 70, 30, "Change");
     btnAdd = new Fl_Button(x+300, y+300, 70, 30, "Add");
     btnRemove = new Fl_Button(x+380, y+300, 70, 30, "Remove");
@@ -109,11 +111,12 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *array, void *d, c
     
     btnChange->callback(change, this);
 
-    if(array->numberOfElement() != 0){
+    if(changed->numberOfElement() != 0){
         this->setDisplay(current);
     }
     
-    array->subscribeListener(this);
+    changed->subscribeListener(this);
+    original->subscribeListener(this);
     this->isArrayEmpty();
     this->checkButtons();
 }
@@ -130,7 +133,7 @@ void DataOf<T>::updateLabel()
     stringstream sstream;
     string type = typeid(T).name();
     type = type.substr(1,type.length());
-    sstream << type <<" " << current + 1 << "/" << array->numberOfElement();
+    sstream << type <<" " << current + 1 << "/" << changed->numberOfElement();
     this->copy_label(sstream.str().c_str());
 }
 
@@ -145,7 +148,7 @@ void DataOf<T>::checkButtons()
     {
         btnPrevious->activate();
     }
-    if (current >= array->numberOfElement() - 1)
+    if (current >= changed->numberOfElement() - 1)
     {
         btnNext->deactivate();
     }
@@ -158,7 +161,7 @@ void DataOf<T>::checkButtons()
 template<typename T>
 void DataOf<T>::nextElement(Fl_Widget *widget, void *d){
     DataOf<T> *data = (DataOf<T> *) d;
-    if (data->current + 1 < data->array->numberOfElement())
+    if (data->current + 1 < data->changed->numberOfElement())
     {
         data->current++;
         data->setDisplay(data->current);
@@ -217,7 +220,7 @@ DataOf<T>::~DataOf<T>()
 template<typename T>
 void DataOf<T>::isArrayEmpty()
 {
-    if(array->numberOfElement() == 0)
+    if(changed->numberOfElement() == 0)
     {
         btnChange->deactivate();
         btnRemove->deactivate();
@@ -286,13 +289,24 @@ void DataOf<T>::removeElem(Fl_Widget *widget, void *data)
     }
     for (int i = endRow; i >= startRow; i--)
     {
-        e->array->removeRow(i);
+        e->changed->removeRow(i);
+        int counter = 0;
+        for(int j = 0; j < e->original->numberOfElement(); j++)
+        {
+            if(!e->original->getElement(j)->isDeleted()){
+                if(counter == i)
+                {
+                    e->original->setDeleted(counter);
+                }
+                counter++;
+            }
+        }
     }
-    if(e->array->numberOfElement() == 0){
+    if(e->changed->numberOfElement() == 0){
         e->setDisplay(0);
     }
     else{
-        e->setDisplay(e->array->numberOfElement()-1);
+        e->setDisplay(e->changed->numberOfElement()-1);
     }
     e->updateLabel();
     e->isArrayEmpty();

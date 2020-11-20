@@ -28,12 +28,24 @@ public:
     ArrayWorkers(vector<T*> *array);
     virtual ~ArrayWorkers();
     void add(T *p);
+    void setDeleted(int index);
+    bool isDeleted(int index);
     T* getElement(int in);
 };
 template<typename T>
 ArrayWorkers<T>::ArrayWorkers() : AbstractTableModel<T*>()
 {
     array = new vector<T*>();
+}
+template<typename T>
+void ArrayWorkers<T>::setDeleted(int index)
+{
+    array->at(index)->setDeleted();
+}
+template<typename T>
+bool ArrayWorkers<T>::isDeleted(int index)
+{
+    return array->at(index)->isDeleted();
 }
 
 template<typename T>

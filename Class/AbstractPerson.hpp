@@ -13,6 +13,7 @@ private:
     string lastname;
     Date *dateBirth;
     const string type = "AbstractPerson";
+    bool deleted = false;
 
 public:
     AbstractPerson();
@@ -26,6 +27,8 @@ public:
 	virtual void setLastname(string lastname);
     virtual Date* getDateBirth();
 	virtual void setDateBirth(Date *dateBirth);
+    virtual bool isDeleted();
+    virtual void setDeleted();
 };
 
 #endif

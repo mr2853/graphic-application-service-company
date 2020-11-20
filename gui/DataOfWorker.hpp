@@ -23,13 +23,13 @@ protected:
     DataOfDepartments* dataOfDepartments;
     void refreshDisplaySalary();
 public:
-    DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *array, Company *company, void *mainWindow, const char *l=0);
+    DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfWorker();
 };
 
 template<typename T>
-DataOfWorker<T>::DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *array, Company *company, void *d, const char *l) 
-: DataOf<T>(x, y, w, h, array, d, l), dataOfDepartments((DataOfDepartments*)d), company(company)
+DataOfWorker<T>::DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, Company *company, void *d, const char *l) 
+: DataOf<T>(x, y, w, h, original, changed, d, l), dataOfDepartments((DataOfDepartments*)d), company(company)
 {
     displaySalary = new DisplaySalary(x+300, y+50, 300, 150);
     vector<void*> *v = new vector<void*>();
@@ -40,8 +40,8 @@ DataOfWorker<T>::DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *array
 template<typename T>
 void DataOfWorker<T>::refreshDisplaySalary()
 {
-    this->displaySalary->setMin1(this->company->getDepartment(this->dataOfDepartments->getCurrent())->getMinSalary());
-    this->displaySalary->setMax1(this->company->getDepartment(this->dataOfDepartments->getCurrent())->getMaxSalary());
+    this->displaySalary->setMin1(this->dataOfDepartments->getElement(this->dataOfDepartments->getCurrent())->getMinSalary());
+    this->displaySalary->setMax1(this->dataOfDepartments->getElement(this->dataOfDepartments->getCurrent())->getMaxSalary());
     this->displaySalary->setMin2(this->company->getMinSalary());
     this->displaySalary->setMax2(this->company->getMaxSalary());
     this->displaySalary->refresh();

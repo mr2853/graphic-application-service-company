@@ -10,6 +10,7 @@ class Audit
 private:
     Auditor *auditor;
     Date *date;
+    bool deleted = false;
 public:
     Audit();
     ~Audit();
@@ -22,6 +23,8 @@ public:
 	void setDate(Date *date);
     void write(ostream &output);
     static vector<Audit *> readArray(string in);
+    virtual bool isDeleted();
+    virtual void setDeleted();
     //static vector<Audit*> readData(string in);
 };
 

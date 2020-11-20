@@ -23,7 +23,7 @@ int main()
     ArrayCompanies *changed = new ArrayCompanies(Company::readData1("podaci.txt"));
 
     Fl_Window *window = new Fl_Window(900, 700, "Projekat");
-    DataOfCompanies *dataOfCompanies = new DataOfCompanies(50, 50, 900, 700, original, window, "");
+    DataOfCompanies *dataOfCompanies = new DataOfCompanies(50, 50, 900, 700, original, changed, window, "");
     window->resizable(dataOfCompanies);
     window->end();
     window->show(); 

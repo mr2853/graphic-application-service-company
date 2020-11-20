@@ -12,8 +12,16 @@ void AbstractPerson::setName(string name) {
 	this->name = name;
 }
 
-string AbstractPerson::AbstractPerson::getLastname() {
+string AbstractPerson::getLastname() {
 	return lastname;
+}
+
+bool AbstractPerson::isDeleted() {
+	return deleted;
+}
+
+void AbstractPerson::setDeleted() {
+	deleted = true;
 }
 
 void AbstractPerson::setLastname(string lastname) {

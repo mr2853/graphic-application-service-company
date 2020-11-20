@@ -8,14 +8,14 @@
 using namespace std;
 
 
-DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *array, Company *company, void *d, const char *l)
- : DataOfWorker(x , y ,w ,h ,array, company, d, l) 
+DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *original, ArrayWorkers<Accountant> *changed, Company *company, void *d, const char *l)
+ : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
     displayAccountant = new DisplayAccountant(x+50, y, 300, 390, "");
     
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
-    if(array->numberOfElement() != 0){
+    if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
     this->end();
@@ -30,8 +30,8 @@ void DataOfAccountants::setDisplay(int indeks)
         this->displayAccountant->setBodyIssuedPermit(this->getElement(indeks)->getBodyIssuedPermit().c_str());
         this->displayAccountant->setMaxAmountCompanyIncome(to_string(this->getElement(indeks)->getMaxAmountCompanyIncome()).c_str());
     }
-    this->refreshDisplaySalary();
     this->displaySalary->setCurrent(this->getElement(this->getCurrent())->getSalary());
+    this->refreshDisplaySalary();
     updateLabel();
 }
 
@@ -55,7 +55,7 @@ void DataOfAccountants::add(Fl_Widget *widget, void *data)
     }
                     
     d->table->add(novaOsoba);
-    d->setDisplay(d->array->numberOfElement()-1);
+    d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
     d->checkButtons();
@@ -80,7 +80,7 @@ void DataOfAccountants::change(Fl_Widget *widget, void *d)
     {
         return;
     }
-    Accountant *a = data->array->getRow(data->getCurrent());
+    Accountant *a = data->changed->getRow(data->getCurrent());
     try{
         a->setName(data->displayAccountant->getValueName());
         a->setLastname(data->displayAccountant->getValueLastName());
@@ -88,11 +88,33 @@ void DataOfAccountants::change(Fl_Widget *widget, void *d)
         a->setDateBirth(data->displayAccountant->getValueDateBirth());
         a->setBodyIssuedPermit(data->displayAccountant->getBodyIssuedPermit());
         a->setMaxAmountCompanyIncome(data->displayAccountant->getMaxAmountCompanyIncome());
-        data->table->redraw();
     }
     catch(WrongDate e)
     {
         fl_message(e.what("Date birth"));
         return;
     }
+
+    
+    int counter = 0;
+    for(int i = 0; i < data->original->numberOfElement(); i++)
+    {
+        if(!data->original->getElement(i)->isDeleted())
+        {
+            if(counter == data->getCurrent())
+            {
+                Accountant *a1 = data->original->getRow(i);
+                a1->setName(data->displayAccountant->getValueName());
+                a1->setLastname(data->displayAccountant->getValueLastName());
+                a1->setSalary(data->displayAccountant->getValueSalary());
+                a1->setDateBirth(data->displayAccountant->getValueDateBirth());
+                a1->setBodyIssuedPermit(data->displayAccountant->getBodyIssuedPermit());
+                a1->setMaxAmountCompanyIncome(data->displayAccountant->getMaxAmountCompanyIncome());
+                break;
+            }
+            counter++;
+        }
+    }
+
+    data->table->redraw();
 }

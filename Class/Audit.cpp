@@ -19,6 +19,12 @@ Auditor* Audit::getAuditor() {
 void Audit::setAuditor(Auditor *auditor) {
 	this->auditor = auditor;
 }
+bool Audit::isDeleted() {
+	return deleted;
+}
+void Audit::setDeleted() {
+	deleted = true;
+}
 Date* Audit::getDate() {
 	return date;
 }

@@ -6,14 +6,14 @@
 
 using namespace std;
 
-DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor> *array, Company *company, void *d, const char *l)
- : DataOfWorker(x , y ,w ,h ,array, company, d, l) 
+DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor> *original, ArrayWorkers<Auditor> *changed, Company *company, void *d, const char *l)
+ : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
     displayAuditor = new DisplayAuditor(x+50, y, 300, 390, "");
     
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
-    if(array->numberOfElement() != 0){
+    if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
     this->end();
@@ -36,8 +36,8 @@ void DataOfAuditors::setDisplay(int indeks)
         }
         displayAuditor->setDatesVisiting(t);
     }
-    this->refreshDisplaySalary();
     this->displaySalary->setCurrent(this->getElement(this->getCurrent())->getSalary());
+    this->refreshDisplaySalary();
     updateLabel();
 }
 
@@ -70,7 +70,7 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
     }
                     
     auditorTable->add(novaOsoba);
-    d->setDisplay(d->array->numberOfElement()-1);
+    d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
     d->checkButtons();
@@ -88,14 +88,13 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
     {
         return;
     }
-    Auditor *a = data->array->getRow(data->getCurrent());
+    Auditor *a = data->changed->getRow(data->getCurrent());
     try{
         a->setName(data->displayAuditor->getValueName());
         a->setLastname(data->displayAuditor->getValueLastName());
         a->setSalary(data->displayAuditor->getValueSalary());
         a->setDateBirth(data->displayAuditor->getValueDateBirth());
         a->setDatesVisiting(data->displayAuditor->getDatesVisiting());
-        data->table->redraw();
     }
     catch(WrongDate e)
     {
@@ -107,4 +106,25 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
         fl_message(e.what("Dates visiting"));
         return;
     }
+
+    int counter = 0;
+    for(int i = 0; i < data->original->numberOfElement(); i++)
+    {
+        if(!data->original->getElement(i)->isDeleted())
+        {
+            if(counter == data->getCurrent())
+            {
+                Auditor *a1 = data->original->getRow(i);
+                a1->setName(data->displayAuditor->getValueName());
+                a1->setLastname(data->displayAuditor->getValueLastName());
+                a1->setSalary(data->displayAuditor->getValueSalary());
+                a1->setDateBirth(data->displayAuditor->getValueDateBirth());
+                a1->setDatesVisiting(data->displayAuditor->getDatesVisiting());
+                break;
+            }
+            counter++;
+        }
+    }
+
+    data->table->redraw();
 }

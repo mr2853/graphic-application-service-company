@@ -30,6 +30,12 @@ Date::Date(string in)
         this->minute = 0;
     }
 }
+void Date::setDeleted() {
+	deleted = true;
+}
+bool Date::isDeleted() {
+	return deleted;
+}
 Date::Date(int hour, int minute, int day, int month, int year)
     : hour(hour), minute(minute), day(day), month(month), year(year){}
 

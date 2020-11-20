@@ -22,7 +22,7 @@
 class DepartmentTable : public WorkerTable<Department>
 {
 public:
-    DepartmentTable(int x, int y, int w, int h, ArrayDepartments *departments, const char* l=0);
+    DepartmentTable(int x, int y, int w, int h, ArrayDepartments *original, ArrayDepartments *changed, const char* l=0);
     virtual ~DepartmentTable();
 };
 

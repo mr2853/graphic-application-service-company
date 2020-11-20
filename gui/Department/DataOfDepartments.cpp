@@ -12,8 +12,8 @@
 
 using namespace std;
 
-DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *array, Company *company, void *mainWindow, const char *l)
- : DataOf(x , y ,w ,h , array, mainWindow, l){
+DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *original, ArrayDepartments *changed, void *mainWindow, const char *l)
+ : DataOf(x , y ,w ,h , original, changed, mainWindow, l){
     
     displayDepartment = new DisplayDepartment(x+50, y, 200, 300, "");
 
@@ -28,14 +28,13 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartment
     // DataOfCompanies *main = (DataOfCompanies*)mainWindow;
     v->push_back(mainWindow);
     v->push_back(this);
-    v->push_back(company);
     btnDetails->callback(details, v);
     btnGoBack->callback(DataOfDepartments::goBack,v);
 
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
     
-    if(array->numberOfElement() != 0){
+    if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
     this->end();
@@ -43,8 +42,8 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartment
 void DataOfDepartments::goBack(Fl_Widget *widget, void *d)
 {
     vector<void*> *v = (vector<void*>*)d;
-    DataOfDepartments *data = (DataOfDepartments*)v->at(1);
     DataOfCompanies *parent = (DataOfCompanies*)v->at(0);
+    DataOfDepartments *data = (DataOfDepartments*)v->at(1);
     
     data->hideGroup();
     data->hide();
@@ -107,9 +106,10 @@ void DataOfDepartments::change(Fl_Widget *widget, void *d)
     {
         return;
     }
-    Department *dep = data->array->getRow(data->getCurrent());
+    int current = data->getCurrent();
+    Department *dep = data->changed->getRow(current);
     dep->setName(data->displayDepartment->getName());
-    string type = data->array->getElement(data->getCurrent())->getHeadOfDepartment()->getType();
+    string type = data->changed->getElement(current)->getHeadOfDepartment()->getType();
     AbstractWorker* head;
     try{
         head = data->displayDepartment->getNewHeadOfDepartment();
@@ -130,6 +130,34 @@ void DataOfDepartments::change(Fl_Widget *widget, void *d)
     else if(type == "Commercialist")
     {
         dep->setHeadOfDepartment(new Commercialist(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+    }
+
+    int counter = 0;
+    for(int i = 0; i < data->original->numberOfElement(); i++)
+    {
+        if(!data->original->getElement(i)->isDeleted())
+        {
+            if(counter == current)
+            {
+                Department *dep1 = data->original->getElement(i);
+                dep1->setName(data->displayDepartment->getName());
+
+                if(type == "Accountant")
+                {
+                    dep1->setHeadOfDepartment(new Accountant(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+                }
+                else if(type == "Auditor")
+                {
+                    dep1->setHeadOfDepartment(new Auditor(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+                }
+                else if(type == "Commercialist")
+                {
+                    dep1->setHeadOfDepartment(new Commercialist(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+                }
+                break;
+            }
+            counter++;
+        }
     }
     data->table->redraw();
     data->updateChDepart();
@@ -165,25 +193,27 @@ void DataOfDepartments::details(Fl_Widget *widget, void *d)
     vector<void*> *v = (vector<void*>*)d;
     DataOfCompanies *mainWindow = (DataOfCompanies*)v->at(0);
     DataOfDepartments *data = (DataOfDepartments*)v->at(1);
-    Company *company = (Company*)v->at(2);
     int intDep = data->chDepartment->value();
     int workerType = data->chWorkerType->value();
-    Department *department = data->array->getElement(intDep);
+    Department *department = data->changed->getElement(intDep);
+    Department *department1 = data->original->getElement(intDep);
+    Company* company = mainWindow->getElement(mainWindow->getCurrent());
+
     if(workerType == 0){
         DataOfAccountants *dataOfAccountants = new DataOfAccountants(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayAccountants(department->getAccountants()), company, data);
+                        data->y(), data->w(), data->h(), new ArrayAccountants(department1->getAccountants()), new ArrayAccountants(department->getAccountants()), company, data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfAccountants);
     }
     else if(workerType == 1){
         DataOfAuditors *dataOfAuditors = new DataOfAuditors(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayAuditors(department->getAuditors()), company, data);
+                        data->y(), data->w(), data->h(), new ArrayAuditors(department1->getAuditors()), new ArrayAuditors(department->getAuditors()), company, data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfAuditors);
     }
     else if(workerType == 2){
         DataOfCommercialists *dataOfCommercialists = new DataOfCommercialists(data->x(),
-                        data->y(), data->w(), data->h(), new ArrayCommercialists(department->getCommercialists()), company, data);
+                        data->y(), data->w(), data->h(), new ArrayCommercialists(department1->getCommercialists()), new ArrayCommercialists(department->getCommercialists()), company, data);
         data->hideGroup();
         mainWindow->Fl_Group::add(dataOfCommercialists);
     }
@@ -210,7 +240,7 @@ void DataOfDepartments::add(Fl_Widget *widget, void *data)
     Department *department = new Department(worker, d->displayDepartment->getName());
     d->table->add(department);
     d->updateChDepart();
-    d->setDisplay(d->array->numberOfElement()-1);
+    d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isDepartmentsEmpty();
     d->checkButtons();

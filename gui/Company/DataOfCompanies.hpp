@@ -18,7 +18,6 @@ protected:
     DisplayCompany *display;
     Fl_Button *btnDetails;
     Fl_Button *btnAudits;
-    //Fl_Button *btnWorkers;
 
     Fl_Choice *chCompany;
 
@@ -32,7 +31,7 @@ protected:
     // static void workers(Fl_Widget *widget, void *data);
     void isCompaniesEmpty();
 public:
-    DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *array, void *data, const char *l=0);
+    DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *original, ArrayCompanies *changed, void *data, const char *l=0);
     virtual ~DataOfCompanies();
     void hideGroup();
     void unhideGroup();

@@ -181,6 +181,12 @@ vector<Company*>* Company::readData1(string path)
     return ret;
 }
 
+bool Company::isDeleted() {
+	return deleted;
+}
+void Company::setDeleted() {
+	deleted = true;
+}
 string Company::toString() const
 {
     string t = "Name:" + name + ", Tax Identification Number:" + taxIdentificationNumber +

@@ -15,8 +15,8 @@
 
 using namespace std;
 
-DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *array, void *data, const char *l)
- : DataOf(x , y ,w ,h , array, data, l){
+DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *original, ArrayCompanies *changed, void *data, const char *l)
+ : DataOf(x , y ,w ,h , original, changed, data, l){
     
     display = new DisplayCompany(x+50, y, 200, 300, "");
 
@@ -25,6 +25,10 @@ DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *arr
     btnDetails = new Fl_Button(x+450, y+50, 150, 50, "Data of Company");
     btnAudits = new Fl_Button(x+450, y+110, 150, 50, "Data of Audits");
     // btnWorkers = new Fl_Button(x+450, y+160, 150, 50, "Data of Workers");
+
+    // vector<void*>*v = new vector<void*>();
+    // v->push_back(this);
+    // v->push_back(changed);
 
     btnDetails->callback(details, this);
     btnChange->callback(change, this);
@@ -36,7 +40,7 @@ DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *arr
     // this->btnGoBack->deactivate();
     // this->btnGoBack->hide();
     
-    if(array->numberOfElement() != 0){
+    if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
     this->end();
@@ -88,12 +92,28 @@ void DataOfCompanies::change(Fl_Widget *widget, void *d)
     {
         return;
     }
-    Company *dep = data->array->getRow(data->getCurrent());
+    Company *dep = data->changed->getRow(data->getCurrent());
 
     dep->setName(data->display->getName());
     dep->setTaxIdentificationNumber(data->display->getTaxIdentificationNumber());
     dep->setIdentificationNumber(data->display->getIdentificationNumber());
 
+    int counter = 0;
+    for(int i = 0; i < data->original->numberOfElement(); i++)
+    {
+        if(!data->original->getElement(i)->isDeleted())
+        {
+            if(counter == data->getCurrent())
+            {
+                Company *dep1 = data->original->getRow(i);
+                dep1->setName(data->display->getName());
+                dep1->setTaxIdentificationNumber(data->display->getTaxIdentificationNumber());
+                dep1->setIdentificationNumber(data->display->getIdentificationNumber());
+                break;
+            }
+            counter++;
+        }
+    }
     data->table->redraw();
     data->updateChCompany();
 }
@@ -127,10 +147,11 @@ void DataOfCompanies::details(Fl_Widget *widget, void *d)
 {
     DataOfCompanies *data = (DataOfCompanies*)d;
     int intDep = data->chCompany->value();
-    Company *company = data->array->getElement(intDep);
+    Company *company = data->changed->getElement(intDep);
+    Company *company1 = data->original->getElement(intDep);
     
     DataOfDepartments *dataOfDepartments = new DataOfDepartments(data->x(),
-                    data->y(), data->w(), data->h(), new ArrayDepartments(company->getDepartments()), company, data);
+                    data->y(), data->w(), data->h(), new ArrayDepartments(company1->getDepartments()), new ArrayDepartments(company->getDepartments()), data);
 
     data->hideGroup();
     data->Fl_Group::add(dataOfDepartments);
@@ -139,10 +160,12 @@ void DataOfCompanies::audits(Fl_Widget *widget, void *d)
 {
     DataOfCompanies *data = (DataOfCompanies*)d;
     int intDep = data->chCompany->value();
-    Company *company = data->array->getElement(intDep);
+    Company *company = data->changed->getElement(intDep);
+    Company *company1 = data->original->getElement(intDep);
     
     DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(), 
-        new ArrayAudits(company->getCompanyAudits()), new ArrayAuditors(company->getCompanyAuditors()), data);
+        new ArrayAudits(company1->getCompanyAudits()), new ArrayAudits(company->getCompanyAudits()),
+         new ArrayAuditors(company->getCompanyAuditors()), data);
 
     data->hideGroup();
     data->Fl_Group::add(dataOfAudits);
@@ -161,7 +184,7 @@ void DataOfCompanies::add(Fl_Widget *widget, void *data)
     Company *company = new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber());
     d->table->add(company);
     d->updateChCompany();
-    d->setDisplay(d->array->numberOfElement()-1);
+    d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isCompaniesEmpty();
     d->checkButtons();

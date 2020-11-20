@@ -14,6 +14,7 @@ private:
     int day;
     int month;
     int year;
+    bool deleted = false;
 
 public:
     Date();
@@ -32,6 +33,8 @@ public:
 	void setMonth(int month);
 	int getYear();
 	void setYear(int year);
+    virtual bool isDeleted();
+    virtual void setDeleted();
 
     string getDate();
     string getDateWithTime();

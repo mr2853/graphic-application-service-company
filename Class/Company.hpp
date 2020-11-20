@@ -15,6 +15,7 @@ private:
     string taxIdentificationNumber;
     string identificationNumber;
     vector<Department*> *departments;
+    bool deleted = false;
 
 public:
     Company();
@@ -24,6 +25,8 @@ public:
     
     string getName();
 	void setName(string name);
+    virtual bool isDeleted();
+    virtual void setDeleted();
 	string getTaxIdentificationNumber();
 	void setTaxIdentificationNumber(string taxIdentificationNumber);
 	string getIdentificationNumber();

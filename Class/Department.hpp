@@ -20,6 +20,7 @@ private:
 
     AbstractWorker* headOfDepartment;
     string name;
+    bool deleted = false;
     vector<Audit*> audits;
 
 public:
@@ -31,6 +32,8 @@ public:
     vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits);
     //static vector<Department*> readData1(string in);
 
+    virtual bool isDeleted();
+    virtual void setDeleted();
     vector<AbstractWorker*> getWorker();
     void setWorker(vector<AbstractWorker*> worker);
     AbstractWorker* getHeadOfDepartment();

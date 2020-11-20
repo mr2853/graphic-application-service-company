@@ -28,7 +28,7 @@ protected:
     void setDisplay(int indeks);
     void isAuditsEmpty();
 public:
-    DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, ArrayAuditors *auditors, void *mainWindow, const char *l=0);
+    DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, ArrayAuditors *auditors, void *mainWindow, const char *l=0);
     virtual ~DataOfAudits();
     void hideGroup();
     void unhideGroup();

@@ -12,8 +12,8 @@
 
 using namespace std;
 
-DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, ArrayAuditors *auditors, void *mainWindow, const char *l)
- : DataOf(x, y, w, h, array, mainWindow, l), auditors(auditors)
+DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, ArrayAuditors *auditors, void *mainWindow, const char *l)
+ : DataOf(x, y, w, h, original, changed, mainWindow, l), auditors(auditors)
  {
     chAuditor = new Fl_Choice(x+50, y, 100, 50, "");
     displayAudit = new DisplayAudit(x+50, y+60, 200, 300, "");
@@ -28,22 +28,22 @@ DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *array, Array
     btnAdd->callback(add, this);
 
     this->insertDataInChAuditor();
-    this->chAuditor->value(0);
     chAuditor->callback(display, this);
-    displayAudit->displayThisAudit(array->getElement(chAuditor->value()));
+    displayAudit->displayThisAudit(changed->getElement(chAuditor->value()));
     this->end();
 }
 
 void DataOfAudits::display(Fl_Widget *widget, void *d)
 {
     DataOfAudits *data = (DataOfAudits*)d;
-    data->displayAudit->displayThisAudit(data->array->getElement(data->chAuditor->value()));
+    data->displayAudit->displayThisAudit(data->changed->getElement(data->chAuditor->value()));
 }
 
 void DataOfAudits::insertDataInChAuditor()
 {
     string aud = "";
     chAuditor->clear();
+    
     for(int i = 0; i < auditors->numberOfElement(); i++)
     {
         string s = to_string(i+1).append(".");
@@ -97,11 +97,27 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
     {
         return;
     }
-    Audit *dep = data->array->getRow(data->getCurrent());
+    Audit *dep = data->changed->getRow(data->getCurrent());
     dep->setDate(data->displayAudit->getDate());
-    string type = data->array->getElement(data->getCurrent())->getAuditor()->getType();
+    string type = data->changed->getElement(data->getCurrent())->getAuditor()->getType();
     Auditor* head = data->auditors->getElement(data->chAuditor->value());
     dep->setAuditor(head);
+
+    int counter = 0;
+    for(int i = 0; i < data->original->numberOfElement(); i++)
+    {
+        if(!data->original->getElement(i)->isDeleted())
+        {
+            if(counter == data->getCurrent())
+            {
+                Audit *a1 = data->original->getRow(i);
+                a1->setDate(data->displayAudit->getDate());
+                a1->setAuditor(head);
+                break;
+            }
+            counter++;
+        }
+    }
     data->table->redraw();
 }
 

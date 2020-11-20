@@ -22,7 +22,7 @@
 class AuditTable : public WorkerTable<Audit>
 {
 public:
-    AuditTable(int x, int y, int w, int h, ArrayAudits *array, const char* l=0);
+    AuditTable(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, const char* l=0);
     virtual ~AuditTable();
 };
 

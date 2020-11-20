@@ -182,10 +182,16 @@ vector<Auditor*>* Department::getAuditors() {
     return &auditors;
 }
 
+void Department::setDeleted() {
+	deleted = true;
+}
 void Department::setAuditors(vector<Auditor*> auditors) {
     this->auditors = auditors;
 }
 
+bool Department::isDeleted() {
+	return deleted;
+}
 vector<Accountant*>* Department::getAccountants() {
     return &accountants;
 }

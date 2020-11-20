@@ -9,14 +9,16 @@
 
 class DisplaySalary : protected Fl_Group{
 protected:
-    double min1 = 0;
-    double max1 = 0;
-    double current = 0;
-    double min2 = 0;
-    double max2 = 0;
-    Fl_Box *boxDep;
+    double min1 = -1;
+    double max1 = -1;
+    double current = -1;
+    double min2 = -1;
+    double max2 = -1;
+    Fl_Box *boxDep1;
+    Fl_Box *boxDep2;
     
-    Fl_Box *boxComp;
+    Fl_Box *boxComp1;
+    Fl_Box *boxComp2;
 public:
     DisplaySalary(int x, int y, int w, int h, const char* l=0);
     virtual ~DisplaySalary();
