@@ -70,7 +70,7 @@ double Department::getMinSalary()
     }
     return min;
 }
-Department::Department(string &in)
+Department::Department(string &in, int changed)
 {
     string twoDots = ":";
     string comma = ",";
@@ -80,7 +80,9 @@ Department::Department(string &in)
     index = in.find(comma);
     string type = in.substr(0, index);
     if(type == "true")
-        return;
+    {
+        this->setDeleted();
+    }
 
     index = in.find(twoDots);
     in.erase(0,index+1);
@@ -91,12 +93,12 @@ Department::Department(string &in)
     in.erase(0,index+1);
     index = in.find("],arrayOfWorker:<");
     string text = in.substr(0, index);
+    Accountant* headOfDepartment = new Accountant(text, changed);
 
-    AbstractWorker* headOfDepartment = new Accountant(text);
     in.erase(0,index+17);
-    index = in.find("audits:<[");
+    index = in.find("audits:<");
     string workers = in.substr(0, index);
-    in.erase(0,index+9);
+    in.erase(0,index+8);
     
     vector<string> textArray;
     string type1;
@@ -108,7 +110,11 @@ Department::Department(string &in)
             workers.erase(0, index + 2);
         }
         else{
-            index = workers.find("]>");
+            index = workers.find(">]");
+            if(index == string::npos)
+            {
+                index = workers.find("]");
+            }
             textArray.push_back(workers.substr(0, index));
             break;
         }
@@ -118,19 +124,31 @@ Department::Department(string &in)
     {
         index = s.find("[");
         type1 = s.substr(0, index);
+        if(changed == 1)
+        {
+            string someText = s;
+            index = someText.find(":");
+            someText.erase(0,index+1);
+            index = someText.find(",");
+            string type = someText.substr(0, index);
+            if(type == "true")
+            {
+                continue;
+            }
+        }
         if(type1 == "Commercialist"){
-            commercialists.push_back(new Commercialist(s));
+            commercialists.push_back(new Commercialist(s, changed));
         }
         else if(type1 == "Auditor"){
-            auditors.push_back(new Auditor(s));
+            auditors.push_back(new Auditor(s, changed));
         }
         else if(type1 == "Accountant"){
-            accountants.push_back(new Accountant(s));
+            accountants.push_back(new Accountant(s, changed));
         }
     }
     
     vector<Audit*> audits = vector<Audit*>();
-    audits = Audit::readArray(in);
+    audits = Audit::readArray(in, changed);
     
     this->setName(name);
     this->setHeadOfDepartment(headOfDepartment);
@@ -154,7 +172,15 @@ AbstractWorker* Department::getHeadOfDepartment() {
 void Department::setHeadOfDepartment(AbstractWorker *headOfDepartment) {
     this->headOfDepartment = headOfDepartment;
 }
-
+// void Department::setHeadOfDepartment(Auditor *headOfDepartment) {
+//     this->headOfDepartment = headOfDepartment;
+// }
+// void Department::setHeadOfDepartment(Commercialist *headOfDepartment) {
+//     this->headOfDepartment = headOfDepartment;
+// }
+// void Department::setHeadOfDepartment(Accountant *headOfDepartment) {
+//     this->headOfDepartment = headOfDepartment;
+// }
 string Department::getName() {
     return name;
 }
@@ -200,28 +226,7 @@ void Department::setAccountants(vector<Accountant*> accountants) {
     this->accountants = accountants;
 }
 
-/*vector<Department*> Department::readData1(string in)
-{
-    vector<Department*> departments;
-    string twoDots = ":";
-    string comma = ",";
-
-    while(in.find("Department[deleted:"))
-    {
-        int index = in.find(twoDots);
-        in.erase(0,index);
-        index = in.find(comma);
-        string deleted = in.substr(0, index);
-        if(deleted == "true")
-            continue;
-        
-        Department *d = new Department();
-        
-    }
-
-    return departments;
-}*/
-vector<Department*>* Department::readArray(string in)
+vector<Department*>* Department::readArray(string in, int changed)
 {
     vector<Department*>* array = new vector<Department*>();
     int index;
@@ -229,8 +234,8 @@ vector<Department*>* Department::readArray(string in)
     string type1;
     while(true)
     {
-        if(in.find("]#Department") != std::string::npos){
-            index = in.find("]#Department");
+        if(in.find("]$Department") != std::string::npos){
+            index = in.find("]$Department");
             text.push_back(in.substr(0, index));
             in.erase(0, index + 2);
         }
@@ -247,8 +252,74 @@ vector<Department*>* Department::readArray(string in)
     {
         index = s.find("[");
         type1 = s.substr(0, index);
-        Department *d = new Department(s);
+        if(changed == 1)
+        {
+            string someText = s;
+            index = someText.find(":");
+            someText.erase(0,index+1);
+            index = someText.find(",");
+            string type = someText.substr(0, index);
+            if(type == "true")
+            {
+                continue;
+            }
+        }
+        Department *d = new Department(s, changed);
         array->push_back(d);
     }
     return array;
 };
+void Department::write(ostream &output, Department *d)
+{
+    output << "Department[deleted:";
+    if(d->deleted)
+    {
+        output << "true";
+    }
+    else
+    {
+        output << "false";
+    }
+    output << ",name:" << d->name << ",headOfDepartment:";
+    // output << d->headOfDepartment->getType();
+    // cout << d->headOfDepartment->getType() << endl;
+    d->headOfDepartment->write(output, d->headOfDepartment);
+    // output << "]";
+    output << ",arrayOfWorker:<";
+
+    for(int i = 0; i < d->accountants.size(); i++)
+    {
+        d->accountants.at(i)->write(output, d->accountants.at(i));
+        if(i < d->accountants.size()-1 || d->auditors.size() != 0 || d->commercialists.size() != 0)
+        {
+            output << "#";
+        }
+    }
+    for(int i = 0; i < d->auditors.size(); i++)
+    {
+        d->auditors.at(i)->write(output, d->auditors.at(i));
+        if(i < d->auditors.size()-1 || d->commercialists.size() != 0)
+        {
+            output << "#";
+        }
+    }
+    for(int i = 0; i < d->commercialists.size(); i++)
+    {
+        d->commercialists.at(i)->write(output, d->commercialists.at(i));
+        if(i < d->commercialists.size()-1)
+        {
+            output << "#";
+        }
+    }
+    output << ">,audits:<";
+    for(int i = 0; i < d->audits.size(); i++)
+    {
+        d->audits.at(i)->write(output, d->audits.at(i));
+        if(i < d->audits.size()-1)
+        {
+            output << "$";
+        }
+    }
+
+    output << ">]";
+}

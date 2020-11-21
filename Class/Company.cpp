@@ -118,7 +118,7 @@ int Company::getDepartmentsSize()
     return departments->size();
 }
 
-vector<Company*>* Company::readData1(string path)
+vector<Company*>* Company::readData1(string path, int changed)
 {
     vector<Company*>* ret = new vector<Company*>();
     ifstream in(path);
@@ -131,17 +131,21 @@ vector<Company*>* Company::readData1(string path)
     string comma = ",";
     string lessThan = "<";
     string twoDots = ":";
-    while(path.find("$Company[") != string::npos)
+    while(path.find("Company[") != string::npos)
     {
         int index = path.find(twoDots);
         path.erase(0,index+1);
         index = path.find(comma);
         string deleted = path.substr(0, index);
+        Company *company = new Company();
         if(deleted == "true")
         {
-            continue;
+            if(changed == 1)
+            {
+                continue;
+            }
+            company->setDeleted();
         }
-        Company *company = new Company();
 
         index = path.find(twoDots);
         path.erase(0,index+1);
@@ -163,12 +167,13 @@ vector<Company*>* Company::readData1(string path)
         if(path.find("$Company[") != string::npos)
         {
             index = path.find("$Company[");
-            departments = Department::readArray(path.substr(0, index));
+            departments = Department::readArray(path.substr(0, index), changed);
             path.erase(0,index);
         }
         else
         {
-            departments = Department::readArray(path); 
+            departments = Department::readArray(path, changed);
+            path.erase(0,index);
             path.erase(0, path.length());
         }
         company->setName(name);
@@ -249,4 +254,28 @@ void Company::removeDepartment(int index)
 vector<Department*>* Company::getDepartments()
 {
     return departments;
+}
+void Company::write(ostream &output, Company *d)
+{
+    output << "Company[deleted:"; 
+    if(d->deleted)
+    {
+        output << "true";
+    }
+    else
+    {
+        output << "false";
+    }
+
+    output << ",name:" << d->name << ",taxIdentificationNumber:" << d->taxIdentificationNumber;
+    output << ",identificationNumber:" << d->identificationNumber << ",departments:<";
+    for(int i = 0; i < d->departments->size(); i++)
+    {
+        d->departments->at(i)->write(output, d->departments->at(i));
+        if(i < d->departments->size()-1)
+        {
+            output << "$";
+        }
+    }
+    output << ">]";
 }

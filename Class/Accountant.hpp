@@ -15,7 +15,7 @@ private:
 
 public:
     Accountant();
-    Accountant(string in);
+    Accountant(string in, int changed);
     Accountant(string name, string lastname, Date *dateBirth, double salary);
     Accountant(string name, string lastname, Date *dateBirth, double salary, string bodyIssuedPermit, double maxAmountCompanyIncome);
     ~Accountant();
@@ -25,6 +25,7 @@ public:
 	double getMaxAmountCompanyIncome();
 	void setMaxAmountCompanyIncome(double maxAmountCompanyIncome);
     virtual string getType();
+    virtual void write(ostream &output, void *d);
 };
 
 #endif

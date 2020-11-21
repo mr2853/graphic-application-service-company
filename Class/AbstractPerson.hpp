@@ -29,6 +29,7 @@ public:
 	virtual void setDateBirth(Date *dateBirth);
     virtual bool isDeleted();
     virtual void setDeleted();
+    virtual void write(ostream &output, void *d);
 };
 
 #endif

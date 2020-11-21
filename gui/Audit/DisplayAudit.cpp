@@ -19,6 +19,11 @@ void DisplayAudit::displayThisAudit(Audit* worker)
     date->value(worker->getDate()->getDateWithTime().c_str());
 }
 
+void DisplayAudit::displayThisAuditor(Auditor* worker)
+{
+    displayAuditor->displayWorker(worker);
+}
+
 bool DisplayAudit::isInputsEmpty()
 {
     string a = date->value();

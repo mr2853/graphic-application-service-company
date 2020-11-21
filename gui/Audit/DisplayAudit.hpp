@@ -22,6 +22,7 @@ public:
     Date* getDate();
     void setDate(string t);
     void displayThisAudit(Audit* worker);
+    void displayThisAuditor(Auditor* worker);
     Audit* getAudit();
     bool isInputsEmpty();
 };

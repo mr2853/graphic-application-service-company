@@ -12,11 +12,13 @@
 
 using namespace std;
 
-DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, ArrayAuditors *auditors, void *mainWindow, const char *l)
- : DataOf(x, y, w, h, original, changed, mainWindow, l), auditors(auditors)
+DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, ArrayDepartments *changedDepartments, ArrayDepartments *originalDepartments, void *mainWindow, const char *l)
+ : DataOf(x, y, w, h, original, changed, mainWindow, l), changedDepartments(changedDepartments), originalDepartments(originalDepartments)
  {
     chAuditor = new Fl_Choice(x+50, y, 100, 50, "");
+    chDepartment = new Fl_Choice(x+160, y, 100, 50, "");
     displayAudit = new DisplayAudit(x+50, y+60, 200, 300, "");
+
 
     vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
     DataOfCompanies *main = (DataOfCompanies*)mainWindow;
@@ -27,34 +29,67 @@ DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, Ar
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
 
-    this->insertDataInChAuditor();
-    chAuditor->callback(display, this);
+    this->insertDataInChDepartment();
+    chAuditor->callback(displayAud, this);
+    chDepartment->callback(displayDep, this);
     displayAudit->displayThisAudit(changed->getElement(chAuditor->value()));
     this->end();
 }
 
-void DataOfAudits::display(Fl_Widget *widget, void *d)
+void DataOfAudits::displayAud(Fl_Widget *widget, void *d)
 {
     DataOfAudits *data = (DataOfAudits*)d;
-    data->displayAudit->displayThisAudit(data->changed->getElement(data->chAuditor->value()));
+    //cout << "proslo" << endl;
+    //cout << data->changed->numberOfElement() << endl;
+    data->displayAudit->displayThisAuditor(data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value()));
+    //cout << "proslo1" << endl;
 }
-
-void DataOfAudits::insertDataInChAuditor()
+void DataOfAudits::displayDep(Fl_Widget *widget, void *d)
+{
+    DataOfAudits *data = (DataOfAudits*)d;
+    data->insertDataInChAuditor(data->changedDepartments->getElement(data->chDepartment->value())->getAuditors());
+}
+void DataOfAudits::insertDataInChDepartment()
+{
+    string aud = "";
+    chDepartment->clear();
+    
+    for(int i = 0; i < changedDepartments->numberOfElement(); i++)
+    {
+        string s = to_string(i+1).append(".");
+        s.append(changedDepartments->getElement(i)->getName()).append(" ");
+        s.append(changedDepartments->getElement(i)->getName());
+        aud.append(s);
+        aud.append("|");
+    }
+    chDepartment->add(aud.c_str());
+    chDepartment->redraw();
+    if(changedDepartments->numberOfElement() != 0)
+    {
+        chDepartment->value(0);
+        // //cout << "size auditors:" << departments->getElement(0)->getAuditors()->size() << endl;
+        this->insertDataInChAuditor(changedDepartments->getElement(0)->getAuditors());
+    }
+}
+void DataOfAudits::insertDataInChAuditor(vector<Auditor*>* auditors)
 {
     string aud = "";
     chAuditor->clear();
     
-    for(int i = 0; i < auditors->numberOfElement(); i++)
+    for(int i = 0; i < auditors->size(); i++)
     {
         string s = to_string(i+1).append(".");
-        s.append(auditors->getElement(i)->getName()).append(" ");
-        s.append(auditors->getElement(i)->getName());
+        s.append(auditors->at(i)->getName()).append(" ");
+        s.append(auditors->at(i)->getName());
         aud.append(s);
         aud.append("|");
     }
     chAuditor->add(aud.c_str());
     chAuditor->redraw();
-    chAuditor->value(0);
+    if(auditors->size() != 0)
+    {
+        chAuditor->value(0);
+    }
 }
 void DataOfAudits::goBack(Fl_Widget *widget, void *d)
 {
@@ -90,6 +125,63 @@ void DataOfAudits::isAuditsEmpty()
         btnChange->activate();
     }
 }
+
+void DataOfAudits::add(Fl_Widget *widget, void *data)
+{
+    DataOfAudits *d = (DataOfAudits*)data;
+    if(!d->displayAudit->isInputsEmpty())
+    {
+        return;
+    }
+    
+    d->displayAudit->getAudit()->setAuditor(d->getElement(d->getCurrent())->getAuditor());
+    Auditor* worker = d->changedDepartments->getElement(d->chDepartment->value())->getAuditors()->at(d->chAuditor->value());
+    Date* date = d->displayAudit->getDate();
+
+    if(!worker->isAvailabe(date))
+    {
+        fl_message("Auditor is not available at that time, please choose another time!");
+        return;
+    }
+    int counter = 0;
+    bool found = false;
+    for(int i = 0; i < d->originalDepartments->numberOfElement(); i++)
+    {
+        if(!d->originalDepartments->getElement(i)->isDeleted())
+        {
+            if(counter == d->chDepartment->value())
+            {
+                int counter1 = 0;
+                for(int j = 0; j < d->originalDepartments->getElement(i)->getAuditors()->size(); j++)
+                {
+                    if(!d->originalDepartments->getElement(i)->getAuditors()->at(j)->isDeleted())
+                    {
+                        if(counter1 == d->chAuditor->value())
+                        {
+                            Auditor *a1 = d->originalDepartments->getRow(i)->getAuditors()->at(j);
+                            a1->addDateVisiting(d->displayAudit->getDate());
+                            break;
+                        }
+                        counter1++;
+                    }
+                }
+                if(found)
+                {
+                    break;
+                }
+            }
+            counter++;
+        }
+    }
+    Audit *audit = new Audit(worker, date);
+    worker->addDateVisiting(date);
+
+    d->table->add(audit);
+    d->setDisplay(d->sizeOfArray()-1);
+    d->updateLabel();
+    d->isAuditsEmpty();
+    d->checkButtons();
+}
 void DataOfAudits::change(Fl_Widget *widget, void *d)
 {
     DataOfAudits *data = (DataOfAudits*)d;
@@ -98,9 +190,17 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
         return;
     }
     Audit *dep = data->changed->getRow(data->getCurrent());
-    dep->setDate(data->displayAudit->getDate());
-    string type = data->changed->getElement(data->getCurrent())->getAuditor()->getType();
-    Auditor* head = data->auditors->getElement(data->chAuditor->value());
+    Auditor* head = data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value());
+    Date* date = data->displayAudit->getDate();
+    if(!head->isAvailabe(date))
+    {
+        fl_message("Auditor is not available at that time, please choose another time!");
+        return;
+    }
+    dep->setDate(date);
+    // string type = data->changed->getElement(data->getCurrent())->getAuditor()->getType();
+    data->changed->getElement(data->getCurrent())->getAuditor()->removeDateVisiting(data->displayAudit->getDate());
+    head->addDateVisiting(data->displayAudit->getDate());
     dep->setAuditor(head);
 
     int counter = 0;
@@ -111,6 +211,7 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
             if(counter == data->getCurrent())
             {
                 Audit *a1 = data->original->getRow(i);
+                data->original->getElement(i)->getAuditor()->removeDateVisiting(data->displayAudit->getDate());
                 a1->setDate(data->displayAudit->getDate());
                 a1->setAuditor(head);
                 break;
@@ -140,21 +241,3 @@ void DataOfAudits::unhideGroup(){
 }
 
 DataOfAudits::~DataOfAudits(){}
-
-void DataOfAudits::add(Fl_Widget *widget, void *data)
-{
-    DataOfAudits *d = (DataOfAudits*)data;
-    if(!d->displayAudit->isInputsEmpty())
-    {
-        return;
-    }
-    
-    d->displayAudit->getAudit()->setAuditor(d->getElement(d->getCurrent())->getAuditor());
-    Auditor* worker = d->auditors->getElement(d->chAuditor->value());
-    Audit *audit = new Audit(worker, d->displayAudit->getDate());
-    d->table->add(audit);
-    d->setDisplay(d->sizeOfArray()-1);
-    d->updateLabel();
-    d->isAuditsEmpty();
-    d->checkButtons();
-}

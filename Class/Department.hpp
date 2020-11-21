@@ -26,7 +26,7 @@ private:
 public:
     Department();
     ~Department();
-    Department(string &in);
+    Department(string &in, int changed);
     Department(AbstractWorker *headOfDepartment, string name);
     Department(vector<Commercialist*> commercialists, vector<Auditor*> auditors,
     vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits);
@@ -38,6 +38,9 @@ public:
     void setWorker(vector<AbstractWorker*> worker);
     AbstractWorker* getHeadOfDepartment();
     void setHeadOfDepartment(AbstractWorker *headOfDepartment);
+    // void setHeadOfDepartment(Accountant *headOfDepartment);
+    // void setHeadOfDepartment(Commercialist *headOfDepartment);
+    // void setHeadOfDepartment(Auditor *headOfDepartment);
     string getName();
     void setName(string name);
     vector<Audit*>* getAudits();
@@ -48,9 +51,10 @@ public:
 	void setAuditors(vector<Auditor*> auditors);
 	vector<Accountant*>* getAccountants();
 	void setAccountants(vector<Accountant*> accountants);
-    static vector<Department*>* readArray(string in);
+    static vector<Department*>* readArray(string in, int changed);
     double getMaxSalary();
     double getMinSalary();
+    void write(ostream &output, Department *osobe);
 };
 
 #endif

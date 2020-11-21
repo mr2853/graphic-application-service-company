@@ -97,8 +97,8 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWo
     btnAdd = new Fl_Button(x+300, y+300, 70, 30, "Add");
     btnRemove = new Fl_Button(x+380, y+300, 70, 30, "Remove");
     btnGoBack = new Fl_Button(x+460, y+300, 70, 30, "Go back");
-    btnPrevious = new Fl_Button(x+170, y, 45, 70, "@<-");
-    btnNext = new Fl_Button(x+220, y, 45, 70, "@->");
+    btnPrevious = new Fl_Button(x+250, y, 45, 70, "@<-");
+    btnNext = new Fl_Button(x+300, y, 45, 70, "@->");
 
     btnNext->callback(nextElement, this);
     btnPrevious->callback(previousElement, this);

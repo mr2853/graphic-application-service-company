@@ -5,9 +5,9 @@ using namespace std;
 
 Date::Date(){};
 Date::~Date(){};
-Date::Date(string in)
+Date::Date(string in, int changed)
 {
-    vector<string> delovi = tokenization(in, ":", ",", "");
+    vector<string> delovi = tokenization(in, ":", ",", "", changed);
     /*cout << "\n\nDelovi elem: " << delovi.at(0) << "\n" << endl;
     cout << "Delovi elem: " << delovi.at(1) << "\n" << endl;
     cout << "Delovi elem: " << delovi.at(2) << "\n" << endl;
@@ -29,9 +29,26 @@ Date::Date(string in)
         //cout << "\nHour: " << hour << "\n" << endl;
         this->minute = 0;
     }
+    else if(delovi.size() == 6){
+        this->setDeleted();
+        this->hour = stod(delovi.at(1));
+        this->minute = stod(delovi.at(2));
+        this->day = stod(delovi.at(3));
+        this->month = stoi(delovi.at(4)); 
+        this->year = stoi(delovi.at(5));
+    }
 }
 void Date::setDeleted() {
 	deleted = true;
+}
+
+bool Date::isEqual(Date* date)
+{
+    if(this->hour == date->hour && this->minute == date->minute && this->day == date->day && this->month == date->month && this->year == date->year)
+    {
+        return true;
+    }
+    return false;
 }
 bool Date::isDeleted() {
 	return deleted;
@@ -97,7 +114,7 @@ string Date::getDateWithTime()
     }
     return dates;
 }*/
-vector<Date*> Date::readArray(string in)
+vector<Date*> Date::readArray(string in, int changed)
 {
     vector<Date*> array = vector<Date*>();
     int index;
@@ -124,8 +141,35 @@ vector<Date*> Date::readArray(string in)
         //cout << "\n\n" << s << "\n\n" << endl;
         index = s.find("[");
         type1 = s.substr(0, index);
-        Date *d = new Date(s);
+        if(changed == 1)
+        {
+            string someText = s;
+            index = someText.find(":");
+            someText.erase(0,index+1);
+            index = someText.find(",");
+            string type = someText.substr(0, index);
+            if(type == "true")
+            {
+                continue;
+            }
+        }
+        Date *d = new Date(s, changed);
         array.push_back(d);
     }
     return array;
 };
+
+void Date::write(ostream &output, Date *d)
+{
+    output << "Date[deleted:";
+    if(d->deleted)
+    {
+        output << "true";
+    }
+    else
+    {
+        output << "false";
+    }
+    output << ",hour:" << d->hour;
+    output << ",minute:" << d->minute << ",day:" << d->day << ",month:" << d->month << ",year:" << d->year << "]";
+}

@@ -4,6 +4,22 @@ AbstractPerson::AbstractPerson(){};
 AbstractPerson::~AbstractPerson(){};
 AbstractPerson::AbstractPerson(string name, string lastname, Date *dateBirth) : name(name), lastname(lastname), dateBirth(dateBirth){}
 
+void AbstractPerson::write(ostream &output, void *data)
+{
+    AbstractPerson *d = (AbstractPerson*)data;
+    output << "[deleted:";
+    if(d->deleted)
+    {
+        output << "true";
+    }
+    else
+    {
+        output << "false";
+    }
+
+	output << ",name:" << d->name << ",lastname:" << d->lastname << ",dateBirth:";
+	d->dateBirth->write(output, d->dateBirth);
+}
 string AbstractPerson::getName() {
 	return name;
 }

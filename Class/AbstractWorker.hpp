@@ -18,6 +18,7 @@ public:
     virtual string getType();
     virtual void setSalary(double salary);
     virtual double getSalary();
+    virtual void write(ostream &output, void *d);
     
     //static vector<AbstractWorker*> readData(string in);
     //virtual vector<AbstractWorker*> readDataVirtual(string in);

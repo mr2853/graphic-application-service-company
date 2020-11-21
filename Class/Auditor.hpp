@@ -16,7 +16,7 @@ private:
 public:
     Auditor();
     ~Auditor();
-    Auditor(string text);
+    Auditor(string text, int changed);
     Auditor(string name, string lastname, Date *dateBirth, double salary);
     Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting);
 
@@ -28,6 +28,10 @@ public:
     virtual string verticalHeader(int row);
     virtual string horizontalHeader(int kolona);
     int getNumberOfVisits();
+    bool isAvailabe(Date* date);
+    void addDateVisiting(Date* date);
+    void removeDateVisiting(Date* date);
+    virtual void write(ostream &output, void *d);
     
     //virtual void zapisi(ostream &output);
     //virtual void procitaj(istream &input);

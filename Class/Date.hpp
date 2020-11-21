@@ -18,7 +18,7 @@ private:
 
 public:
     Date();
-    Date(string in);
+    Date(string in, int changed);
     Date(int day, int month, int year);
     Date(int hour, int minute, int day, int month, int year);
     ~Date();
@@ -35,10 +35,12 @@ public:
 	void setYear(int year);
     virtual bool isDeleted();
     virtual void setDeleted();
+    bool isEqual(Date* date);
 
     string getDate();
     string getDateWithTime();
-    static vector<Date *> readArray(string in);
+    static vector<Date *> readArray(string in, int changed);
+    void write(ostream &output, Date *osobe);
     //static vector<Date*> readData(string in);
 };
 

@@ -29,7 +29,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2)
     parts.push_back(line);
     return parts;
 }
-vector<string> tokenization(string &line, string delimiter1, string delimiter2, string del3){
+vector<string> tokenization(string &line, string delimiter1, string delimiter2, string del3, int changed){
     ltrim(line);
     vector<string> parts = vector<string>();
     int pos;
@@ -43,7 +43,14 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
     string part = line.substr(0, pos);
     
     line.erase(0,pos+delimiter2.length());
-    if(part == "true"){ return parts; }
+    if(part == "true")
+    {
+        if(changed == 1)
+        {
+            return parts;
+        }
+        parts.push_back(part);
+    }
 
     while(true){
         if(del3 == "Audit")

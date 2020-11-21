@@ -12,23 +12,28 @@
 #include "../ArrayWorkers.hpp"
 #include "ArrayAudits.hpp"
 #include "../Auditor/ArrayAuditors.hpp"
+#include "../Department/ArrayDepartments.hpp"
 
 class DataOfAudits : public DataOf<Audit>{
 protected:
     Fl_Choice *chAuditor;
-    ArrayAuditors *auditors;
+    Fl_Choice *chDepartment;
+    ArrayDepartments *changedDepartments;
+    ArrayDepartments *originalDepartments;
     DisplayAudit *displayAudit;
     
     static void add(Fl_Widget *widget, void *data);
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);
-    static void display(Fl_Widget *widget, void *data);
-    void insertDataInChAuditor();
+    static void displayAud(Fl_Widget *widget, void *data);
+    static void displayDep(Fl_Widget *widget, void *data);
+    void insertDataInChDepartment();
+    void insertDataInChAuditor(vector<Auditor*>* auditors);
     void setDisplay(int indeks);
     void isAuditsEmpty();
 public:
-    DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, ArrayAuditors *auditors, void *mainWindow, const char *l=0);
+    DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, ArrayDepartments *changedDepartments, ArrayDepartments *originalDepartments, void *mainWindow, const char *l=0);
     virtual ~DataOfAudits();
     void hideGroup();
     void unhideGroup();

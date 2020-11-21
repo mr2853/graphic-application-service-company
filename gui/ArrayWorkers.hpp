@@ -31,12 +31,15 @@ public:
     void setDeleted(int index);
     bool isDeleted(int index);
     T* getElement(int in);
+    vector<T*>* arrayOfNotDeleted();
 };
+
 template<typename T>
 ArrayWorkers<T>::ArrayWorkers() : AbstractTableModel<T*>()
 {
     array = new vector<T*>();
 }
+
 template<typename T>
 void ArrayWorkers<T>::setDeleted(int index)
 {
@@ -87,10 +90,14 @@ void ArrayWorkers<T>::removeRow(int index)
 template<typename T>
 void ArrayWorkers<T>::write(ostream &output)
 {
-    output << array->size() << endl;
+    // output << array->size() << endl;
     for (int i = 0; i < array->size(); i++)
     {
-        output << array->at(i) << endl;
+        array->at(i)->write(output, array->at(i));
+        if(i < array->size()-1)
+        {
+            output << "$";
+        }
     }
 }
 

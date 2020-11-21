@@ -15,7 +15,12 @@ string AbstractWorker::getType()
 {
 	return type;
 }
-
+void AbstractWorker::write(ostream &output, void *data)
+{
+    AbstractWorker *d = (AbstractWorker*)data;
+    AbstractPerson::write(output, d);
+    output << ",salary:" << d->salary;
+}
 /*vector<AbstractWorker*> AbstractWorker::readData(string in)
 {
     return readDataVirtual(in);

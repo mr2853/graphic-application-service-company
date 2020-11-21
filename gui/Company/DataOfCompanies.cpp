@@ -165,7 +165,7 @@ void DataOfCompanies::audits(Fl_Widget *widget, void *d)
     
     DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(), 
         new ArrayAudits(company1->getCompanyAudits()), new ArrayAudits(company->getCompanyAudits()),
-         new ArrayAuditors(company->getCompanyAuditors()), data);
+         new ArrayDepartments(company1->getDepartments()), new ArrayDepartments(company->getDepartments()), data);
 
     data->hideGroup();
     data->Fl_Group::add(dataOfAudits);
