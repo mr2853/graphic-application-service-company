@@ -6,7 +6,10 @@
 #include "Department.hpp"
 using namespace std;
 Company::Company(){}
-Company::~Company(){}
+Company::~Company()
+{
+    
+};
 Company::Company(string name, string taxIdentificationNumber, string identificationNumber)
     : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(new vector<Department*>()){}
 
@@ -190,6 +193,10 @@ bool Company::isDeleted() {
 	return deleted;
 }
 void Company::setDeleted() {
+    for(int i = 0; i < departments->size(); i++)
+    {
+        departments->at(i)->setDeleted();
+    }
 	deleted = true;
 }
 string Company::toString() const

@@ -19,12 +19,6 @@ DisplaySalary::DisplaySalary(int x, int y, int w, int h, const char* l) : Fl_Gro
     boxComp1->box(FL_UP_BOX);
     boxComp2->box(FL_DOWN_BOX);
     
-    // boxDep1->align(FL_ALIGN_RIGHT | FL_ALIGN_INSIDE);
-    // boxDep2->align(FL_ALIGN_RIGHT | FL_ALIGN_INSIDE);
-    // boxComp1->align(FL_ALIGN_RIGHT | FL_ALIGN_INSIDE);
-    // boxComp2->align(FL_ALIGN_RIGHT | FL_ALIGN_INSIDE);
-
-    //refresh();
     this->end();
 }
 DisplaySalary::~DisplaySalary(){}

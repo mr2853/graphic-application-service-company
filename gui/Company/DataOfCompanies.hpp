@@ -28,7 +28,6 @@ protected:
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
     static void audits(Fl_Widget *widget, void *data);
-    // static void workers(Fl_Widget *widget, void *data);
     void isCompaniesEmpty();
 public:
     DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *original, ArrayCompanies *changed, void *data, const char *l=0);

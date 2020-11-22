@@ -25,6 +25,7 @@ public:
     int getNumberOfBusinessContact();
     string getBusinessContact(int index);
     virtual void write(ostream &output, void *d);
+    virtual void setDeleted();
 };
 
 #endif

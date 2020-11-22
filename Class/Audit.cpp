@@ -2,7 +2,9 @@
 #include "../Util.hpp"
 
 Audit::Audit(){}
-Audit::~Audit(){}
+Audit::~Audit()
+{
+};
 Audit::Audit(string in, int changed)
 {
     vector<string> parts = tokenization(in, ":", ",", "Audit", changed);
@@ -48,6 +50,8 @@ bool Audit::isDeleted() {
 	return deleted;
 }
 void Audit::setDeleted() {
+    auditor->setDeleted();
+    date->setDeleted();
 	deleted = true;
 }
 Date* Audit::getDate() {

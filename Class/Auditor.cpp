@@ -5,7 +5,17 @@
 using namespace std;
 
 Auditor::Auditor(){}
-Auditor::~Auditor(){}
+Auditor::~Auditor()
+{
+    
+};
+void Auditor::setDeleted() {
+    for(int i = 0; i < datesVisiting->size(); i++)
+    {
+        datesVisiting->at(i)->setDeleted();
+    }
+	AbstractWorker::setDeleted();
+}
 Auditor::Auditor(string text, int changed)
 {
     string twoDots = ":";
@@ -17,8 +27,6 @@ Auditor::Auditor(string text, int changed)
     vector<string> t = tokenization(in, ":", ",", "", changed);
     text.erase(0, index+10);
     
-    //index = text.find(twoDots);
-    //text.erase(0,index+1);// bilo + 5
     index = text.find("],");
     string t1 = text.substr(0, index);
     Date* dateBirth = new Date(t1, changed);
@@ -101,19 +109,7 @@ string Auditor::getType()
 {
 	return type;
 }
-/*void Auditor::zapisi(ostream &output)
-{
-    output << getType() << " " << this->getName() << endl << this->getLastname() << endl;
-}
-void Auditor::procitaj(istream &input)
-{
-    input >> ws;
-    string ime, prezime;
-    getline(input, ime, '\n');
-    getline(input, prezime, '\n');
-    this->setName(ime);
-    this->setLastname(prezime);
-}*/
+
 void Auditor::write(ostream &output, void *data)
 {
     Auditor *d = (Auditor*)data;
@@ -152,10 +148,6 @@ string Auditor::verticalHeader(int row)
     {
         return to_string(this->getSalary());
     }
-    /*else if (row == 4)
-    {
-        return auditors.at(row)->getDateVisiting(0).getDateWithTime();
-    }*/
     return "";
 }
 string Auditor::horizontalHeader(int colomn)

@@ -24,25 +24,18 @@ DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *ori
     this->updateChCompany();
     btnDetails = new Fl_Button(x+450, y+50, 150, 50, "Data of Company");
     btnAudits = new Fl_Button(x+450, y+110, 150, 50, "Data of Audits");
-    // btnWorkers = new Fl_Button(x+450, y+160, 150, 50, "Data of Workers");
-
-    // vector<void*>*v = new vector<void*>();
-    // v->push_back(this);
-    // v->push_back(changed);
 
     btnDetails->callback(details, this);
     btnChange->callback(change, this);
     btnAdd->callback(add, this);
     btnAudits->callback(audits, this);
-    // btnWorkers->callback(workers, this);
 
     remove(btnGoBack);
-    // this->btnGoBack->deactivate();
-    // this->btnGoBack->hide();
     
     if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
+    this->isArrayEmpty();
     this->end();
 }
 

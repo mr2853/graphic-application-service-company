@@ -5,7 +5,10 @@
 #include "AbstractWorker.hpp"
 
 Department::Department(){}
-Department::~Department(){}
+Department::~Department()
+{
+    
+};
 double Department::getMaxSalary()
 {
     double max = -1;
@@ -172,15 +175,7 @@ AbstractWorker* Department::getHeadOfDepartment() {
 void Department::setHeadOfDepartment(AbstractWorker *headOfDepartment) {
     this->headOfDepartment = headOfDepartment;
 }
-// void Department::setHeadOfDepartment(Auditor *headOfDepartment) {
-//     this->headOfDepartment = headOfDepartment;
-// }
-// void Department::setHeadOfDepartment(Commercialist *headOfDepartment) {
-//     this->headOfDepartment = headOfDepartment;
-// }
-// void Department::setHeadOfDepartment(Accountant *headOfDepartment) {
-//     this->headOfDepartment = headOfDepartment;
-// }
+
 string Department::getName() {
     return name;
 }
@@ -209,6 +204,23 @@ vector<Auditor*>* Department::getAuditors() {
 }
 
 void Department::setDeleted() {
+    for(int i = 0; i < commercialists.size(); i++)
+    {
+        commercialists.at(i)->setDeleted();
+    }
+    for(int i = 0; i < auditors.size(); i++)
+    {
+        auditors.at(i)->setDeleted();
+    }
+    for(int i = 0; i < accountants.size(); i++)
+    {
+        accountants.at(i)->setDeleted();
+    }
+    for(int i = 0; i < audits.size(); i++)
+    {
+        audits.at(i)->setDeleted();
+    }
+    headOfDepartment->setDeleted();
 	deleted = true;
 }
 void Department::setAuditors(vector<Auditor*> auditors) {
@@ -281,10 +293,7 @@ void Department::write(ostream &output, Department *d)
         output << "false";
     }
     output << ",name:" << d->name << ",headOfDepartment:";
-    // output << d->headOfDepartment->getType();
-    // cout << d->headOfDepartment->getType() << endl;
     d->headOfDepartment->write(output, d->headOfDepartment);
-    // output << "]";
     output << ",arrayOfWorker:<";
 
     for(int i = 0; i < d->accountants.size(); i++)

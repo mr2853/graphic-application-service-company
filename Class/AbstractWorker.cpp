@@ -1,6 +1,8 @@
 #include "AbstractWorker.hpp"
 AbstractWorker::AbstractWorker(){};
-AbstractWorker::~AbstractWorker(){};
+AbstractWorker::~AbstractWorker()
+{
+};
 AbstractWorker::AbstractWorker(string name, string lastname, Date *dateBirth, double salary) : AbstractPerson(name, lastname, dateBirth), salary(salary){};
 
 void AbstractWorker::setSalary(double salary) 
@@ -21,11 +23,7 @@ void AbstractWorker::write(ostream &output, void *data)
     AbstractPerson::write(output, d);
     output << ",salary:" << d->salary;
 }
-/*vector<AbstractWorker*> AbstractWorker::readData(string in)
-{
-    return readDataVirtual(in);
-}
-vector<AbstractWorker*> AbstractWorker::readDataVirtual(string in)
-{
 
-}*/
+void AbstractWorker::setDeleted() {
+	AbstractPerson::setDeleted();
+}

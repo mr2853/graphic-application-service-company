@@ -32,17 +32,17 @@ DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, Ar
     this->insertDataInChDepartment();
     chAuditor->callback(displayAud, this);
     chDepartment->callback(displayDep, this);
-    displayAudit->displayThisAudit(changed->getElement(chAuditor->value()));
+    if(changed->numberOfElement() != 0){
+        displayAudit->displayThisAudit(changed->getElement(chAuditor->value()));
+    }
+    this->isAuditsEmpty();
     this->end();
 }
 
 void DataOfAudits::displayAud(Fl_Widget *widget, void *d)
 {
     DataOfAudits *data = (DataOfAudits*)d;
-    //cout << "proslo" << endl;
-    //cout << data->changed->numberOfElement() << endl;
     data->displayAudit->displayThisAuditor(data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value()));
-    //cout << "proslo1" << endl;
 }
 void DataOfAudits::displayDep(Fl_Widget *widget, void *d)
 {
@@ -67,7 +67,6 @@ void DataOfAudits::insertDataInChDepartment()
     if(changedDepartments->numberOfElement() != 0)
     {
         chDepartment->value(0);
-        // //cout << "size auditors:" << departments->getElement(0)->getAuditors()->size() << endl;
         this->insertDataInChAuditor(changedDepartments->getElement(0)->getAuditors());
     }
 }
@@ -198,7 +197,6 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
         return;
     }
     dep->setDate(date);
-    // string type = data->changed->getElement(data->getCurrent())->getAuditor()->getType();
     data->changed->getElement(data->getCurrent())->getAuditor()->removeDateVisiting(data->displayAudit->getDate());
     head->addDateVisiting(data->displayAudit->getDate());
     dep->setAuditor(head);

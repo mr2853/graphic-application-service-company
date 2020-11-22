@@ -90,7 +90,6 @@ void ArrayWorkers<T>::removeRow(int index)
 template<typename T>
 void ArrayWorkers<T>::write(ostream &output)
 {
-    // output << array->size() << endl;
     for (int i = 0; i < array->size(); i++)
     {
         array->at(i)->write(output, array->at(i));
@@ -113,7 +112,6 @@ void ArrayWorkers<T>::read(istream &input)
         input >> tip;
         string type = typeid(T).name();
         type = type.substr(1,type.length());
-        cout << "Type: " << type << endl;
         if (tip == type)
         {
             novaOsoba = new T();

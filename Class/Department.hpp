@@ -30,7 +30,6 @@ public:
     Department(AbstractWorker *headOfDepartment, string name);
     Department(vector<Commercialist*> commercialists, vector<Auditor*> auditors,
     vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits);
-    //static vector<Department*> readData1(string in);
 
     virtual bool isDeleted();
     virtual void setDeleted();
@@ -38,9 +37,6 @@ public:
     void setWorker(vector<AbstractWorker*> worker);
     AbstractWorker* getHeadOfDepartment();
     void setHeadOfDepartment(AbstractWorker *headOfDepartment);
-    // void setHeadOfDepartment(Accountant *headOfDepartment);
-    // void setHeadOfDepartment(Commercialist *headOfDepartment);
-    // void setHeadOfDepartment(Auditor *headOfDepartment);
     string getName();
     void setName(string name);
     vector<Audit*>* getAudits();

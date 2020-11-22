@@ -4,16 +4,14 @@
 using namespace std;
 
 Date::Date(){};
-Date::~Date(){};
+Date::~Date()
+{
+	this->setDeleted();
+};
 Date::Date(string in, int changed)
 {
     vector<string> delovi = tokenization(in, ":", ",", "", changed);
-    /*cout << "\n\nDelovi elem: " << delovi.at(0) << "\n" << endl;
-    cout << "Delovi elem: " << delovi.at(1) << "\n" << endl;
-    cout << "Delovi elem: " << delovi.at(2) << "\n" << endl;
-    cout << "Delovi elem: " << delovi.at(3) << "\n" << endl;*/
     if(delovi.size() == 5){
-        //cout << "\nHour: " << stod(delovi.at(0)) << "\n" << endl;
         this->hour = stod(delovi.at(0));
         this->minute = stod(delovi.at(1));
         this->day = stod(delovi.at(2));
@@ -21,12 +19,10 @@ Date::Date(string in, int changed)
         this->year = stoi(delovi.at(4));
     }
     else if(delovi.size() == 3){
-        //cout << "\nDay: " << stod(delovi.at(0)) << "\n" << endl;
         this->day = stod(delovi.at(0));
         this->month = stoi(delovi.at(1)); 
         this->year = stoi(delovi.at(2));
         this->hour = 0;
-        //cout << "\nHour: " << hour << "\n" << endl;
         this->minute = 0;
     }
     else if(delovi.size() == 6){
@@ -97,23 +93,6 @@ string Date::getDateWithTime()
 {
     return to_string(hour) + "-" + to_string(minute) + "-" + Date::getDate();
 }
-
-/*vector<Date*> Date::readData(string in)
-{
-    vector<Date*> dates;
-    vector<string> text;
-    while(in.find("Date["))
-    {
-        int index = in.find("],");
-        text.push_back(in.substr(0, index));
-        in.erase(0, index + 2);
-    }
-    for(string s : text)
-    {
-        dates.push_back(new Date(s));
-    }
-    return dates;
-}*/
 vector<Date*> Date::readArray(string in, int changed)
 {
     vector<Date*> array = vector<Date*>();
@@ -138,7 +117,6 @@ vector<Date*> Date::readArray(string in, int changed)
     }
     for(string &s : text)
     {
-        //cout << "\n\n" << s << "\n\n" << endl;
         index = s.find("[");
         type1 = s.substr(0, index);
         if(changed == 1)

@@ -5,8 +5,11 @@ using namespace std;
 
 Commercialist::Commercialist(){};
 Commercialist::~Commercialist(){};
+void Commercialist::setDeleted() {
+	AbstractWorker::setDeleted();
+}
 Commercialist::Commercialist(string in, int changed)
-{ //salary:300,businessContact<contact:contact 1$contact:contact 2$contact:contact 3>]#Auditor[d
+{
     vector<string> parts = tokenization(in, ":", ",", "Commercialist", changed);
     if(parts.size() == 5){
        this->setName(parts.at(0));

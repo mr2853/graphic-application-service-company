@@ -41,7 +41,6 @@ public:
     string getDateWithTime();
     static vector<Date *> readArray(string in, int changed);
     void write(ostream &output, Date *osobe);
-    //static vector<Date*> readData(string in);
 };
 
 

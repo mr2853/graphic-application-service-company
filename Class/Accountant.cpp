@@ -5,7 +5,13 @@
 using namespace std;
 
 Accountant::Accountant(){};
-Accountant::~Accountant(){};
+Accountant::~Accountant()
+{
+	this->setDeleted();
+};
+void Accountant::setDeleted() {
+	AbstractWorker::setDeleted();
+}
 Accountant::Accountant(string in, int changed)
 {
     vector<string> parts = tokenization(in, ":", ",", "Date", changed);

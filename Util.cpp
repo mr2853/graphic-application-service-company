@@ -76,7 +76,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
             break;
         }
         if(parts.size() == 2 && del3 == "Commercialist")
-        { //salary:300,businessContact<contact:contact 1$contact:contact 2$contact:contact 3>]#Auditor[d
+        {
             pos = line.find(",salary:");
             if(pos == string::npos){
                 break;
@@ -138,7 +138,7 @@ vector<int> getDate(string &t)
     vector<int> date = vector<int>();
 
     int index = t.find("-");
-    if(index == string::npos){return date;} // exception
+    if(index == string::npos){return date;}
     int hour = stoi(t.substr(0, index));
     t.erase(0, index+1);
     
@@ -167,20 +167,7 @@ vector<int> getDate(string &t)
     date.push_back(year);
     return date;
 }
-// std::string trim(const std::string &s)
-// {
-// 	auto start = s.begin();
-// 	while (start != s.end() && std::isspace(*start)) {
-// 		start++;
-// 	}
 
-// 	auto end = s.end();
-// 	do {
-// 		end--;
-// 	} while (std::distance(start, end) > 0 && std::isspace(*end));
-
-// 	return std::string(start, end + 1);
-// }
 bool correctDate(string t, int time)
 {
     ltrim(t);
@@ -225,17 +212,3 @@ bool correctDate(string t, int time)
     }
     return true;
 }
-/*void inputStrings(string &in, int &index, vector<string> &text)
-{
-    while(true)
-    {
-        if(in.find("#") != std::string::npos){
-            index = in.find("]#");
-            text.push_back(in.substr(0, index));
-            in.erase(0, index + 2);
-        }
-        else{
-            break;
-        }
-    }
-};*/

@@ -25,7 +25,6 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartment
     btnDetails = new Fl_Button(x+450, y+100, 150, 50, "Data of worker type");
 
     vector<void*> *v = new vector<void*>();
-    // DataOfCompanies *main = (DataOfCompanies*)mainWindow;
     v->push_back(mainWindow);
     v->push_back(this);
     btnDetails->callback(details, v);
@@ -37,6 +36,7 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayDepartment
     if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
+    this->isDepartmentsEmpty();
     this->end();
 }
 void DataOfDepartments::goBack(Fl_Widget *widget, void *d)

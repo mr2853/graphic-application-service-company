@@ -21,7 +21,6 @@ public:
     DisplayWorker(int x, int y, int w, int h, const char *l);
     virtual ~DisplayWorker();
     virtual void displayWorker(AbstractWorker *worker);
-    // virtual void setDisplay(int indeks);
     string getValueName();
     string getValueLastName();
     Date* getValueDateBirth();

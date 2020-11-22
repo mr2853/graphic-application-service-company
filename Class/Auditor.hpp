@@ -32,16 +32,7 @@ public:
     void addDateVisiting(Date* date);
     void removeDateVisiting(Date* date);
     virtual void write(ostream &output, void *d);
-    
-    //virtual void zapisi(ostream &output);
-    //virtual void procitaj(istream &input);
-    /*void write(ostream &output);
-    void read(istream &input);
-
-    friend ostream &operator<<(ostream &output, Auditor &auditor);
-    friend istream &operator>>(istream &input, Auditor &auditor);
-    friend ostream &operator<<(ostream &output, Auditor *auditor);
-    friend istream &operator>>(istream &input, Auditor *auditor);*/
+    virtual void setDeleted();
 };
 
 #endif

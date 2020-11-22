@@ -1,7 +1,10 @@
 #include "AbstractPerson.hpp"
 
 AbstractPerson::AbstractPerson(){};
-AbstractPerson::~AbstractPerson(){};
+AbstractPerson::~AbstractPerson()
+{
+	this->setDeleted();
+};
 AbstractPerson::AbstractPerson(string name, string lastname, Date *dateBirth) : name(name), lastname(lastname), dateBirth(dateBirth){}
 
 void AbstractPerson::write(ostream &output, void *data)
@@ -37,6 +40,7 @@ bool AbstractPerson::isDeleted() {
 }
 
 void AbstractPerson::setDeleted() {
+	dateBirth->setDeleted();
 	deleted = true;
 }
 

@@ -26,7 +26,6 @@ public:
     virtual bool isDeleted();
     virtual void setDeleted();
     void write(ostream &output, Audit *d);
-    //static vector<Audit*> readData(string in);
 };
 
 

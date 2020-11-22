@@ -26,6 +26,7 @@ public:
 	void setMaxAmountCompanyIncome(double maxAmountCompanyIncome);
     virtual string getType();
     virtual void write(ostream &output, void *d);
+    virtual void setDeleted();
 };
 
 #endif
