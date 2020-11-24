@@ -11,9 +11,8 @@
 #include "DisplayCompany.hpp"
 #include "../DataOf.hpp"
 #include "../ArrayWorkers.hpp"
-#include "ArrayCompanies.hpp"
 
-class DataOfCompanies : public DataOf<Company>{
+class DataOfCompanies : public DataOf<Company*>{
 protected:
     DisplayCompany *display;
     Fl_Button *btnDetails;
@@ -30,7 +29,7 @@ protected:
     static void audits(Fl_Widget *widget, void *data);
     void isCompaniesEmpty();
 public:
-    DataOfCompanies(int x, int y, int w, int h, ArrayCompanies *original, ArrayCompanies *changed, void *data, const char *l=0);
+    DataOfCompanies(int x, int y, int w, int h, ArrayWorkers<Company*> *original, ArrayWorkers<Company*> *changed, void *data, const char *l=0);
     virtual ~DataOfCompanies();
     void hideGroup();
     void unhideGroup();

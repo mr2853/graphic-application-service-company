@@ -51,6 +51,7 @@ public:
     double getMaxSalary();
     double getMinSalary();
     void write(ostream &output, Department *osobe);
+    string getData(int column);
 };
 
 #endif

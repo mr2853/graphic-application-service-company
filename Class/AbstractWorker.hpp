@@ -20,6 +20,7 @@ public:
     virtual double getSalary();
     virtual void setDeleted();
     virtual void write(ostream &output, void *d);
+    string getData(int column);
 };
 
 

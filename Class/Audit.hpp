@@ -26,6 +26,7 @@ public:
     virtual bool isDeleted();
     virtual void setDeleted();
     void write(ostream &output, Audit *d);
+    string getData(int column);
 };
 
 

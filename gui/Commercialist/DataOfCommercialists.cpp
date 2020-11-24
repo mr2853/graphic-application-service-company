@@ -7,7 +7,7 @@
 
 using namespace std;
 
-DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayCommercialists *original, ArrayCommercialists *changed, Company *company, void *d, const char *l)
+DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayWorkers<Commercialist*> *original, ArrayWorkers<Commercialist*> *changed, Company *company, void *d, const char *l)
  : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
     displayCommercialist = new DisplayCommercialist(x+100, y, 300, 390, "");
@@ -54,7 +54,7 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
     {
         return;
     }
-    WorkerTable<Commercialist> *table = d->table;
+    WorkerTable<Commercialist*> *table = d->table;
     Commercialist *novaOsoba;
     try{
         novaOsoba = new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
@@ -68,6 +68,7 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
     
     novaOsoba->setBusinessContact(d->displayCommercialist->getBusinessContacts());                
     table->add(novaOsoba);
+    d->original->add(novaOsoba);
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
@@ -75,7 +76,7 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
 }
 void DataOfCommercialists::hideGroup()
 {
-    DataOfWorker<Commercialist>::hideGroup();
+    DataOfWorker<Commercialist*>::hideGroup();
     this->label("");
     this->displayCommercialist->hide();
 }

@@ -8,7 +8,7 @@
 using namespace std;
 
 
-DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *original, ArrayWorkers<Accountant> *changed, Company *company, void *d, const char *l)
+DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant*> *original, ArrayWorkers<Accountant*> *changed, Company *company, void *d, const char *l)
  : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
     displayAccountant = new DisplayAccountant(x+50, y, 300, 390, "");
@@ -55,6 +55,7 @@ void DataOfAccountants::add(Fl_Widget *widget, void *data)
     }
                     
     d->table->add(novaOsoba);
+    d->original->add(novaOsoba);
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
@@ -69,7 +70,7 @@ DataOfAccountants::~DataOfAccountants()
 }
 void DataOfAccountants::hideGroup()
 {
-    DataOfWorker<Accountant>::hideGroup();
+    DataOfWorker<Accountant*>::hideGroup();
     this->label("");
     this->displayAccountant->hide();
 }

@@ -35,6 +35,7 @@ public:
 	void pushDepartments(Department *department);
     void setDepartments(vector<Department*>* departments);
     vector<Department*>* getDepartments();
+    vector<Department> getDepartmentsOriginal();
     int getDepartmentsSize();
     static vector<Company*>* readData1(string path, int changed=0);
     string toString() const;
@@ -46,6 +47,7 @@ public:
     double getMaxSalary();
     double getMinSalary();
     void write(ostream &output, Company *d);
+    string getData(int column);
 
 };
 

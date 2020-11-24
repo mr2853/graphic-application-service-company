@@ -11,6 +11,8 @@ Date::~Date()
 Date::Date(string in, int changed)
 {
     vector<string> delovi = tokenization(in, ":", ",", "", changed);
+    for(string s : delovi)
+        cout << "s deo: " << s << endl;
     if(delovi.size() == 5){
         this->hour = stod(delovi.at(0));
         this->minute = stod(delovi.at(1));
@@ -26,12 +28,12 @@ Date::Date(string in, int changed)
         this->minute = 0;
     }
     else if(delovi.size() == 6){
-        this->setDeleted();
         this->hour = stod(delovi.at(1));
         this->minute = stod(delovi.at(2));
         this->day = stod(delovi.at(3));
         this->month = stoi(delovi.at(4)); 
         this->year = stoi(delovi.at(5));
+        this->setDeleted();
     }
 }
 void Date::setDeleted() {
@@ -87,6 +89,7 @@ void Date::setYear(int year) {
 }
 string Date::getDate()
 {
+    cout << day << " " << month << " " << year << endl;
     return to_string(day) + "-" + to_string(month) + "-" + to_string(year);
 }
 string Date::getDateWithTime()

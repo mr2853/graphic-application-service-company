@@ -1,7 +1,7 @@
 #ifndef DISPLAY_ABSTRACT_HPP
 #define DISPLAY_ABSTRACT_HPP
 #include <iostream>
-#include "Auditor/AuditorTable.hpp"
+#include <FL/Fl_Group.H>
 #include "../Class/Auditor.hpp"
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Value_Input.H>

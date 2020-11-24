@@ -14,7 +14,6 @@
 #include "Class/Date.hpp"
 #include "Class/Company.hpp"
 #include "gui/Company/DataOfCompanies.hpp"
-#include "gui/Company/ArrayCompanies.hpp"
 
 using namespace std;
 
@@ -23,9 +22,13 @@ void save(Fl_Widget *widget, void *data)
     int answer = fl_choice("Do you want to save changes and close window?", "Yes", "No", "Go back");
     if (answer == 0)
     {
-        ArrayCompanies *original = (ArrayCompanies *)data;
+        ArrayWorkers<Company*> original = *(ArrayWorkers<Company*>*)data;
+        for(int j = 0; j < original.numberOfElement(); j++)
+        {
+            cout << j+1 << ". " << original.getElement(j)->isDeleted() << endl;
+        }
         ofstream datoteka("podaciTest.txt");
-        original->write(datoteka);
+        original.write(datoteka);
         datoteka.close();
     }
     if (answer < 2)
@@ -36,15 +39,15 @@ void save(Fl_Widget *widget, void *data)
 
 int main()
 {
-    ArrayCompanies *original = new ArrayCompanies(Company::readData1("podaciTest.txt"));
-    ArrayCompanies *changed = new ArrayCompanies(Company::readData1("podaciTest.txt", 1));
+    ArrayWorkers<Company*> original = ArrayWorkers<Company*>(Company::readData1("podaciTest.txt"));
+    ArrayWorkers<Company*> changed = ArrayWorkers<Company*>(Company::readData1("podaciTest.txt", 1));
 
     Fl_Window *window = new Fl_Window(900, 700, "Projekat");
-    DataOfCompanies *dataOfCompanies = new DataOfCompanies(50, 50, 900, 700, original, changed, window, "");
+    DataOfCompanies *dataOfCompanies = new DataOfCompanies(50, 50, 900, 700, &original, &changed, window, "");
     window->resizable(dataOfCompanies);
     window->end();
     
-    window->callback(save, original);
+    window->callback(save, dataOfCompanies->getArrayOriginal());
     window->show();
     return Fl::run();
 }

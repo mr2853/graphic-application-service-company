@@ -8,6 +8,7 @@
 #include <FL/Fl_Multiline_Input.H>
 
 #include "../Auditor/DisplayAuditor.hpp"
+#include "../../Class/Audit.hpp"
 
 class DisplayAudit : public Fl_Group{
 protected:

@@ -13,9 +13,9 @@ Audit::Audit(string in, int changed)
 	    this->date = new Date(parts.at(1), changed);
     }
     else if(parts.size() == 3){
-        this->setDeleted();
         this->auditor = new Auditor(parts.at(1), changed);
 	    this->date = new Date(parts.at(2), changed);
+        this->setDeleted();
     }
 }
 
@@ -59,6 +59,26 @@ Date* Audit::getDate() {
 }
 void Audit::setDate(Date *date) {
 	this->date = date;
+}
+string Audit::getData(int column)
+{
+    if (column == 0)
+    {
+        return this->getDate()->getDateWithTime();
+    }
+    else if (column == 1)
+    {
+        return this->getAuditor()->getName();
+    }
+    else if (column == 2)
+    {
+        return this->getAuditor()->getLastname();
+    }
+    else if (column == 3)
+    {
+        return this->getAuditor()->getDateBirth()->getDate();
+    }
+    return "";
 }
 vector<Audit*> Audit::readArray(string in, int changed)
 {

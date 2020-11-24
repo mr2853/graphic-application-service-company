@@ -78,33 +78,56 @@ Department::Department(string &in, int changed)
     string twoDots = ":";
     string comma = ",";
 
+    commercialists = vector<Commercialist*>();
+    auditors = vector<Auditor*>();
+    accountants = vector<Accountant*>();
+    audits = vector<Audit*>();
+
     int index = in.find(twoDots);
     in.erase(0,index+1);
     index = in.find(comma);
-    string type = in.substr(0, index);
-    if(type == "true")
-    {
-        this->setDeleted();
-    }
+    string deleted = in.substr(0, index);
 
     index = in.find(twoDots);
     in.erase(0,index+1);
     index = in.find(comma);
-    string name = in.substr(0, index);
+    name = in.substr(0, index);
 
     index = in.find(twoDots);
     in.erase(0,index+1);
+    
     index = in.find("],arrayOfWorker:<");
     string text = in.substr(0, index);
-    Accountant* headOfDepartment = new Accountant(text, changed);
+    index = text.find("[");
+    string type = text.substr(0, index);
+    if(type == "Accountant")
+    {
+        headOfDepartment = new Accountant(text, changed);
+    }
+    else if(type == "Auditor")
+    {
+        headOfDepartment = new Auditor(text, changed);
+    }
+    else if(type == "Commercialist")
+    {
+        headOfDepartment = new Commercialist(text, changed);
+    }
+    else
+    {
+        return;
+    }
+    
+    
 
     in.erase(0,index+17);
     index = in.find("audits:<");
     string workers = in.substr(0, index);
+    cout << "workers size: " << workers.size() << endl;
     in.erase(0,index+8);
     
     vector<string> textArray;
     string type1;
+    cout << "dep1" << endl;
     while(true)
     {
         if(workers.find("]#") != std::string::npos){
@@ -112,7 +135,7 @@ Department::Department(string &in, int changed)
             textArray.push_back(workers.substr(0, index));
             workers.erase(0, index + 2);
         }
-        else{
+        else if(workers.find(">]") != std::string::npos){
             index = workers.find(">]");
             if(index == string::npos)
             {
@@ -121,43 +144,77 @@ Department::Department(string &in, int changed)
             textArray.push_back(workers.substr(0, index));
             break;
         }
+        else
+        {
+            break;
+        }
     }
     
     for(string &s : textArray)
     {
         index = s.find("[");
         type1 = s.substr(0, index);
+        cout << "dep2" << endl;
         if(changed == 1)
         {
             string someText = s;
             index = someText.find(":");
             someText.erase(0,index+1);
             index = someText.find(",");
-            string type = someText.substr(0, index);
-            if(type == "true")
+            string deleted = someText.substr(0, index);
+            if(deleted == "true")
             {
                 continue;
             }
         }
+        cout << "dep3" << endl;
         if(type1 == "Commercialist"){
+            cout << "dep3.1" << endl;
             commercialists.push_back(new Commercialist(s, changed));
+            cout << "dep3.2" << endl;
         }
         else if(type1 == "Auditor"){
+            cout << "dep3.3" << endl;
             auditors.push_back(new Auditor(s, changed));
+            cout << "dep3.4" << endl;
         }
         else if(type1 == "Accountant"){
+            cout << "dep3.5" << endl;
             accountants.push_back(new Accountant(s, changed));
+            cout << "dep3.6" << endl;
         }
+        cout << "dep4" << endl;
     }
     
-    vector<Audit*> audits = vector<Audit*>();
     audits = Audit::readArray(in, changed);
     
-    this->setName(name);
-    this->setHeadOfDepartment(headOfDepartment);
-    this->setAudits(audits);
+    if(deleted == "true")
+    {
+        cout << "ov1" << endl;
+        this->setDeleted();
+        cout << "ov2" << endl;
+    }
 }
-
+string Department::getData(int column)
+{
+    if (column == 0)
+    {
+        return this->getName();
+    }
+    else if (column == 1)
+    {
+        return this->getHeadOfDepartment()->getName();
+    }
+    else if (column == 2)
+    {
+        return this->getHeadOfDepartment()->getLastname();
+    }
+    else if (column == 3)
+    {
+        return this->getHeadOfDepartment()->getType();
+    }
+    return "";
+}
 Department::Department(vector<Commercialist*> commercialists, vector<Auditor*> auditors,
     vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits)
     : commercialists(commercialists), auditors(auditors), accountants(accountants),
@@ -254,7 +311,9 @@ vector<Department*>* Department::readArray(string in, int changed)
         else if(in.find("Department[") != std::string::npos){
             index = in.find_last_of(">");
             text.push_back(in.substr(0, index));
+            cout << "erase department" << endl;
             in.erase(0, index + 2);
+            cout << "erase department 1" << endl;
         }
         else{
             break;
@@ -273,9 +332,11 @@ vector<Department*>* Department::readArray(string in, int changed)
             string type = someText.substr(0, index);
             if(type == "true")
             {
+                cout << "ovde" << endl;
                 continue;
             }
         }
+        // cout << "ovde1" << endl;
         Department *d = new Department(s, changed);
         array->push_back(d);
     }

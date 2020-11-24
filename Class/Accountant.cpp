@@ -24,13 +24,13 @@ Accountant::Accountant(string in, int changed)
 		this->maxAmountCompanyIncome = stod(parts.at(5));
     }
 	else if(parts.size() == 7){
-		this->setDeleted();
         this->setName(parts.at(1));
         this->setLastname(parts.at(2));
 		this->setDateBirth(new Date(parts.at(3), changed));
 		this->setSalary(stod(parts.at(4)));
 		this->bodyIssuedPermit = parts.at(5);
 		this->maxAmountCompanyIncome = stod(parts.at(6));
+		this->setDeleted();
     }
 }
 void Accountant::write(ostream &output, void *data)

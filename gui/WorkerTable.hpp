@@ -15,33 +15,31 @@
 #include "ArrayWorkers.hpp"
 
 template<typename T>
-class WorkerTable : public Fl_Table_Row, protected AbstractDisplay<T*>{
+class WorkerTable : public Fl_Table_Row, protected AbstractDisplay<T>{
 protected:
     ArrayWorkers<T>* changed;
-    ArrayWorkers<T>* original;
     virtual void draw_cell(TableContext context, int row = 0, int column = 0, int x = 0, int y = 0, int w = 0, int h = 0);
-    virtual void elementPushed(int row, T* element);
-    virtual void elementRemoved(int row);
 
 public:
-    WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* original, ArrayWorkers<T>* changed, const char* l=0);
+    WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* changed, const char* l=0);
     virtual ~WorkerTable();
     WorkerTable();
-    void add(T *p);
+    void add(T p);
     void refreshTable();
+    virtual void elementPushed(int row, T element);
+    virtual void elementRemoved(int row);
 };
 
 template<typename T>
-WorkerTable<T>::WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* original, ArrayWorkers<T>* changed, const char* l) : Fl_Table_Row(x, y, w, h, l),
-    changed(changed), original(original)
+WorkerTable<T>::WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* changed, const char* l) : Fl_Table_Row(x, y, w, h, l),
+    changed(changed)
 {
     this->end();
-     col_resize_min(10);
+    col_resize_min(10);
     col_resize(1);
     col_header(1);
     row_header(1);
-    changed->subscribeListener(this);
-    original->subscribeListener(this);
+    // changed->subscribeListener(this);
     this->refreshTable();
 }
 
@@ -97,7 +95,7 @@ void WorkerTable<T>::draw_cell(TableContext context, int row, int column, int x,
 }
 
 template<typename T>
-void WorkerTable<T>::elementPushed(int row, T *element)
+void WorkerTable<T>::elementPushed(int row, T element)
 {
     rows(changed->numberOfRows());
     cols(changed->numberOfColumns());
@@ -106,6 +104,7 @@ void WorkerTable<T>::elementPushed(int row, T *element)
 template<typename T>
 void WorkerTable<T>::elementRemoved(int row)
 {
+    changed->removeRow(row);
     rows(changed->numberOfRows());
     cols(changed->numberOfColumns());
 }
@@ -116,9 +115,8 @@ WorkerTable<T>::~WorkerTable<T>()
 }
 
 template<typename T>
-void WorkerTable<T>::add(T *r)
+void WorkerTable<T>::add(T r)
 {
-    this->original->add(r);
     this->changed->add(r);
     rows(changed->numberOfRows());
     cols(changed->numberOfColumns());

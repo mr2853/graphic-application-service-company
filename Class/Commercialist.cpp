@@ -27,7 +27,6 @@ Commercialist::Commercialist(string in, int changed)
        this->setBusinessContact(businessContact);
     }
     else if(parts.size() == 6){
-        this->setDeleted();
         this->setName(parts.at(1));
         this->setLastname(parts.at(2));
         this->setDateBirth(new Date(parts.at(3), changed));
@@ -41,6 +40,7 @@ Commercialist::Commercialist(string in, int changed)
             businessContact->push_back(new string(s));
         }
         this->setBusinessContact(businessContact);
+        this->setDeleted();
     }
 }
 Commercialist::Commercialist(string name, string lastname, Date *dateBirth, double salary) : AbstractWorker(name, lastname, dateBirth, salary){}

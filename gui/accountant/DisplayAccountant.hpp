@@ -7,13 +7,11 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Multiline_Input.H>
 
-#include "AccountantTable.hpp"
 #include "../../Class/Accountant.hpp"
 #include "../../Class/AbstractWorker.hpp"
 #include "../DisplayWorker.hpp"
 #include "../AbstractModel.hpp"
 #include "../AbstractDisplay.hpp"
-#include "ArrayAccountants.hpp"
 
 class DisplayAccountant : public DisplayWorker{
 protected:

@@ -12,13 +12,16 @@
 
 using namespace std;
 
-DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayAudits *original, ArrayAudits *changed, ArrayDepartments *changedDepartments, ArrayDepartments *originalDepartments, void *mainWindow, const char *l)
+DataOfAudits::DataOfAudits(int x, int y, int w, int h, ArrayWorkers<Audit*> *original, ArrayWorkers<Audit*> *changed, ArrayWorkers<Department*> *changedDepartments, ArrayWorkers<Department*> *originalDepartments, void *mainWindow, const char *l)
  : DataOf(x, y, w, h, original, changed, mainWindow, l), changedDepartments(changedDepartments), originalDepartments(originalDepartments)
  {
-    chAuditor = new Fl_Choice(x+50, y, 100, 50, "");
-    chDepartment = new Fl_Choice(x+160, y, 100, 50, "");
+    chAuditor = new Fl_Choice(x+50, y, 100, 50, "Auditor:");
+    chDepartment = new Fl_Choice(x+160, y, 100, 50, "Department:");
+    chDepartment->align(FL_ALIGN_TOP);
     displayAudit = new DisplayAudit(x+50, y+60, 200, 300, "");
 
+    btnPrevious->resize(btnPrevious->x()+50, btnPrevious->y(), btnPrevious->w(), btnPrevious->h());
+    btnNext->resize(btnNext->x()+50, btnNext->y(), btnNext->w(), btnNext->h());
 
     vector<Fl_Widget*> *v = new vector<Fl_Widget*>();
     DataOfCompanies *main = (DataOfCompanies*)mainWindow;
@@ -88,6 +91,7 @@ void DataOfAudits::insertDataInChAuditor(vector<Auditor*>* auditors)
     if(auditors->size() != 0)
     {
         chAuditor->value(0);
+        displayAudit->displayThisAudit(changed->getElement(chAuditor->value()));
     }
 }
 void DataOfAudits::goBack(Fl_Widget *widget, void *d)
@@ -176,6 +180,7 @@ void DataOfAudits::add(Fl_Widget *widget, void *data)
     worker->addDateVisiting(date);
 
     d->table->add(audit);
+    d->original->add(audit);
     d->setDisplay(d->sizeOfArray()-1);
     d->updateLabel();
     d->isAuditsEmpty();
@@ -221,7 +226,7 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
 }
 
 void DataOfAudits::hideGroup(){
-    DataOf<Audit>::hideGroup();
+    DataOf<Audit*>::hideGroup();
     this->label("");
     this->displayAudit->hideGroup();
 
@@ -229,7 +234,7 @@ void DataOfAudits::hideGroup(){
     this->btnAdd->hide();
 }
 void DataOfAudits::unhideGroup(){
-    DataOf<Audit>::unhideGroup();
+    DataOf<Audit*>::unhideGroup();
     this->redraw_label();
     this->updateLabel();
     this->displayAudit->unhide();

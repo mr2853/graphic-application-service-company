@@ -6,12 +6,10 @@
 #include <FL/Fl_Output.H>
 #include <FL/Fl_Multiline_Input.H>
 
-#include "AuditorTable.hpp"
 #include "../../Class/Auditor.hpp"
 #include "../DisplayWorker.hpp"
 #include "../AbstractModel.hpp"
 #include "../AbstractDisplay.hpp"
-#include "ArrayAuditors.hpp"
 #include "../../Class/AbstractWorker.hpp"
 
 class DisplayAuditor : public DisplayWorker{

@@ -167,48 +167,73 @@ vector<int> getDate(string &t)
     date.push_back(year);
     return date;
 }
-
+bool checkDate(string &t, int min, int max)
+{
+    string number = "";
+    if(max != -1)
+    {
+        int index = t.find("-");
+        if(index == string::npos){return false;}
+        number = t.substr(0, index);
+        t.erase(0, index+1);
+    }
+    else
+    {
+        number = t;
+        t.erase(0, t.size());
+    }
+    
+    //cout << "date data:" << stoi(number) << " " << min << " " << max << endl;
+    if(max == -1)
+    {
+        if(!std::all_of(number.begin(), number.end(), ::isdigit) || min > stoi(number)){
+            //cout << "ovde je" << endl;
+            return false;
+        }
+        return true;
+    }
+    //cout << to_string(min > stoi(number)) << " " << to_string(stoi(number) > max) << endl;
+    if(!std::all_of(number.begin(), number.end(), ::isdigit) || min > stoi(number) || stoi(number) > max){
+        //cout << "ovde izlazi" << endl;
+        return false;
+    }
+    return true;
+}
 bool correctDate(string t, int time)
 {
     ltrim(t);
-    int index = t.find("-");
-    if(index == string::npos){return false;}
-    string hour = t.substr(0, index);
-    t.erase(0, index+1);
-    if(!std::all_of(hour.begin(), hour.end(), ::isdigit)){
-        return false;
+    //cout << "ovde" << endl;
+    if(time == 1){
+        
+        if(!checkDate(t, 1, 24)) //hour
+        {
+            return false;
+        }
+        
+        if(!checkDate(t, 1, 59)) //minute
+        {
+            return false;
+        }
     }
+    //cout << "ovde1" << endl;
     
-    index = t.find("-");
-    if(index == string::npos){return false;}
-    string minute = t.substr(0, index);
-    t.erase(0, index+1);
-    if(!std::all_of(minute.begin(), minute.end(), ::isdigit)){
+    if(!checkDate(t, 1, 31)) //day
+    {
         return false;
     }
+    //cout << "ovde2" << endl;
 
-    if(t.find("-") != string::npos || time == 1){
-        index = t.find("-");
-        if(index == string::npos){return false;}
-        string day = t.substr(0, index);
-        t.erase(0, index+1);
-        if(!std::all_of(day.begin(), day.end(), ::isdigit)){
-            return false;
-        }
-
-        index = t.find("-");
-        if(index == string::npos){return false;}
-        string month = t.substr(0, index);
-        t.erase(0, index+1);
-        if(!std::all_of(month.begin(), month.end(), ::isdigit)){
-            return false;
-        }
-    }
-
-    string year = t.substr(0, t.length());
-    t.erase(0, t.length());
-    if(!std::all_of(year.begin(), year.end(), ::isdigit)){
+    if(!checkDate(t, 1, 12)) //month
+    {
         return false;
     }
+    //cout << "ovde3" << endl;
+    //cout << "t: " << t << endl;
+    if(!checkDate(t, 1)) //year
+    {
+        return false;
+    }
+    //cout << "ovde4" << endl;
+    
     return true;
 }

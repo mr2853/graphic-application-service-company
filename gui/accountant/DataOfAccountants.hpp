@@ -7,15 +7,13 @@
 #include <FL/Fl_Multiline_Output.H>
 #include <FL/Fl_Group.H>
 
-#include "AccountantTable.hpp"
 #include "../../Class/Accountant.hpp"
 #include "../DisplayWorker.hpp"
 #include "DisplayAccountant.hpp"
-#include "ArrayAccountants.hpp"
 #include "../DataOfWorker.hpp"
 #include "../ArrayWorkers.hpp"
 
-class DataOfAccountants : public DataOfWorker<Accountant>{
+class DataOfAccountants : public DataOfWorker<Accountant*>{
 protected:
     DisplayAccountant *displayAccountant;
     
@@ -23,7 +21,7 @@ protected:
     static void change(Fl_Widget *widget, void *data);
 
 public:
-    DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant> *original, ArrayWorkers<Accountant> *changed, Company *company, void *mainWindow, const char *l=0);
+    DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant*> *original, ArrayWorkers<Accountant*> *changed, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfAccountants();
     virtual void setDisplay(int indeks);
     void hideGroup();

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor> *original, ArrayWorkers<Auditor> *changed, Company *company, void *d, const char *l)
+DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor*> *original, ArrayWorkers<Auditor*> *changed, Company *company, void *d, const char *l)
  : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
     displayAuditor = new DisplayAuditor(x+50, y, 300, 390, "");
@@ -52,7 +52,7 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
     {
         return;
     }
-    WorkerTable<Auditor> *auditorTable = d->table;
+    WorkerTable<Auditor*> *auditorTable = d->table;
     Auditor* novaOsoba;
     try{
         novaOsoba = new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
@@ -70,6 +70,7 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
     }
                     
     auditorTable->add(novaOsoba);
+    d->original->add(novaOsoba);
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
@@ -77,7 +78,7 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
 }
 void DataOfAuditors::hideGroup()
 {
-    DataOfWorker<Auditor>::hideGroup();
+    DataOfWorker<Auditor*>::hideGroup();
     this->label("");
     this->displayAuditor->hide();
 }

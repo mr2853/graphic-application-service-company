@@ -2,8 +2,7 @@
 #include "../Util.hpp"
 #include <FL/fl_message.H>
 
-DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0)
- : Fl_Group(x,y,w,h,l){
+DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0) : Fl_Group(x,y,w,h,l){
 
     name = new Fl_Input(x, y, 100, 40, "Name:");
     lastName = new Fl_Input(x, y+50, 100, 40, "Last name:");
@@ -67,10 +66,19 @@ void DisplayWorker::unhide()
 }
 void DisplayWorker::displayWorker(AbstractWorker *worker)
 {
+    cout << "usao u display" << endl;
     name->value(worker->getName().c_str());
+    cout << "ovde" << endl;
     lastName->value(worker->getLastname().c_str());
+    cout << "ovde1" << endl;
+    cout << "date:" << worker->getDateBirth()->getDate() << endl;
+    cout << "ovde2" << endl;
+    cout << "date:" << worker->getDateBirth()->getDateWithTime() << endl;
+    cout << "ovde3" << endl;
     dateBirth->value(worker->getDateBirth()->getDateWithTime().c_str());
+    cout << "ovde4" << endl;
     salary->value(worker->getSalary());
+    cout << "ovde5" << endl;
 }
 
 string DisplayWorker::getValueName()
@@ -89,10 +97,30 @@ Date* DisplayWorker::getValueDateBirth()
 {
     string t = dateBirth->value();
     ltrim(t);
-    if(!correctDate(t)){
-        throw WrongDate();
+    int index = 0;
+    int counter = 0;
+    string check = t;
+    while(index != string::npos)
+    {
+        index = check.find("-");
+        check.erase(0, index+1);
+        counter++;
     }
-    int index = t.find("-");
+    
+    if(counter == 3)
+    {
+        if(!correctDate(t)){
+            throw WrongDate();
+        }
+    }
+    else
+    {
+        if(!correctDate(t,1)){
+            throw WrongDate();
+        }
+    }
+    
+    index = t.find("-");
     int a = stoi(t.substr(0, index));
     t.erase(0, index+1);
     

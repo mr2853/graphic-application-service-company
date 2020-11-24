@@ -10,9 +10,8 @@
 #include "DisplayDepartment.hpp"
 #include "../DataOf.hpp"
 #include "../ArrayWorkers.hpp"
-#include "ArrayDepartments.hpp"
 
-class DataOfDepartments : public DataOf<Department>{
+class DataOfDepartments : public DataOf<Department*>{
 protected:
     DisplayDepartment *displayDepartment;
     Fl_Button *btnDetails;
@@ -24,12 +23,13 @@ protected:
     void updateChDepart();
     
     static void add(Fl_Widget *widget, void *data);
+    static void removeElem(Fl_Widget *widget, void *data);
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);
     void isDepartmentsEmpty();
 public:
-    DataOfDepartments(int x, int y, int w, int h, ArrayDepartments *original, ArrayDepartments *changed, void *mainWindow, const char *l=0);
+    DataOfDepartments(int x, int y, int w, int h, ArrayWorkers<Department*> *original, ArrayWorkers<Department*> *changed, void *mainWindow, const char *l=0);
     virtual ~DataOfDepartments();
     void hideGroup();
     void unhideGroup();

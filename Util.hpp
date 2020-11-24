@@ -11,8 +11,6 @@
 #include "Class/Audit.hpp"
 #include "Class/Accountant.hpp"
 #include "Class/AbstractWorker.hpp"
-#include "gui/auditor/ArrayAuditors.hpp"
-#include "gui/auditor/AuditorTable.hpp"
 #include "gui/auditor/DisplayAuditor.hpp"
 #include <exception>
 
@@ -24,7 +22,8 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
 vector<string> tokenization(string &line, string delimiter1, string delimiter2);
 vector<int> getDate(string &line);
 
-bool correctDate(string t, int time=0);
+bool correctDate(string t, int time = 0);
+static bool checkDate(string &t, int min, int max = -1);
 
 static inline std::string &ltrim(std::string &s) {
     s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int c) {return !std::isspace(c);}));

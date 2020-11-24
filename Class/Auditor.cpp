@@ -41,20 +41,27 @@ Auditor::Auditor(string text, int changed)
     index = text.find(lessThan);
     text.erase(0,index+1);
     vector<Date*> *dates = new vector<Date*>();
+    cout << "aud1" << endl;
     *dates = Date::readArray(text, changed);
+    cout << "aud2" << endl;
     if(t.size() == 2){
         this->setName(t.at(0));
         this->setLastname(t.at(1));
     }
     else if(t.size() == 3)
     {
-        this->setDeleted();
         this->setName(t.at(1));
         this->setLastname(t.at(2));
     }
     this->setSalary(salary);
     this->setDateBirth(dateBirth);
     this->setDatesVisiting(dates);
+    cout << "aud3" << endl;
+    if(t.size() == 3)
+    {
+        this->setDeleted();
+    }
+    cout << "aud4" << endl;
 }
 Auditor::Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting)
     : AbstractWorker(name, lastname, dateBirth, salary), datesVisiting(datesVisiting){}

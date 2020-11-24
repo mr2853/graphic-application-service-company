@@ -7,15 +7,13 @@
 #include <FL/Fl_Multiline_Output.H>
 #include <FL/Fl_Group.H>
 
-#include "AuditorTable.hpp"
 #include "../../Class/Auditor.hpp"
 #include "../DisplayWorker.hpp"
 #include "DisplayAuditor.hpp"
-#include "ArrayAuditors.hpp"
 #include "../DataOfWorker.hpp"
 #include "../ArrayWorkers.hpp"
 
-class DataOfAuditors : public DataOfWorker<Auditor>{
+class DataOfAuditors : public DataOfWorker<Auditor*>{
 protected:
     DisplayAuditor *displayAuditor;
 
@@ -23,7 +21,7 @@ protected:
     static void add(Fl_Widget *widget, void *data);
 
 public:
-    DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor> *original, ArrayWorkers<Auditor> *changed, Company *company, void *mainWindow, const char *l=0);
+    DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor*> *original, ArrayWorkers<Auditor*> *changed, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfAuditors();
     virtual void setDisplay(int indeks);
     void hideGroup();

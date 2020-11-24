@@ -27,3 +27,24 @@ void AbstractWorker::write(ostream &output, void *data)
 void AbstractWorker::setDeleted() {
 	AbstractPerson::setDeleted();
 }
+
+string AbstractWorker::getData(int column)
+{
+    if (column == 0)
+    {
+        return this->getName();
+    }
+    else if (column == 1)
+    {
+        return this->getLastname();
+    }
+    else if (column == 2)
+    {
+        return this->getDateBirth()->getDateWithTime();
+    }
+    else if (column == 3)
+    {
+        return to_string(this->getSalary());
+    }
+    return "";
+}
