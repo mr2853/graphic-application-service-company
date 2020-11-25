@@ -30,7 +30,7 @@ public:
     int getNumberOfVisits();
     bool isAvailabe(Date* date);
     void addDateVisiting(Date* date);
-    void removeDateVisiting(Date* date);
+    void removeDateVisiting(Date* date, int original=0);
     virtual void write(ostream &output, void *d);
     virtual void setDeleted();
 };

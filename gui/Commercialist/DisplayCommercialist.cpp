@@ -82,6 +82,9 @@ void DisplayCommercialist::displayWorker(Commercialist *worker)
     businessContact->value("");
     for(int i = 0; i < worker->getNumberOfBusinessContact(); i++){
         businessContact->insert((*worker->getContact(i)).c_str());
-        businessContact->insert(",\n");
+        if(i != worker->getNumberOfBusinessContact()-1)
+        {
+            businessContact->insert(",\n");
+        }
     }
 }

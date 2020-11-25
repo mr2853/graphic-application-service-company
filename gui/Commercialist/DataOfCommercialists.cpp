@@ -10,6 +10,7 @@ using namespace std;
 DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayWorkers<Commercialist*> *original, ArrayWorkers<Commercialist*> *changed, Company *company, void *d, const char *l)
  : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
+     
     displayCommercialist = new DisplayCommercialist(x+100, y, 300, 390, "");
     btnPrevious->position(x+310,y);
     btnNext->position(x+390,y);
@@ -56,9 +57,12 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
     }
     WorkerTable<Commercialist*> *table = d->table;
     Commercialist *novaOsoba;
-    try{
-        novaOsoba = new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
-                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary());
+    try{              
+        table->add(new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
+                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary()));
+
+        d->original->add(new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
+                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary()));
     }
     catch(WrongDate e)
     {
@@ -66,9 +70,6 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
         return;
     }
     
-    novaOsoba->setBusinessContact(d->displayCommercialist->getBusinessContacts());                
-    table->add(novaOsoba);
-    d->original->add(novaOsoba);
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
@@ -120,4 +121,5 @@ void DataOfCommercialists::change(Fl_Widget *widget, void *d)
         }
     }
     data->table->redraw();
+    data->displaySalary->refresh();
 }

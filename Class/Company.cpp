@@ -14,8 +14,21 @@ Company::Company(string name, string taxIdentificationNumber, string identificat
     : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(new vector<Department*>()){}
 
 Company::Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments)
-    : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments){}
+    : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments)
+{
+    // for(int i = 0; i < departments->size(); i++)
+    // {
+    //     for(int j = 0; j < departments->at(i)->getAudits()->size(); j++)
+    //     {
+    //         audits->push_back(departments->at(i)->getAudits()->at(j));
+    //     }
+    // }
+}
 
+// vector<Audit*>* Company::getAudits()
+// {
+//     return audits;
+// }
 string Company::getData(int column)
 {
     if (column == 0)
@@ -35,35 +48,38 @@ string Company::getData(int column)
 double Company::getMaxSalary()
 {
     double max = -1;
-    for(int j = 0; j < this->getCompanyAccountants()->size(); j++)
+    for(int i = 0; i < departments->size(); i++)
     {
-        if(max < this->getCompanyAccountants()->at(j)->getSalary() || max == -1)
+        for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
         {
-            max = this->getCompanyAccountants()->at(j)->getSalary();
+            if(max < departments->at(i)->getCommercialists()->at(j)->getSalary() || max == -1)
+            {
+                max = departments->at(i)->getCommercialists()->at(j)->getSalary();
+            }
+        }
+
+        for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
+        {
+            if(max < departments->at(i)->getAccountants()->at(j)->getSalary() || max == -1)
+            {
+                max = departments->at(i)->getAccountants()->at(j)->getSalary();
+            }
+        }
+
+        for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
+        {
+            if(max < departments->at(i)->getAuditors()->at(j)->getSalary() || max == -1)
+            {
+                max = departments->at(i)->getAuditors()->at(j)->getSalary();
+            }
         }
     }
 
-    for(int j = 0; j < this->getCompanyCommercialists()->size(); j++)
+    for(int j = 0; j < departments->size(); j++)
     {
-        if(max < this->getCompanyCommercialists()->at(j)->getSalary() || max == -1)
+        if(max < departments->at(j)->getHeadOfDepartment()->getSalary() || max == -1)
         {
-            max = this->getCompanyCommercialists()->at(j)->getSalary();
-        }
-    }
-
-    for(int j = 0; j < this->getCompanyAuditors()->size(); j++)
-    {
-        if(max < this->getCompanyAuditors()->at(j)->getSalary() || max == -1)
-        {
-            max = this->getCompanyAuditors()->at(j)->getSalary();
-        }
-    }
-
-    for(int j = 0; j < this->departments->size(); j++)
-    {
-        if(max < this->departments->at(j)->getHeadOfDepartment()->getSalary() || max == -1)
-        {
-            max = this->departments->at(j)->getHeadOfDepartment()->getSalary();
+            max = departments->at(j)->getHeadOfDepartment()->getSalary();
         }
     }
     return max;
@@ -71,35 +87,38 @@ double Company::getMaxSalary()
 double Company::getMinSalary()
 {
     double min = -1;
-    for(int j = 0; j < this->getCompanyAccountants()->size(); j++)
+    for(int i = 0; i < departments->size(); i++)
     {
-        if(min > this->getCompanyAccountants()->at(j)->getSalary() || min == -1)
+        for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
         {
-            min = this->getCompanyAccountants()->at(j)->getSalary();
+            if(min > departments->at(i)->getCommercialists()->at(j)->getSalary() || min == -1)
+            {
+                min = departments->at(i)->getCommercialists()->at(j)->getSalary();
+            }
+        }
+
+        for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
+        {
+            if(min > departments->at(i)->getAccountants()->at(j)->getSalary() || min == -1)
+            {
+                min = departments->at(i)->getAccountants()->at(j)->getSalary();
+            }
+        }
+
+        for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
+        {
+            if(min > departments->at(i)->getAuditors()->at(j)->getSalary() || min == -1)
+            {
+                min = departments->at(i)->getAuditors()->at(j)->getSalary();
+            }
         }
     }
 
-    for(int j = 0; j < this->getCompanyCommercialists()->size(); j++)
+    for(int j = 0; j < departments->size(); j++)
     {
-        if(min > this->getCompanyCommercialists()->at(j)->getSalary() || min == -1)
+        if(min > departments->at(j)->getHeadOfDepartment()->getSalary() || min == -1)
         {
-            min = this->getCompanyCommercialists()->at(j)->getSalary();
-        }
-    }
-
-    for(int j = 0; j < this->getCompanyAuditors()->size(); j++)
-    {
-        if(min > this->getCompanyAuditors()->at(j)->getSalary() || min == -1)
-        {
-            min = this->getCompanyAuditors()->at(j)->getSalary();
-        }
-    }
-    
-    for(int j = 0; j < this->departments->size(); j++)
-    {
-        if(min > this->departments->at(j)->getHeadOfDepartment()->getSalary() || min == -1)
-        {
-            min = this->departments->at(j)->getHeadOfDepartment()->getSalary();
+            min = departments->at(j)->getHeadOfDepartment()->getSalary();
         }
     }
     return min;
@@ -241,54 +260,54 @@ string Company::toString() const
     return t;
 }
 
-vector<Commercialist*>* Company::getCompanyCommercialists()
-{
-    vector<Commercialist*>* ret = new vector<Commercialist*>();
-    for(int i = 0; i < departments->size(); i++)
-    {
-        for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
-        {
-            ret->push_back(departments->at(i)->getCommercialists()->at(j));
-        }
-    }
-    return ret;
-}
-vector<Auditor*>* Company::getCompanyAuditors()
-{
-    vector<Auditor*> *ret = new vector<Auditor*>();
-    for(int i = 0; i < departments->size(); i++)
-    {
-        for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
-        {
-            ret->push_back(departments->at(i)->getAuditors()->at(j));
-        }
-    }
-    return ret;
-}
-vector<Audit*>* Company::getCompanyAudits()
-{
-    vector<Audit*> *ret = new vector<Audit*>();
-    for(int i = 0; i < departments->size(); i++)
-    {
-        for(int j = 0; j < departments->at(i)->getAudits()->size(); j++)
-        {
-            ret->push_back(departments->at(i)->getAudits()->at(j));
-        }
-    }
-    return ret;
-}
-vector<Accountant*>* Company::getCompanyAccountants()
-{
-    vector<Accountant*>* ret = new vector<Accountant*>();
-    for(int i = 0; i < departments->size(); i++)
-    {
-        for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
-        {
-            ret->push_back(departments->at(i)->getAccountants()->at(j));
-        }
-    }
-    return ret;
-}
+// vector<Commercialist*>* Company::getCompanyCommercialists()
+// {
+//     vector<Commercialist*>* ret = new vector<Commercialist*>();
+//     for(int i = 0; i < departments->size(); i++)
+//     {
+//         for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
+//         {
+//             ret->push_back(departments->at(i)->getCommercialists()->at(j));
+//         }
+//     }
+//     return ret;
+// }
+// vector<Auditor*>* Company::getCompanyAuditors()
+// {
+//     vector<Auditor*> *ret = new vector<Auditor*>();
+//     for(int i = 0; i < departments->size(); i++)
+//     {
+//         for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
+//         {
+//             ret->push_back(departments->at(i)->getAuditors()->at(j));
+//         }
+//     }
+//     return ret;
+// }
+// vector<Audit*>* Company::getCompanyAudits()
+// {
+//     vector<Audit*> *ret = new vector<Audit*>();
+//     for(int i = 0; i < departments->size(); i++)
+//     {
+//         for(int j = 0; j < departments->at(i)->getAudits()->size(); j++)
+//         {
+//             ret->push_back(departments->at(i)->getAudits()->at(j));
+//         }
+//     }
+//     return ret;
+// }
+// vector<Accountant*>* Company::getCompanyAccountants()
+// {
+//     vector<Accountant*>* ret = new vector<Accountant*>();
+//     for(int i = 0; i < departments->size(); i++)
+//     {
+//         for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
+//         {
+//             ret->push_back(departments->at(i)->getAccountants()->at(j));
+//         }
+//     }
+//     return ret;
+// }
 void Company::removeDepartment(int index)
 {
     departments->erase(departments->begin() + index);
@@ -297,15 +316,15 @@ vector<Department*>* Company::getDepartments()
 {
     return departments;
 }
-vector<Department> Company::getDepartmentsOriginal()
-{
-    vector<Department> ret = vector<Department>();
-    for(int i = 0; i < departments->size(); i++)
-    {
-        ret.push_back(*departments->at(i));
-    }
-    return ret;
-}
+// vector<Department> Company::getDepartmentsOriginal()
+// {
+//     vector<Department> ret = vector<Department>();
+//     for(int i = 0; i < departments->size(); i++)
+//     {
+//         ret.push_back(*departments->at(i));
+//     }
+//     return ret;
+// }
 void Company::write(ostream &output, Company *d)
 {
     output << "Company[deleted:"; 
@@ -328,5 +347,15 @@ void Company::write(ostream &output, Company *d)
             output << "$";
         }
     }
+
+    // output << ">,audits:<";
+    // for(int i = 0; i < d->audits->size(); i++)
+    // {
+    //     d->audits->at(i)->write(output, d->audits->at(i));
+    //     if(i < d->audits->size()-1)
+    //     {
+    //         output << "$";
+    //     }
+    // }
     output << ">]";
 }

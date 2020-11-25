@@ -74,14 +74,28 @@ void Auditor::addDateVisiting(Date* date)
 {
     datesVisiting->push_back(date);
 }
-void Auditor::removeDateVisiting(Date* date)
+void Auditor::removeDateVisiting(Date* date, int original)
 {
-    for(int i = 0; i < datesVisiting->size(); i++)
+    if(original == 1)
     {
-        if(datesVisiting->at(i)->isEqual(date))
+        for(int i = 0; i < datesVisiting->size(); i++)
         {
-            datesVisiting->erase(datesVisiting->begin()+i);
-            break;
+            if(datesVisiting->at(i)->isEqual(date))
+            {
+                datesVisiting->at(i)->setDeleted();
+                return;
+            }
+        }
+    }
+    else
+    {
+        for(int i = 0; i < datesVisiting->size(); i++)
+        {
+            if(datesVisiting->at(i)->isEqual(date))
+            {
+                datesVisiting->erase(datesVisiting->begin()+i);
+                return;
+            }
         }
     }
 }

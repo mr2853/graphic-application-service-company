@@ -22,7 +22,7 @@ public:
 	Date* getDate();
 	void setDate(Date *date);
     void write(ostream &output);
-    static vector<Audit *> readArray(string in, int changed);
+    static vector<Audit *>* readArray(string in, int changed);
     virtual bool isDeleted();
     virtual void setDeleted();
     void write(ostream &output, Audit *d);

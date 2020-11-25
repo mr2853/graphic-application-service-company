@@ -36,8 +36,14 @@ Commercialist::Commercialist(string in, int changed)
         string part = parts.at(5).substr(0, parts.at(5).length()-1);
         vector<string> a = tokenization(part, ":", "$");
         
-        for(string s : a){
-            businessContact->push_back(new string(s));
+        for(int i = 0; i < a.size(); i++){
+            if(a.at(i).find(">") != string::npos)
+            {
+                int index = a.at(i).find(">");
+                businessContact->push_back(new string(a.at(i).substr(0, index)));
+                continue;
+            }
+            businessContact->push_back(new string(a.at(i)));
         }
         this->setBusinessContact(businessContact);
         this->setDeleted();

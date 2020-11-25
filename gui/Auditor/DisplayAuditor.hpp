@@ -19,7 +19,7 @@ protected:
 public:
     DisplayAuditor(int x, int y, int w, int h, const char *l=0);
     virtual ~DisplayAuditor();
-    vector<Date*>* getDatesVisiting();
+    // vector<Date*>* getDatesVisiting();
     void setDatesVisiting(string t);
     virtual void displayWorker(Auditor *worker);
     virtual void hide();

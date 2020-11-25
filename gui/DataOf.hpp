@@ -79,6 +79,13 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWo
 
     vector<void*> *data = new vector<void*>();
     data->push_back(d);
+    if(this->original == original)
+    {
+        cout << "\n\njednaki su\n\n" << endl;
+    }
+    else{
+        cout << "\n\nnisu jednaki\n\n" << endl;
+    }
 
     table = new WorkerTable<T>(x+200, y+340, 400, 280, changed);
     btnChange = new Fl_Button(x+220, y+300, 70, 30, "Change");
@@ -87,6 +94,7 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWo
     btnGoBack = new Fl_Button(x+460, y+300, 70, 30, "Go back");
     btnPrevious = new Fl_Button(x+250, y, 45, 70, "@<-");
     btnNext = new Fl_Button(x+300, y, 45, 70, "@->");
+    cout << "doso dovde1" << endl;
 
     btnNext->callback(nextElement, this);
     btnPrevious->callback(previousElement, this);
@@ -98,6 +106,7 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWo
     btnGoBack->callback(goBack, data);
     
     btnChange->callback(change, this);
+    cout << "doso dovde2" << endl;
 
     if(changed->numberOfElement() != 0){
         this->setDisplay(current);
@@ -106,6 +115,7 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWo
     // changed->subscribeListener(this);
     this->isArrayEmpty();
     this->checkButtons();
+    cout << "doso dovde3" << endl;
 }
 
 template<typename T>
@@ -159,7 +169,17 @@ void DataOf<T>::updateLabel()
 {
     stringstream sstream;
     string type = typeid(T).name();
-    type = type.substr(2,type.length());
+    int i = 0;
+    int last = 0;
+    while (i < type.size())
+    {
+        if(isdigit(type[i]))
+        {
+            last = i;      
+        }
+        i++;
+    }
+    type = type.substr(last+1, type.length());
     sstream << type <<" " << current + 1 << "/" << changed->numberOfElement();
     this->copy_label(sstream.str().c_str());
 }

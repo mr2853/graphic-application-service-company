@@ -30,8 +30,10 @@ protected:
     void insertDataInChAuditor(vector<Auditor*>* auditors);
     void setDisplay(int indeks);
     void isAuditsEmpty();
+    void isAuditorsEmpty();
 public:
-    DataOfAudits(int x, int y, int w, int h, ArrayWorkers<Audit*> *original, ArrayWorkers<Audit*> *changed, ArrayWorkers<Department*> *changedDepartments, ArrayWorkers<Department*> *originalDepartments, void *mainWindow, const char *l=0);
+    DataOfAudits(int x, int y, int w, int h, ArrayWorkers<Audit*> *original, ArrayWorkers<Audit*> *changed,
+     ArrayWorkers<Department*> *originalDepartments, ArrayWorkers<Department*> *changedDepartments, void *mainWindow, const char *l=0);
     virtual ~DataOfAudits();
     void hideGroup();
     void unhideGroup();

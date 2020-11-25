@@ -10,9 +10,9 @@
 #include "../Class/AbstractWorker.hpp"
 
 template<typename T>
-class ArrayWorkers : public AbstractTableModel<T >{
+class ArrayWorkers : public AbstractTableModel<T>{
 private:
-    vector<T > *array;
+    vector<T> *array;
     string type = "da";
 public:
     virtual int numberOfRows();
@@ -28,6 +28,7 @@ public:
     void read(istream &input);
     ArrayWorkers();
     ArrayWorkers(vector<T> *array);
+    // ArrayWorkers(vector<vector<T>*> *array);
     virtual ~ArrayWorkers();
     void add(T p);
     void setDeleted(int index);
@@ -45,10 +46,34 @@ string ArrayWorkers<T>::getText(int row, int column)
 }
 
 template<typename T>
-ArrayWorkers<T>::ArrayWorkers() : AbstractTableModel<T >()
+ArrayWorkers<T>::ArrayWorkers() : AbstractTableModel<T>()
 {
-    array = new vector<T >();
+    array = new vector<T>();
 }
+
+template<typename T>
+ArrayWorkers<T>::ArrayWorkers(vector<T> *array) : AbstractTableModel<T>(), array(array)
+{
+}
+
+// template<typename T>
+// ArrayWorkers<T>::ArrayWorkers(vector<vector<T>*> *array) : AbstractTableModel<T>()
+// {
+//     this->array = new vector<T>();
+//     cout << "usao vector<<Audit*>*>*" << endl;
+//     cout << array->size() << endl;
+//     cout << this->array->size() << endl;
+//     for(int i = 0; i < array->size(); i++)
+//     {
+//         cout << "i " << i << endl;
+//         for(int j = 0; j < array->at(i)->size(); j++)
+//         {
+//             cout << "j" << j << endl;
+//             this->array->push_back(array->at(i)->at(j));
+//         }
+//     }
+//     cout << "prosao vector<<Audit*>*>*" << endl;
+// }
 
 template<typename T>
 void ArrayWorkers<T>::setDeleted(int index)
@@ -61,10 +86,7 @@ bool ArrayWorkers<T>::isDeleted(int index)
     return array->at(index)->isDeleted();
 }
 
-template<typename T>
-ArrayWorkers<T>::ArrayWorkers(vector<T> *array) : AbstractTableModel<T >(), array(array)
-{
-}
+
 
 template<typename T>
 int ArrayWorkers<T>::numberOfRows()
@@ -98,14 +120,14 @@ T ArrayWorkers<T>::getRow(int indeks)
 template<typename T>
 void ArrayWorkers<T>::pushRow(int row, T  elem){
     array->insert(array->begin() + row, elem);
-    AbstractTableModel<T >::pushRow(row, elem);
+    AbstractTableModel<T>::pushRow(row, elem);
 };
 
 template<typename T>
 void ArrayWorkers<T>::removeRow(int index)
 {
     array->erase(array->begin() + index);
-    AbstractTableModel<T >::removeRow(index);
+    AbstractTableModel<T>::removeRow(index);
 }
 
 template<typename T>

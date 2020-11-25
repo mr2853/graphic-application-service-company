@@ -11,18 +11,38 @@ Date::~Date()
 Date::Date(string in, int changed)
 {
     vector<string> delovi = tokenization(in, ":", ",", "", changed);
-    for(string s : delovi)
-        cout << "s deo: " << s << endl;
     if(delovi.size() == 5){
         this->hour = stod(delovi.at(0));
         this->minute = stod(delovi.at(1));
         this->day = stod(delovi.at(2));
-        this->month = stoi(delovi.at(3)); 
+        this->month = stoi(delovi.at(3));
+        int i = 0;
+        int last = 0;
+        while (i < delovi.at(4).size())
+        {
+            if(isdigit(delovi.at(4)[i]))
+            {
+                last = i;      
+            }
+            i++;
+        }
+        delovi.at(4) = delovi.at(4).substr(0, last+1);
         this->year = stoi(delovi.at(4));
     }
     else if(delovi.size() == 3){
         this->day = stod(delovi.at(0));
-        this->month = stoi(delovi.at(1)); 
+        this->month = stoi(delovi.at(1));
+        int i = 0;
+        int last = 0;
+        while (i < delovi.at(2).size())
+        {
+            if(isdigit(delovi.at(2)[i]))
+            {
+                last = i;      
+            }
+            i++;
+        }
+        delovi.at(2) = delovi.at(2).substr(0, last+1);
         this->year = stoi(delovi.at(2));
         this->hour = 0;
         this->minute = 0;
@@ -31,10 +51,24 @@ Date::Date(string in, int changed)
         this->hour = stod(delovi.at(1));
         this->minute = stod(delovi.at(2));
         this->day = stod(delovi.at(3));
-        this->month = stoi(delovi.at(4)); 
+        this->month = stoi(delovi.at(4));
+        int i = 0;
+        int last = 0;
+        while (i < delovi.at(5).size())
+        {
+            if(isdigit(delovi.at(5)[i]))
+            {
+                last = i;      
+            }
+            i++;
+        }
+        delovi.at(5) = delovi.at(5).substr(0, last+1);
         this->year = stoi(delovi.at(5));
         this->setDeleted();
     }
+    
+    for(string s : delovi)
+        cout << "s deo: " << s << endl;
 }
 void Date::setDeleted() {
 	deleted = true;
@@ -110,7 +144,7 @@ vector<Date*> Date::readArray(string in, int changed)
             in.erase(0, index + 2);
         }
         else if(in.find("Date[") != std::string::npos){
-            index = in.find_last_of(">");
+            index = in.find_last_of("]>");
             text.push_back(in.substr(0, index));
             in.erase(0, index + 2);
         }

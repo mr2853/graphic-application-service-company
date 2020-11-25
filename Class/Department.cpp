@@ -78,11 +78,6 @@ Department::Department(string &in, int changed)
     string twoDots = ":";
     string comma = ",";
 
-    commercialists = vector<Commercialist*>();
-    auditors = vector<Auditor*>();
-    accountants = vector<Accountant*>();
-    audits = vector<Audit*>();
-
     int index = in.find(twoDots);
     in.erase(0,index+1);
     index = in.find(comma);
@@ -98,6 +93,7 @@ Department::Department(string &in, int changed)
     
     index = in.find("],arrayOfWorker:<");
     string text = in.substr(0, index);
+    in.erase(0,index+17);
     index = text.find("[");
     string type = text.substr(0, index);
     if(type == "Accountant")
@@ -119,10 +115,10 @@ Department::Department(string &in, int changed)
     
     
 
-    in.erase(0,index+17);
     index = in.find("audits:<");
     string workers = in.substr(0, index);
-    cout << "workers size: " << workers.size() << endl;
+    cout << "\n\nworkers size: " << workers.size() << endl;
+    cout << workers << endl;
     in.erase(0,index+8);
     
     vector<string> textArray;
@@ -135,8 +131,8 @@ Department::Department(string &in, int changed)
             textArray.push_back(workers.substr(0, index));
             workers.erase(0, index + 2);
         }
-        else if(workers.find(">]") != std::string::npos){
-            index = workers.find(">]");
+        else if(workers.find("]>") != std::string::npos){
+            index = workers.find("]>");
             if(index == string::npos)
             {
                 index = workers.find("]");
@@ -170,17 +166,17 @@ Department::Department(string &in, int changed)
         cout << "dep3" << endl;
         if(type1 == "Commercialist"){
             cout << "dep3.1" << endl;
-            commercialists.push_back(new Commercialist(s, changed));
+            commercialists->push_back(new Commercialist(s, changed));
             cout << "dep3.2" << endl;
         }
         else if(type1 == "Auditor"){
             cout << "dep3.3" << endl;
-            auditors.push_back(new Auditor(s, changed));
+            auditors->push_back(new Auditor(s, changed));
             cout << "dep3.4" << endl;
         }
         else if(type1 == "Accountant"){
             cout << "dep3.5" << endl;
-            accountants.push_back(new Accountant(s, changed));
+            accountants->push_back(new Accountant(s, changed));
             cout << "dep3.6" << endl;
         }
         cout << "dep4" << endl;
@@ -215,15 +211,13 @@ string Department::getData(int column)
     }
     return "";
 }
-Department::Department(vector<Commercialist*> commercialists, vector<Auditor*> auditors,
-    vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits)
+Department::Department(vector<Commercialist*>* commercialists, vector<Auditor*>* auditors,
+    vector<Accountant*>* accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*>* audits)
     : commercialists(commercialists), auditors(auditors), accountants(accountants),
      headOfDepartment(headOfDepartment), name(name), audits(audits){}
 
 
-Department::Department(AbstractWorker *headOfDepartment, string name) : headOfDepartment(headOfDepartment), name(name),
-    commercialists(vector<Commercialist*>()), auditors(vector<Auditor*>()), accountants(vector<Accountant*>()), 
-    audits(vector<Audit*>()){}
+Department::Department(AbstractWorker *headOfDepartment, string name) : headOfDepartment(headOfDepartment), name(name){}
     
 AbstractWorker* Department::getHeadOfDepartment() {
     return headOfDepartment;
@@ -242,45 +236,45 @@ void Department::setName(string name) {
 }
 
 vector<Audit*>* Department::getAudits() {
-    return &audits;
+    return audits;
 }
 
-void Department::setAudits(vector<Audit*> audits) {
+void Department::setAudits(vector<Audit*>* audits) {
     this->audits = audits;
 }
 vector<Commercialist*>* Department::getCommercialists() {
-    return &commercialists;
+    return commercialists;
 }
 
-void Department::setCommercialists(vector<Commercialist*> commercialists) {
+void Department::setCommercialists(vector<Commercialist*>* commercialists) {
     this->commercialists = commercialists;
 }
 
 vector<Auditor*>* Department::getAuditors() {
-    return &auditors;
+    return auditors;
 }
 
 void Department::setDeleted() {
-    for(int i = 0; i < commercialists.size(); i++)
+    for(int i = 0; i < commercialists->size(); i++)
     {
-        commercialists.at(i)->setDeleted();
+        commercialists->at(i)->setDeleted();
     }
-    for(int i = 0; i < auditors.size(); i++)
+    for(int i = 0; i < auditors->size(); i++)
     {
-        auditors.at(i)->setDeleted();
+        auditors->at(i)->setDeleted();
     }
-    for(int i = 0; i < accountants.size(); i++)
+    for(int i = 0; i < accountants->size(); i++)
     {
-        accountants.at(i)->setDeleted();
+        accountants->at(i)->setDeleted();
     }
-    for(int i = 0; i < audits.size(); i++)
+    for(int i = 0; i < audits->size(); i++)
     {
-        audits.at(i)->setDeleted();
+        audits->at(i)->setDeleted();
     }
     headOfDepartment->setDeleted();
 	deleted = true;
 }
-void Department::setAuditors(vector<Auditor*> auditors) {
+void Department::setAuditors(vector<Auditor*>* auditors) {
     this->auditors = auditors;
 }
 
@@ -288,10 +282,10 @@ bool Department::isDeleted() {
 	return deleted;
 }
 vector<Accountant*>* Department::getAccountants() {
-    return &accountants;
+    return accountants;
 }
 
-void Department::setAccountants(vector<Accountant*> accountants) {
+void Department::setAccountants(vector<Accountant*>* accountants) {
     this->accountants = accountants;
 }
 
@@ -357,35 +351,35 @@ void Department::write(ostream &output, Department *d)
     d->headOfDepartment->write(output, d->headOfDepartment);
     output << ",arrayOfWorker:<";
 
-    for(int i = 0; i < d->accountants.size(); i++)
+    for(int i = 0; i < d->accountants->size(); i++)
     {
-        d->accountants.at(i)->write(output, d->accountants.at(i));
-        if(i < d->accountants.size()-1 || d->auditors.size() != 0 || d->commercialists.size() != 0)
+        d->accountants->at(i)->write(output, d->accountants->at(i));
+        if(i < d->accountants->size()-1 || d->auditors->size() != 0 || d->commercialists->size() != 0)
         {
             output << "#";
         }
     }
-    for(int i = 0; i < d->auditors.size(); i++)
+    for(int i = 0; i < d->auditors->size(); i++)
     {
-        d->auditors.at(i)->write(output, d->auditors.at(i));
-        if(i < d->auditors.size()-1 || d->commercialists.size() != 0)
+        d->auditors->at(i)->write(output, d->auditors->at(i));
+        if(i < d->auditors->size()-1 || d->commercialists->size() != 0)
         {
             output << "#";
         }
     }
-    for(int i = 0; i < d->commercialists.size(); i++)
+    for(int i = 0; i < d->commercialists->size(); i++)
     {
-        d->commercialists.at(i)->write(output, d->commercialists.at(i));
-        if(i < d->commercialists.size()-1)
+        d->commercialists->at(i)->write(output, d->commercialists->at(i));
+        if(i < d->commercialists->size()-1)
         {
             output << "#";
         }
     }
     output << ">,audits:<";
-    for(int i = 0; i < d->audits.size(); i++)
+    for(int i = 0; i < d->audits->size(); i++)
     {
-        d->audits.at(i)->write(output, d->audits.at(i));
-        if(i < d->audits.size()-1)
+        d->audits->at(i)->write(output, d->audits->at(i));
+        if(i < d->audits->size()-1)
         {
             output << "$";
         }

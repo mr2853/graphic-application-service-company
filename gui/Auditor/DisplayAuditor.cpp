@@ -6,7 +6,7 @@ DisplayAuditor::DisplayAuditor(int x, int y, int w, int h, const char *l)
 : DisplayWorker(x, y, 200, 190, "")
 {
     datesVisiting = new Fl_Multiline_Input(x, y+200, 100, 70, "Dates visiting:");
-    
+    datesVisiting->deactivate();
     this->end();
 }
 void DisplayAuditor::deactivate()
@@ -20,17 +20,17 @@ bool DisplayAuditor::isInputsEmpty()
     {
         return false;
     }
-    string a = datesVisiting->value();
-    try{
-        if(a.empty()){
-            throw EmptyInput();
-        }
-    }
-    catch(EmptyInput e)
-    {
-        fl_message(e.what("Dates visiting"));
-        return false;
-    }
+    // string a = datesVisiting->value();
+    // try{
+    //     if(a.empty()){
+    //         throw EmptyInput();
+    //     }
+    // }
+    // catch(EmptyInput e)
+    // {
+    //     fl_message(e.what("Dates visiting"));
+    //     return false;
+    // }
     return true;
 }
 string DisplayAuditor::getType()
@@ -56,37 +56,37 @@ void DisplayAuditor::setDatesVisiting(string t)
 {
     datesVisiting->value(t.c_str());
 }
-vector<Date*>* DisplayAuditor::getDatesVisiting(){
-    string t = this->datesVisiting->value();
-    ltrim(t);
-    vector<Date*> *dates = new vector<Date*>();
-    if(t.empty()){
-        return dates;
-    }
-    int index;
-    while(t.find(",") != string::npos){
-        index = t.find(",");
-        string subs = t.substr(0, index);
-        if(!correctDate(subs, 1)){
-            throw WrongDateWithTime();
-        }
-        ltrim(subs);
-        vector<int> d = getDate(subs);
-        t.erase(0, index + 1);
-        dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
-    }
-    if(t.find(",") == string::npos){
-        if(!correctDate(t, 1)){
-            throw WrongDateWithTime();
-        }
-        ltrim(t);
-        vector<int> d = getDate(t);
-        t.erase(0, index + 1);
-        dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
-        return dates;
-    }
-    return dates;
-}
+// vector<Date*>* DisplayAuditor::getDatesVisiting(){
+//     string t = this->datesVisiting->value();
+//     ltrim(t);
+//     vector<Date*> *dates = new vector<Date*>();
+//     if(t.empty()){
+//         return dates;
+//     }
+//     int index;
+//     while(t.find(",") != string::npos){
+//         index = t.find(",");
+//         string subs = t.substr(0, index);
+//         if(!correctDate(subs, 1)){
+//             throw WrongDateWithTime();
+//         }
+//         ltrim(subs);
+//         vector<int> d = getDate(subs);
+//         t.erase(0, index + 1);
+//         dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
+//     }
+//     if(t.find(",") == string::npos){
+//         if(!correctDate(t, 1)){
+//             throw WrongDateWithTime();
+//         }
+//         ltrim(t);
+//         vector<int> d = getDate(t);
+//         t.erase(0, index + 1);
+//         dates->push_back(new Date(d.at(0), d.at(1), d.at(2), d.at(3), d.at(4)));
+//         return dates;
+//     }
+//     return dates;
+// }
 
 void DisplayAuditor::displayWorker(Auditor *worker)
 {

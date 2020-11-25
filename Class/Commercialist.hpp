@@ -10,7 +10,7 @@ using namespace std;
 
 class Commercialist : public AbstractWorker{
 private:
-    vector<string*> *businessContact;
+    vector<string*> *businessContact = new vector<string*>();
     const string type = "Commercialist";
 public:
     Commercialist();

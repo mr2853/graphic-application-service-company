@@ -80,9 +80,9 @@ string Audit::getData(int column)
     }
     return "";
 }
-vector<Audit*> Audit::readArray(string in, int changed)
+vector<Audit*>* Audit::readArray(string in, int changed)
 {
-    vector<Audit*> array = vector<Audit*>();
+    vector<Audit*> *array = new vector<Audit*>();
     int index;
     vector<string> text;
     string type1;
@@ -118,8 +118,7 @@ vector<Audit*> Audit::readArray(string in, int changed)
         }
         index = s.find("[");
         s = s.substr(index, s.length());
-        Audit *d = new Audit(s, changed);
-        array.push_back(d);
+        array->push_back(new Audit(s, changed));
     }
     return array;
 };

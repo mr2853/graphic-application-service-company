@@ -42,11 +42,15 @@ void DataOfAccountants::add(Fl_Widget *widget, void *data)
     {
         return;
     }
-    Accountant *novaOsoba;
+    
     try{
-        novaOsoba = new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
+        d->table->add(new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
                         d->displayAccountant->getValueDateBirth(), d->displayAccountant->getValueSalary(),
-                        d->displayAccountant->getBodyIssuedPermit(), d->displayAccountant->getMaxAmountCompanyIncome());
+                        d->displayAccountant->getBodyIssuedPermit(), d->displayAccountant->getMaxAmountCompanyIncome()));
+
+        d->original->add(new Accountant(d->displayAccountant->getValueName(), d->displayAccountant->getValueLastName(),
+                        d->displayAccountant->getValueDateBirth(), d->displayAccountant->getValueSalary(),
+                        d->displayAccountant->getBodyIssuedPermit(), d->displayAccountant->getMaxAmountCompanyIncome()));
     }
     catch(WrongDate e)
     {
@@ -54,8 +58,6 @@ void DataOfAccountants::add(Fl_Widget *widget, void *data)
         return;
     }
                     
-    d->table->add(novaOsoba);
-    d->original->add(novaOsoba);
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
@@ -118,4 +120,5 @@ void DataOfAccountants::change(Fl_Widget *widget, void *d)
     }
 
     data->table->redraw();
+    data->displaySalary->refresh();
 }

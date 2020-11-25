@@ -13,15 +13,18 @@ DisplayAudit::DisplayAudit(int x, int y, int w, int h, const char *l)
     displayAuditor->deactivate();
     this->end();
 }
-void DisplayAudit::displayThisAudit(Audit* worker)
+void DisplayAudit::displayThisAudit(Audit* audit)
 {
-    displayAuditor->displayWorker(worker->getAuditor());
-    date->value(worker->getDate()->getDateWithTime().c_str());
+    cout << "display ovde1" << endl;
+    displayAuditor->displayWorker(audit->getAuditor());
+    cout << "display ovde2" << endl;
+    date->value(audit->getDate()->getDateWithTime().c_str());
+    cout << "display ovde3" << endl;
 }
 
-void DisplayAudit::displayThisAuditor(Auditor* worker)
+void DisplayAudit::displayThisAuditor(Auditor* auditor)
 {
-    displayAuditor->displayWorker(worker);
+    displayAuditor->displayWorker(auditor);
 }
 
 bool DisplayAudit::isInputsEmpty()
@@ -35,10 +38,6 @@ bool DisplayAudit::isInputsEmpty()
     catch(EmptyInput e)
     {
         fl_message(e.what("Name of Department"));
-        return false;
-    }
-    if(!displayAuditor->isInputsEmpty())
-    {
         return false;
     }
     return true;
@@ -96,9 +95,8 @@ Date* DisplayAudit::getDate()
     t.erase(0, index+1);
     
     int e = stoi(t);
-    Date *newDate = new Date(a,b,c,d,e);
     
-    return newDate;
+    return new Date(a,b,c,d,e);
 }
 
 void DisplayAudit::hideGroup() {

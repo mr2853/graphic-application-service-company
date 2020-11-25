@@ -9,3 +9,14 @@ for i in range(len(text1)):
         break
 
 print(len(text1) == len(text2))
+# def max(a,n):
+#     m = 0
+#     for i in range(n):
+#         s = 0
+#         for j in range(i,n):
+#             s = s + a[j]
+#             if m < s:
+#                 m = s
+#     return m
+# list = [2,-1,1,3,-4,-6,7,-2,3,-5]
+# print(max(list, 10))

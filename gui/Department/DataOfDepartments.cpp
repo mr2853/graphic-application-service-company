@@ -17,7 +17,7 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, ArrayWorkers<De
     cout << "uslo" << endl;
     
     displayDepartment = new DisplayDepartment(x+50, y, 200, 300, "");
-
+    
     chDepartment = new Fl_Choice(x+450, y, 100, 40, "Departments:");
     cout << "ovde" << endl;
     this->updateChDepart();
@@ -272,9 +272,8 @@ void DataOfDepartments::add(Fl_Widget *widget, void *data)
         fl_message(e.what("Date birth"));
         return;
     }
-    Department *department = new Department(worker, d->displayDepartment->getName());
-    d->table->add(department);
-    d->original->add(department);
+    d->table->add(new Department(worker, d->displayDepartment->getName()));
+    d->original->add(new Department(worker, d->displayDepartment->getName()));
     d->updateChDepart();
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();

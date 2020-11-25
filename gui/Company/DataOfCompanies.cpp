@@ -16,7 +16,7 @@ DataOfCompanies::DataOfCompanies(int x, int y, int w, int h, ArrayWorkers<Compan
  : DataOf(x , y ,w ,h , original, changed, data, l){
     
     display = new DisplayCompany(x+50, y, 200, 300, "");
-
+    
     chCompany = new Fl_Choice(x+450, y, 100, 40, "Companies:");
     this->updateChCompany();
     btnDetails = new Fl_Button(x+450, y+50, 150, 50, "Data of Company");
@@ -180,16 +180,43 @@ void DataOfCompanies::audits(Fl_Widget *widget, void *d)
             if(counter == intDep)
             {
                 company1 = data->original->getElement(j);
+                break;
             }
             counter++;
         }
     }
     Company *company2 = data->changed->getElement(intDep);
-    
-    DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(), 
-        new ArrayWorkers<Audit*>(company1->getCompanyAudits()), new ArrayWorkers<Audit*>(company2->getCompanyAudits()),
-         new ArrayWorkers<Department*>(company1->getDepartments()), new ArrayWorkers<Department*>(company2->getDepartments()), data);
+    cout << "pocetak" << endl;
+    vector<Audit*>* audits1 = new vector<Audit*>();
+    for(int i = 0; i < company1->getDepartments()->size(); i++)
+    {
+        if(company1->getDepartments()->at(i)->isDeleted())
+        {
+            continue;
+        }
+        for(int j = 0; j < company1->getDepartments()->at(i)->getAudits()->size(); j++)
+        {
+            if(company1->getDepartments()->at(i)->getAudits()->at(j)->isDeleted())
+            {
+                continue;
+            }
+            audits1->push_back(company1->getDepartments()->at(i)->getAudits()->at(j));
+        }
+    }
 
+    vector<Audit*>* audits2 = new vector<Audit*>();
+    for(int i = 0; i < company2->getDepartments()->size(); i++)
+    {
+        for(int j = 0; j < company2->getDepartments()->at(i)->getAudits()->size(); j++)
+        {
+            audits2->push_back(company2->getDepartments()->at(i)->getAudits()->at(j));
+        }
+    }
+
+    DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(), 
+        new ArrayWorkers<Audit*>(audits1), new ArrayWorkers<Audit*>(audits2),
+         new ArrayWorkers<Department*>(company1->getDepartments()), new ArrayWorkers<Department*>(company2->getDepartments()), data);
+    cout << "krajj" << endl;
     data->hideGroup();
     data->Fl_Group::add(dataOfAudits);
 }
@@ -204,9 +231,9 @@ void DataOfCompanies::add(Fl_Widget *widget, void *data)
     {
         return;
     }
-    Company *company = new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber());
-    d->table->add(company);
-    d->original->add(company);
+    // Company *company = new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber());
+    d->table->add(new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber()));
+    d->original->add(new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber()));
     d->updateChCompany();
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();

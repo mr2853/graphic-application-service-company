@@ -14,39 +14,39 @@ using namespace std;
 class Department
 {
 private:
-    vector<Commercialist*> commercialists;
-    vector<Auditor*> auditors;
-    vector<Accountant*> accountants;
+    vector<Commercialist*>* commercialists = new vector<Commercialist*>();
+    vector<Auditor*>* auditors = new vector<Auditor*>();
+    vector<Accountant*>* accountants = new vector<Accountant*>();
 
     AbstractWorker* headOfDepartment;
     string name;
     bool deleted = false;
-    vector<Audit*> audits;
+    vector<Audit*>* audits = new vector<Audit*>();
 
 public:
     Department();
     ~Department();
     Department(string &in, int changed);
     Department(AbstractWorker *headOfDepartment, string name);
-    Department(vector<Commercialist*> commercialists, vector<Auditor*> auditors,
-    vector<Accountant*> accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*> audits);
+    Department(vector<Commercialist*>* commercialists, vector<Auditor*>* auditors,
+    vector<Accountant*>* accountants, AbstractWorker *headOfDepartment, string name, vector<Audit*>* audits);
 
     virtual bool isDeleted();
     virtual void setDeleted();
     vector<AbstractWorker*> getWorker();
-    void setWorker(vector<AbstractWorker*> worker);
+    void setWorker(vector<AbstractWorker*>* worker);
     AbstractWorker* getHeadOfDepartment();
     void setHeadOfDepartment(AbstractWorker *headOfDepartment);
     string getName();
     void setName(string name);
     vector<Audit*>* getAudits();
-    void setAudits(vector<Audit*> audits);
+    void setAudits(vector<Audit*>* audits);
     vector<Commercialist*>* getCommercialists();
-	void setCommercialists(vector<Commercialist*> commercialists);
+	void setCommercialists(vector<Commercialist*>* commercialists);
 	vector<Auditor*>* getAuditors();
-	void setAuditors(vector<Auditor*> auditors);
+	void setAuditors(vector<Auditor*>* auditors);
 	vector<Accountant*>* getAccountants();
-	void setAccountants(vector<Accountant*> accountants);
+	void setAccountants(vector<Accountant*>* accountants);
     static vector<Department*>* readArray(string in, int changed);
     double getMaxSalary();
     double getMinSalary();

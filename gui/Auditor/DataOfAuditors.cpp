@@ -52,25 +52,25 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
     {
         return;
     }
-    WorkerTable<Auditor*> *auditorTable = d->table;
-    Auditor* novaOsoba;
+    
     try{
-        novaOsoba = new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
-                        d->displayAuditor->getValueDateBirth(), d->displayAuditor->getValueSalary(), d->displayAuditor->getDatesVisiting());
+        d->table->add(new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
+                        d->displayAuditor->getValueDateBirth(), d->displayAuditor->getValueSalary()));
+
+        d->original->add(new Auditor(d->displayAuditor->getValueName(), d->displayAuditor->getValueLastName(),
+                        d->displayAuditor->getValueDateBirth(), d->displayAuditor->getValueSalary()));
     }
     catch(WrongDate e)
     {
         fl_message(e.what("Date birth"));
         return;
     }
-    catch(WrongDateWithTime e)
-    {
-        fl_message(e.what("Dates visiting"));
-        return;
-    }
+    // catch(WrongDateWithTime e)
+    // {
+    //     fl_message(e.what("Dates visiting"));
+    //     return;
+    // }
                     
-    auditorTable->add(novaOsoba);
-    d->original->add(novaOsoba);
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
@@ -95,7 +95,7 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
         a->setLastname(data->displayAuditor->getValueLastName());
         a->setSalary(data->displayAuditor->getValueSalary());
         a->setDateBirth(data->displayAuditor->getValueDateBirth());
-        a->setDatesVisiting(data->displayAuditor->getDatesVisiting());
+        // a->setDatesVisiting(data->displayAuditor->getDatesVisiting());
     }
     catch(WrongDate e)
     {
@@ -120,7 +120,7 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
                 a1->setLastname(data->displayAuditor->getValueLastName());
                 a1->setSalary(data->displayAuditor->getValueSalary());
                 a1->setDateBirth(data->displayAuditor->getValueDateBirth());
-                a1->setDatesVisiting(data->displayAuditor->getDatesVisiting());
+                // a1->setDatesVisiting(data->displayAuditor->getDatesVisiting());
                 break;
             }
             counter++;
@@ -128,4 +128,5 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
     }
 
     data->table->redraw();
+    data->displaySalary->refresh();
 }
