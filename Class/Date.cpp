@@ -66,9 +66,6 @@ Date::Date(string in, int changed)
         this->year = stoi(delovi.at(5));
         this->setDeleted();
     }
-    
-    for(string s : delovi)
-        cout << "s deo: " << s << endl;
 }
 void Date::setDeleted() {
 	deleted = true;
@@ -123,7 +120,6 @@ void Date::setYear(int year) {
 }
 string Date::getDate()
 {
-    cout << day << " " << month << " " << year << endl;
     return to_string(day) + "-" + to_string(month) + "-" + to_string(year);
 }
 string Date::getDateWithTime()
@@ -154,14 +150,11 @@ vector<Date*> Date::readArray(string in, int changed)
     }
     for(string &s : text)
     {
-        // index = s.find("[");
-        // type1 = s.substr(0, index);
         if(changed == 1)
         {
             string someText = s;
             index = someText.find(":");
             someText.erase(0,index+1);
-            cout << "\n\ns referenca: " << s << endl;
             index = someText.find(",");
             string type = someText.substr(0, index);
             if(type == "true")

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor*> *original, ArrayWorkers<Auditor*> *changed, Company *company, void *d, const char *l)
+DataOfAuditors::DataOfAuditors(int x, int y, int w, int h, Array<Auditor*> *original, Array<Auditor*> *changed, Company *company, void *d, const char *l)
  : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
     displayAuditor = new DisplayAuditor(x+50, y, 300, 390, "");
@@ -39,6 +39,7 @@ void DataOfAuditors::setDisplay(int indeks)
     this->displaySalary->setCurrent(this->getElement(this->getCurrent())->getSalary());
     this->refreshDisplaySalary();
     updateLabel();
+    this->checkButtons();
 }
 
 DataOfAuditors::~DataOfAuditors()
@@ -65,11 +66,6 @@ void DataOfAuditors::add(Fl_Widget *widget, void *data)
         fl_message(e.what("Date birth"));
         return;
     }
-    // catch(WrongDateWithTime e)
-    // {
-    //     fl_message(e.what("Dates visiting"));
-    //     return;
-    // }
                     
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
@@ -95,7 +91,6 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
         a->setLastname(data->displayAuditor->getValueLastName());
         a->setSalary(data->displayAuditor->getValueSalary());
         a->setDateBirth(data->displayAuditor->getValueDateBirth());
-        // a->setDatesVisiting(data->displayAuditor->getDatesVisiting());
     }
     catch(WrongDate e)
     {
@@ -120,7 +115,6 @@ void DataOfAuditors::change(Fl_Widget *widget, void *d)
                 a1->setLastname(data->displayAuditor->getValueLastName());
                 a1->setSalary(data->displayAuditor->getValueSalary());
                 a1->setDateBirth(data->displayAuditor->getValueDateBirth());
-                // a1->setDatesVisiting(data->displayAuditor->getDatesVisiting());
                 break;
             }
             counter++;

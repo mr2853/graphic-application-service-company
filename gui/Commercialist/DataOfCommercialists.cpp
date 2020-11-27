@@ -7,7 +7,7 @@
 
 using namespace std;
 
-DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayWorkers<Commercialist*> *original, ArrayWorkers<Commercialist*> *changed, Company *company, void *d, const char *l)
+DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, Array<Commercialist*> *original, Array<Commercialist*> *changed, Company *company, void *d, const char *l)
  : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
      
@@ -19,6 +19,7 @@ DataOfCommercialists::DataOfCommercialists(int x, int y, int w, int h, ArrayWork
     if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
+    this->checkButtons();
     this->end();
  }
 

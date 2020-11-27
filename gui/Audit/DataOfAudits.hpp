@@ -9,15 +9,15 @@
 #include "../../Class/Audit.hpp"
 #include "DisplayAudit.hpp"
 #include "../DataOf.hpp"
-#include "../ArrayWorkers.hpp"
+#include "../Array.hpp"
 #include "../../Class/Department.hpp"
 
 class DataOfAudits : public DataOf<Audit*>{
 protected:
     Fl_Choice *chAuditor;
     Fl_Choice *chDepartment;
-    ArrayWorkers<Department*> *changedDepartments;
-    ArrayWorkers<Department*> *originalDepartments;
+    Array<Department*> *changedDepartments;
+    Array<Department*> *originalDepartments;
     DisplayAudit *displayAudit;
     
     static void add(Fl_Widget *widget, void *data);
@@ -32,8 +32,8 @@ protected:
     void isAuditsEmpty();
     void isAuditorsEmpty();
 public:
-    DataOfAudits(int x, int y, int w, int h, ArrayWorkers<Audit*> *original, ArrayWorkers<Audit*> *changed,
-     ArrayWorkers<Department*> *originalDepartments, ArrayWorkers<Department*> *changedDepartments, void *mainWindow, const char *l=0);
+    DataOfAudits(int x, int y, int w, int h, Array<Audit*> *original, Array<Audit*> *changed,
+     Array<Department*> *originalDepartments, Array<Department*> *changedDepartments, void *mainWindow, const char *l=0);
     virtual ~DataOfAudits();
     void hideGroup();
     void unhideGroup();

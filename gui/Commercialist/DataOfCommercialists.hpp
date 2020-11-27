@@ -19,7 +19,7 @@ protected:
     static void add(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *d);
 public:
-    DataOfCommercialists(int x, int y, int w, int h, ArrayWorkers<Commercialist*> *original, ArrayWorkers<Commercialist*> *changed, Company *company, void *mainWindow, const char *l=0);
+    DataOfCommercialists(int x, int y, int w, int h, Array<Commercialist*> *original, Array<Commercialist*> *changed, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfCommercialists();
     virtual void setDisplay(int indeks);
     void hideGroup();

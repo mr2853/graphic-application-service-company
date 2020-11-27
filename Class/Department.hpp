@@ -52,6 +52,7 @@ public:
     double getMinSalary();
     void write(ostream &output, Department *osobe);
     string getData(int column);
+    int getNumbOfWorkers();
 };
 
 #endif

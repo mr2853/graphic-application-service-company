@@ -18,7 +18,7 @@ Commercialist::Commercialist(string in, int changed)
        this->setSalary(stod(parts.at(3)));
 
        vector<string*>* businessContact = new vector<string*>(0);
-       cout << "\nPARTS:" << parts.at(4) << endl;
+
        int index1 = parts.at(4).find("<");
        string part = parts.at(4).substr(index1+1, parts.at(4).length());
        vector<string> a = tokenization(part, ":", "$");
@@ -28,7 +28,7 @@ Commercialist::Commercialist(string in, int changed)
            {
                a.at(i) = a.at(i).substr(0, a.at(i).length()-2);
            }
-           cout << "a[i]: " << a.at(i) << endl;
+           
            businessContact->push_back(new string(a.at(i)));
        }
        this->setBusinessContact(businessContact);
@@ -48,9 +48,7 @@ Commercialist::Commercialist(string in, int changed)
             {
                 int index = a.at(i).find(">");
                 string left = a.at(i).substr(0, index);
-                cout << "left: " << left << endl;
                 businessContact->push_back(new string(a.at(i).substr(0, index)));
-                cout << "businessContact at i: " << businessContact->at(i) << endl;
                 continue;
             }
             businessContact->push_back(new string(a.at(i)));

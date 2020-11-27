@@ -12,16 +12,16 @@
 #include <FL/fl_draw.H>
 #include <FL/Fl_Table_Row.H>
 #include <FL/Fl_Spinner.H>
-#include "ArrayWorkers.hpp"
+#include "Array.hpp"
 
 template<typename T>
 class WorkerTable : public Fl_Table_Row, protected AbstractDisplay<T>{
 protected:
-    ArrayWorkers<T>* changed;
+    Array<T>* changed;
     virtual void draw_cell(TableContext context, int row = 0, int column = 0, int x = 0, int y = 0, int w = 0, int h = 0);
 
 public:
-    WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* changed, const char* l=0);
+    WorkerTable(int x, int y, int w, int h, Array<T>* changed, const char* l=0);
     virtual ~WorkerTable();
     WorkerTable();
     void add(T p);
@@ -31,7 +31,7 @@ public:
 };
 
 template<typename T>
-WorkerTable<T>::WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* changed, const char* l) : Fl_Table_Row(x, y, w, h, l),
+WorkerTable<T>::WorkerTable(int x, int y, int w, int h, Array<T>* changed, const char* l) : Fl_Table_Row(x, y, w, h, l),
     changed(changed)
 {
     this->end();
@@ -39,7 +39,6 @@ WorkerTable<T>::WorkerTable(int x, int y, int w, int h, ArrayWorkers<T>* changed
     col_resize(1);
     col_header(1);
     row_header(1);
-    // changed->subscribeListener(this);
     this->refreshTable();
 }
 
@@ -110,9 +109,7 @@ void WorkerTable<T>::elementRemoved(int row)
 }
 
 template<typename T>
-WorkerTable<T>::~WorkerTable<T>()
-{
-}
+WorkerTable<T>::~WorkerTable<T>(){}
 
 template<typename T>
 void WorkerTable<T>::add(T r)

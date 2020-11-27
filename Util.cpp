@@ -187,18 +187,14 @@ bool checkDate(string &t, int min, int max)
         t.erase(0, t.size());
     }
     
-    //cout << "date data:" << stoi(number) << " " << min << " " << max << endl;
     if(max == -1)
     {
         if(!std::all_of(number.begin(), number.end(), ::isdigit) || min > stoi(number)){
-            //cout << "ovde je" << endl;
             return false;
         }
         return true;
     }
-    //cout << to_string(min > stoi(number)) << " " << to_string(stoi(number) > max) << endl;
     if(!std::all_of(number.begin(), number.end(), ::isdigit) || min > stoi(number) || stoi(number) > max){
-        //cout << "ovde izlazi" << endl;
         return false;
     }
     return true;
@@ -206,7 +202,6 @@ bool checkDate(string &t, int min, int max)
 bool correctDate(string t, int time)
 {
     ltrim(t);
-    //cout << "ovde" << endl;
     if(time == 1){
         
         if(!checkDate(t, 1, 24)) //hour
@@ -219,25 +214,20 @@ bool correctDate(string t, int time)
             return false;
         }
     }
-    //cout << "ovde1" << endl;
     
     if(!checkDate(t, 1, 31)) //day
     {
         return false;
     }
-    //cout << "ovde2" << endl;
 
     if(!checkDate(t, 1, 12)) //month
     {
         return false;
     }
-    //cout << "ovde3" << endl;
-    //cout << "t: " << t << endl;
     if(!checkDate(t, 1)) //year
     {
         return false;
     }
-    //cout << "ovde4" << endl;
     
     return true;
 }

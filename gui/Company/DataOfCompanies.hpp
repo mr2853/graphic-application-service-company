@@ -10,7 +10,7 @@
 #include "../../Class/Company.hpp"
 #include "DisplayCompany.hpp"
 #include "../DataOf.hpp"
-#include "../ArrayWorkers.hpp"
+#include "../Array.hpp"
 
 class DataOfCompanies : public DataOf<Company*>{
 protected:
@@ -29,7 +29,7 @@ protected:
     static void audits(Fl_Widget *widget, void *data);
     void isCompaniesEmpty();
 public:
-    DataOfCompanies(int x, int y, int w, int h, ArrayWorkers<Company*> *original, ArrayWorkers<Company*> *changed, void *data, const char *l=0);
+    DataOfCompanies(int x, int y, int w, int h, Array<Company*> *original, Array<Company*> *changed, void *data, const char *l=0);
     virtual ~DataOfCompanies();
     void hideGroup();
     void unhideGroup();

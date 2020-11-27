@@ -11,7 +11,7 @@
 #include "../DisplayWorker.hpp"
 #include "DisplayAuditor.hpp"
 #include "../DataOfWorker.hpp"
-#include "../ArrayWorkers.hpp"
+#include "../Array.hpp"
 
 class DataOfAuditors : public DataOfWorker<Auditor*>{
 protected:
@@ -21,7 +21,7 @@ protected:
     static void add(Fl_Widget *widget, void *data);
 
 public:
-    DataOfAuditors(int x, int y, int w, int h, ArrayWorkers<Auditor*> *original, ArrayWorkers<Auditor*> *changed, Company *company, void *mainWindow, const char *l=0);
+    DataOfAuditors(int x, int y, int w, int h, Array<Auditor*> *original, Array<Auditor*> *changed, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfAuditors();
     virtual void setDisplay(int indeks);
     void hideGroup();

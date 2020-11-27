@@ -15,11 +15,8 @@ DisplayAudit::DisplayAudit(int x, int y, int w, int h, const char *l)
 }
 void DisplayAudit::displayThisAudit(Audit* audit)
 {
-    cout << "display ovde1" << endl;
     displayAuditor->displayWorker(audit->getAuditor());
-    cout << "display ovde2" << endl;
     date->value(audit->getDate()->getDateWithTime().c_str());
-    cout << "display ovde3" << endl;
 }
 
 void DisplayAudit::displayThisAuditor(Auditor* auditor)

@@ -4,7 +4,7 @@
 #include <FL/Fl_Group.H>
 #include <FL/fl_message.H>
 #include <FL/Fl_Button.H>
-#include "ArrayWorkers.hpp"
+#include "Array.hpp"
 #include "WorkerTable.hpp"
 #include "AbstractDisplay.hpp"
 #include "../Util.hpp"
@@ -23,28 +23,31 @@ protected:
     DataOfDepartments* dataOfDepartments;
     void refreshDisplaySalary();
 public:
-    DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, Company *company, void *mainWindow, const char *l=0);
+    DataOfWorker(int x, int y, int w, int h, Array<T> *original, Array<T> *changed, Company *company, void *mainWindow, const char *l=0);
     virtual ~DataOfWorker();
 };
 
 template<typename T>
-DataOfWorker<T>::DataOfWorker(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, Company *company, void *d, const char *l) 
+DataOfWorker<T>::DataOfWorker(int x, int y, int w, int h, Array<T> *original, Array<T> *changed, Company *company, void *d, const char *l) 
 : DataOf<T>(x, y, w, h, original, changed, d, l), dataOfDepartments((DataOfDepartments*)d), company(company)
 {
-    displaySalary = new DisplaySalary(x+300, y+50, 300, 150);
+    displaySalary = new DisplaySalary(x+450, y+50, 300, 150);
     vector<void*> *v = new vector<void*>();
     v->push_back(d);
     v->push_back(this);
     this->btnGoBack->callback(DataOfWorker<T>::goBack, v);
+    this->checkButtons();
 }
 template<typename T>
 void DataOfWorker<T>::refreshDisplaySalary()
 {
-    this->displaySalary->setMin1(this->dataOfDepartments->getElement(this->dataOfDepartments->getCurrent())->getMinSalary());
-    this->displaySalary->setMax1(this->dataOfDepartments->getElement(this->dataOfDepartments->getCurrent())->getMaxSalary());
+    int chDepValue = this->dataOfDepartments->getChDepartmentValue();
+    this->displaySalary->setMin1(this->dataOfDepartments->getElement(chDepValue)->getMinSalary());
+    this->displaySalary->setMax1(this->dataOfDepartments->getElement(chDepValue)->getMaxSalary());
     this->displaySalary->setMin2(this->company->getMinSalary());
     this->displaySalary->setMax2(this->company->getMaxSalary());
-    this->displaySalary->refresh();
+    this->displaySalary->setAverage1(this->displaySalary->getMax1() / this->dataOfDepartments->getElement(chDepValue)->getNumbOfWorkers());
+    this->displaySalary->setAverage2(this->displaySalary->getMax2() / this->company->getNumbOfWorkers());
 }
 template<typename T>
 DataOfWorker<T>::~DataOfWorker<T>(){}

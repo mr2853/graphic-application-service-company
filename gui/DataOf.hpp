@@ -8,7 +8,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Text_Buffer.H>
 #include <string>
-#include "ArrayWorkers.hpp"
+#include "Array.hpp"
 #include "WorkerTable.hpp"
 #include "AbstractDisplay.hpp"
 #include "../Util.hpp"
@@ -19,8 +19,8 @@
 template<typename T>
 class DataOf : public Fl_Group, protected AbstractDisplay<T>{
 protected:
-    ArrayWorkers<T> *original;
-    ArrayWorkers<T> *changed;
+    Array<T> *original;
+    Array<T> *changed;
     WorkerTable<T> *table;
 
     int current = 0;
@@ -46,7 +46,7 @@ protected:
     void updateLabel();
     void checkButtons();
 public:
-    DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, void *mainWindow, const char *l=0);
+    DataOf(int x, int y, int w, int h, Array<T> *original, Array<T> *changed, void *mainWindow, const char *l=0);
     virtual ~DataOf();
     virtual void setDisplay(int indeks);
     virtual void addToOriginal(T a);
@@ -59,33 +59,14 @@ public:
     void hideGroup();
     virtual void unhideGroup();
     T getElement(int index);
-    // static void save(Fl_Widget *widget, void *data);
-    ArrayWorkers<T>* getArrayOriginal();
+    Array<T>* getArrayOriginal();
 };
 template<typename T>
-DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWorkers<T> *changed, void *d, const char *l)
+DataOf<T>::DataOf(int x, int y, int w, int h, Array<T> *original, Array<T> *changed, void *d, const char *l)
  : Fl_Group(x , y ,w ,h ,l), original(original), changed(changed)
  {
-    // this->original = new ArrayWorkers<T>();
-    // for(int i = 0; i < original->numberOfElement(); i++)
-    // {
-    //     this->original->add(original->getRow(i));
-    // }
-    // this->changed = new ArrayWorkers<T>();
-    // for(int i = 0; i < changed->numberOfElement(); i++)
-    // {
-    //     this->changed->add(changed->getRow(i));
-    // }
-
     vector<void*> *data = new vector<void*>();
     data->push_back(d);
-    if(this->original == original)
-    {
-        cout << "\n\njednaki su\n\n" << endl;
-    }
-    else{
-        cout << "\n\nnisu jednaki\n\n" << endl;
-    }
 
     table = new WorkerTable<T>(x+200, y+340, 400, 280, changed);
     btnChange = new Fl_Button(x+220, y+300, 70, 30, "Change");
@@ -94,28 +75,22 @@ DataOf<T>::DataOf(int x, int y, int w, int h, ArrayWorkers<T> *original, ArrayWo
     btnGoBack = new Fl_Button(x+460, y+300, 70, 30, "Go back");
     btnPrevious = new Fl_Button(x+250, y, 45, 70, "@<-");
     btnNext = new Fl_Button(x+300, y, 45, 70, "@->");
-    cout << "doso dovde1" << endl;
 
     btnNext->callback(nextElement, this);
     btnPrevious->callback(previousElement, this);
-
     btnAdd->callback(add, this);
     btnRemove->callback(removeElem, this);
+    btnChange->callback(change, this);
 
     data->push_back(this);
     btnGoBack->callback(goBack, data);
-    
-    btnChange->callback(change, this);
-    cout << "doso dovde2" << endl;
 
     if(changed->numberOfElement() != 0){
         this->setDisplay(current);
     }
     
-    // changed->subscribeListener(this);
     this->isArrayEmpty();
     this->checkButtons();
-    cout << "doso dovde3" << endl;
 }
 
 template<typename T>
@@ -128,7 +103,7 @@ T DataOf<T>::getElement(int index)
 }
 
 template<typename T>
-ArrayWorkers<T>* DataOf<T>::getArrayOriginal()
+Array<T>* DataOf<T>::getArrayOriginal()
 {
     return original;
 }
@@ -318,13 +293,13 @@ template<typename T>
 void DataOf<T>::removeElem(Fl_Widget *widget, void *data)
 {
     DataOf<T> *e = (DataOf<T> *)data;
-    int startRow;
-    int endRow;
-    int colLeft;
-    int colRight;
+    int startRow = -1;
+    int endRow = -1;
+    int colLeft = -1;
+    int colRight = -1;
     try{
         e->table->get_selection(startRow, colLeft, endRow, colRight);
-        if(startRow == -1 || endRow == -1 || colLeft == -1 || colRight == -1)
+        if(startRow == -1 || endRow == -1 || colLeft == -1 || colRight == -1 || startRow >= e->changed->numberOfElement())
         {
             throw UnselectedDataToRemove();
         }
@@ -336,9 +311,7 @@ void DataOf<T>::removeElem(Fl_Widget *widget, void *data)
     }
     for (int i = endRow; i >= startRow; i--)
     {
-        cout << "ovde" << endl;
         e->table->elementRemoved(i);
-        cout << "ovde1" << endl;
         int counter = 0;
         for(int j = 0; j < e->original->numberOfElement(); j++)
         {
@@ -346,17 +319,13 @@ void DataOf<T>::removeElem(Fl_Widget *widget, void *data)
             {
                 if(counter == i)
                 {
-                    cout << "dosao do setDelete" << endl;
-                    cout << counter << " - " << i << endl;
-                    cout << e->original->getElement(j)->isDeleted() << endl;
                     e->original->getElement(j)->setDeleted();
-                    cout << e->original->getElement(j)->isDeleted() << endl;
                 }
                 counter++;
             }
         }
     }
-    cout << "changed/original: " << e->changed->numberOfElement() << "/" << e->original->numberOfElement() << endl;
+    
     if(e->changed->numberOfElement() != 0)
     {
         e->setDisplay(e->changed->numberOfElement()-1);
@@ -372,24 +341,4 @@ void DataOf<T>::refreshTable()
     table->refreshTable();
 }
 
-// template<typename T>
-// void DataOf<T>::save(Fl_Widget *widget, void *d)
-// {
-//     int answer = fl_choice("Do you want to save changes and close window?", "Yes", "No", "Go back");
-//     if (answer == 0)
-//     {
-//         ArrayWorkers<T> data = *(ArrayWorkers<T>*)d;
-//         for(int j = 0; j < data->original->numberOfElement(); j++)
-//         {
-//             cout << j+1 << ". " << data->original->getElement(j)->isDeleted() << endl;
-//         }
-//         ofstream datoteka("podaciTest.txt");
-//         data->original->write(datoteka);
-//         datoteka.close();
-//     }
-//     if (answer < 2)
-//     {
-//         widget->hide();
-//     }
-// }
 #endif

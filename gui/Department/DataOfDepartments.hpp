@@ -9,7 +9,7 @@
 #include "../../Class/Department.hpp"
 #include "DisplayDepartment.hpp"
 #include "../DataOf.hpp"
-#include "../ArrayWorkers.hpp"
+#include "../Array.hpp"
 
 class DataOfDepartments : public DataOf<Department*>{
 protected:
@@ -29,10 +29,11 @@ protected:
     static void goBack(Fl_Widget *widget, void *data);
     void isDepartmentsEmpty();
 public:
-    DataOfDepartments(int x, int y, int w, int h, ArrayWorkers<Department*> *original, ArrayWorkers<Department*> *changed, void *mainWindow, const char *l=0);
+    DataOfDepartments(int x, int y, int w, int h, Array<Department*> *original, Array<Department*> *changed, void *mainWindow, const char *l=0);
     virtual ~DataOfDepartments();
     void hideGroup();
     void unhideGroup();
+    int getChDepartmentValue();
 };
 
 #endif

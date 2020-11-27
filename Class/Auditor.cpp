@@ -16,6 +16,7 @@ void Auditor::setDeleted() {
     }
 	AbstractWorker::setDeleted();
 }
+
 Auditor::Auditor(string text, int changed)
 {
     string twoDots = ":";
@@ -41,11 +42,10 @@ Auditor::Auditor(string text, int changed)
     index = text.find(lessThan);
     text.erase(0,index+1);
     vector<Date*> *dates = new vector<Date*>();
-    cout << "aud1" << endl;
     index = text.find_last_of(">");
     *dates = Date::readArray(text.substr(0, index), changed);
     text.erase(0, text.size());
-    cout << "aud2" << endl;
+    
     if(t.size() == 2){
         this->setName(t.at(0));
         this->setLastname(t.at(1));

@@ -8,7 +8,7 @@
 using namespace std;
 
 
-DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Accountant*> *original, ArrayWorkers<Accountant*> *changed, Company *company, void *d, const char *l)
+DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, Array<Accountant*> *original, Array<Accountant*> *changed, Company *company, void *d, const char *l)
  : DataOfWorker(x , y ,w ,h , original, changed, company, d, l) 
  {
     displayAccountant = new DisplayAccountant(x+50, y, 300, 390, "");
@@ -18,6 +18,7 @@ DataOfAccountants::DataOfAccountants(int x, int y, int w, int h, ArrayWorkers<Ac
     if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
     }
+    this->checkButtons();
     this->end();
 }
 

@@ -14,11 +14,18 @@ protected:
     double current = -1;
     double min2 = -1;
     double max2 = -1;
+    double average1 = -1;
+    double average2 = -1;
+
     Fl_Box *boxDep1;
     Fl_Box *boxDep2;
+    Fl_Box *boxDep3;
+    Fl_Box *boxDep4;
     
     Fl_Box *boxComp1;
     Fl_Box *boxComp2;
+    Fl_Box *boxComp3;
+    Fl_Box *boxComp4;
 public:
     DisplaySalary(int x, int y, int w, int h, const char* l=0);
     virtual ~DisplaySalary();
@@ -32,6 +39,10 @@ public:
     void setMax1(double max1);
     double getMax2();
     void setMax2(double max2);
+    double getAverage1();
+    void setAverage1(double average1);
+    double getAverage2();
+    void setAverage2(double average2);
     void refresh();
 };
 

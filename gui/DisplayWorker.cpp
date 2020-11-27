@@ -66,19 +66,10 @@ void DisplayWorker::unhide()
 }
 void DisplayWorker::displayWorker(AbstractWorker *worker)
 {
-    cout << "usao u display" << endl;
     name->value(worker->getName().c_str());
-    cout << "ovde" << endl;
     lastName->value(worker->getLastname().c_str());
-    cout << "ovde1" << endl;
-    cout << "date:" << worker->getDateBirth()->getDate() << endl;
-    cout << "ovde2" << endl;
-    cout << "date:" << worker->getDateBirth()->getDateWithTime() << endl;
-    cout << "ovde3" << endl;
     dateBirth->value(worker->getDateBirth()->getDateWithTime().c_str());
-    cout << "ovde4" << endl;
     salary->value(worker->getSalary());
-    cout << "ovde5" << endl;
 }
 
 string DisplayWorker::getValueName()

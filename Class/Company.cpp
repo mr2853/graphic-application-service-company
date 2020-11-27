@@ -14,21 +14,8 @@ Company::Company(string name, string taxIdentificationNumber, string identificat
     : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(new vector<Department*>()){}
 
 Company::Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments)
-    : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments)
-{
-    // for(int i = 0; i < departments->size(); i++)
-    // {
-    //     for(int j = 0; j < departments->at(i)->getAudits()->size(); j++)
-    //     {
-    //         audits->push_back(departments->at(i)->getAudits()->at(j));
-    //     }
-    // }
-}
+    : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments){}
 
-// vector<Audit*>* Company::getAudits()
-// {
-//     return audits;
-// }
 string Company::getData(int column)
 {
     if (column == 0)
@@ -123,6 +110,17 @@ double Company::getMinSalary()
     }
     return min;
 }
+
+int Company::getNumbOfWorkers()
+{
+    int number = 0;
+    for(int i = 0; i < departments->size(); i++)
+    {
+        number += departments->at(i)->getNumbOfWorkers();
+        number += 1;
+    }
+    return number;
+}
 string Company::getName() {
     return name;
 }
@@ -168,7 +166,7 @@ vector<Company*>* Company::readData1(string path, int changed)
     string comma = ",";
     string lessThan = "<";
     string twoDots = ":";
-    //cout << "prosao" << endl;
+
     while(path.find("Company[") != string::npos)
     {
         int index = path.find(twoDots);
@@ -193,9 +191,7 @@ vector<Company*>* Company::readData1(string path, int changed)
         string identificationNumber = path.substr(0, index);
         index = path.find(lessThan);
         
-        //cout << "path size: " << path.size() << endl;
         path.erase(0,index+1);
-        //cout << "path size: " << path.size() << endl;
         vector<Department*>* departments = new vector<Department*>();
         if(path.find("]$Company[") != string::npos)
         {
@@ -205,41 +201,28 @@ vector<Company*>* Company::readData1(string path, int changed)
         }
         else
         {
-            //cout << "ovde" << endl;
             index = path.find_last_of(">]");
             departments = Department::readArray(path.substr(0, index), changed);
-            //cout << "ovde1" << endl;
-            //cout << "path size: " << path.size() << endl;
-            //cout << index << endl;
-            //cout << "ovde1.2" << endl;
             path.erase(0, path.length());
-            //cout << "ovde2" << endl;
         }
-        //cout << "ovde3" << endl;
+        
         company->setName(name);
         company->setTaxIdentificationNumber(taxIdentificationNumber);
         company->setIdentificationNumber(identificationNumber);
         company->setDepartments(departments);
         
-        //cout << "prosao1" << endl;
         if(deleted == "true")
         {
             if(changed == 1)
             {
-                //cout << "here1" << endl;
                 continue;
-                //cout << "here2" << endl;
             }
             
-            //cout << "here11" << endl;
             company->setDeleted();
         }
-        //cout << "prosao2" << endl;
-
         ret->push_back(company);
     }
     in.close();
-    //cout << "kraj" << endl;
     return ret;
 }
 
