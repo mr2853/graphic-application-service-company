@@ -61,7 +61,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
             }
             line.erase(0,pos);
 
-            pos = line.find(",date:Date[");
+            pos = line.find(",date:");
             if(pos == string::npos){
                 break;
             }
@@ -70,7 +70,11 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
             parts.push_back(part);
             line.erase(0,pos+6);
 
-            part = line.substr(0, line.length());
+            pos = line.find("]");
+            if(pos == string::npos){
+                break;
+            }
+            part = line.substr(0, pos);
             parts.push_back(part);
             line.erase(0,line.length());
             break;
@@ -106,7 +110,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
                 break;
             }
             
-            string part = line.substr(0, pos);
+            string part = line.substr(0, pos+1);
             parts.push_back(part);
             line.erase(0,pos+2);
             continue;

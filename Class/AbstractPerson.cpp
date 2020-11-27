@@ -10,7 +10,7 @@ AbstractPerson::AbstractPerson(string name, string lastname, Date *dateBirth) : 
 void AbstractPerson::write(ostream &output, void *data)
 {
     AbstractPerson *d = (AbstractPerson*)data;
-    output << "[deleted:";
+    output << "deleted:";
     if(d->deleted)
     {
         output << "true";

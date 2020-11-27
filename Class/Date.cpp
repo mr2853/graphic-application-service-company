@@ -138,15 +138,15 @@ vector<Date*> Date::readArray(string in, int changed)
     string type1;
     while(true)
     {
-        if(in.find("]$Date") != std::string::npos){
-            index = in.find("]$Date");
+        if(in.find("$Date[") != std::string::npos){
+            index = in.find("$Date[");
             text.push_back(in.substr(0, index));
-            in.erase(0, index + 2);
+            in.erase(0, index + 1);
         }
         else if(in.find("Date[") != std::string::npos){
-            index = in.find_last_of("]>");
-            text.push_back(in.substr(0, index));
-            in.erase(0, index + 2);
+            index = in.find_last_of("]");
+            text.push_back(in.substr(0, index+1));
+            in.erase(0, index + 1);
         }
         else{
             break;
@@ -154,13 +154,14 @@ vector<Date*> Date::readArray(string in, int changed)
     }
     for(string &s : text)
     {
-        index = s.find("[");
-        type1 = s.substr(0, index);
+        // index = s.find("[");
+        // type1 = s.substr(0, index);
         if(changed == 1)
         {
             string someText = s;
             index = someText.find(":");
             someText.erase(0,index+1);
+            cout << "\n\ns referenca: " << s << endl;
             index = someText.find(",");
             string type = someText.substr(0, index);
             if(type == "true")

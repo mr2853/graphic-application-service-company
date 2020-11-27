@@ -28,9 +28,9 @@ Auditor::Auditor(string text, int changed)
     text.erase(0, index+10);
     
     index = text.find("],");
-    string t1 = text.substr(0, index);
+    string t1 = text.substr(0, index+1);
     Date* dateBirth = new Date(t1, changed);
-    text.erase(0,index+2);
+    text.erase(0,index);
 
     index = text.find(twoDots);
     text.erase(0,index+1);
@@ -42,7 +42,9 @@ Auditor::Auditor(string text, int changed)
     text.erase(0,index+1);
     vector<Date*> *dates = new vector<Date*>();
     cout << "aud1" << endl;
-    *dates = Date::readArray(text, changed);
+    index = text.find_last_of(">");
+    *dates = Date::readArray(text.substr(0, index), changed);
+    text.erase(0, text.size());
     cout << "aud2" << endl;
     if(t.size() == 2){
         this->setName(t.at(0));
@@ -56,12 +58,10 @@ Auditor::Auditor(string text, int changed)
     this->setSalary(salary);
     this->setDateBirth(dateBirth);
     this->setDatesVisiting(dates);
-    cout << "aud3" << endl;
     if(t.size() == 3)
     {
         this->setDeleted();
     }
-    cout << "aud4" << endl;
 }
 Auditor::Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting)
     : AbstractWorker(name, lastname, dateBirth, salary), datesVisiting(datesVisiting){}
@@ -134,7 +134,7 @@ string Auditor::getType()
 void Auditor::write(ostream &output, void *data)
 {
     Auditor *d = (Auditor*)data;
-    output << "Auditor";
+    output << "Auditor[";
     AbstractWorker::write(output, d);
     output << ",datesVisiting:<";
     for(int i = 0; i < d->datesVisiting->size(); i++)

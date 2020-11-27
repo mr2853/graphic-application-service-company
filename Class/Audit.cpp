@@ -94,9 +94,9 @@ vector<Audit*>* Audit::readArray(string in, int changed)
             in.erase(0, index + 2);
         }
         else if(in.find("Audit[") != std::string::npos){
-            index = in.find("]]>]");
-            text.push_back(in.substr(0, index+2));
-            in.erase(0, index + 3);
+            index = in.find_last_of("]");
+            text.push_back(in.substr(0, index+1));
+            in.erase(0, in.size());
         }
         else{
             break;

@@ -91,9 +91,9 @@ Department::Department(string &in, int changed)
     index = in.find(twoDots);
     in.erase(0,index+1);
     
-    index = in.find("],arrayOfWorker:<");
+    index = in.find(",arrayOfWorker:<");
     string text = in.substr(0, index);
-    in.erase(0,index+17);
+    in.erase(0,index+16);
     index = text.find("[");
     string type = text.substr(0, index);
     if(type == "Accountant")
@@ -110,16 +110,17 @@ Department::Department(string &in, int changed)
     }
     else
     {
+        cout << "Error with reading Head Of Department!" << endl;
         return;
     }
     
     
 
-    index = in.find("audits:<");
+    index = in.find(",audits:<");
     string workers = in.substr(0, index);
     cout << "\n\nworkers size: " << workers.size() << endl;
     cout << workers << endl;
-    in.erase(0,index+8);
+    in.erase(0,index+9);
     
     vector<string> textArray;
     string type1;
@@ -128,15 +129,15 @@ Department::Department(string &in, int changed)
     {
         if(workers.find("]#") != std::string::npos){
             index = workers.find("]#");
-            textArray.push_back(workers.substr(0, index));
+            textArray.push_back(workers.substr(0, index+1));
             workers.erase(0, index + 2);
         }
-        else if(workers.find("]>") != std::string::npos){
-            index = workers.find("]>");
-            if(index == string::npos)
-            {
-                index = workers.find("]");
-            }
+        else if(workers.find_last_of(">") != std::string::npos){
+            index = workers.find_last_of(">");
+            // if(index == string::npos)
+            // {
+            //     index = workers.find_last_of("]");
+            // }
             textArray.push_back(workers.substr(0, index));
             break;
         }
@@ -181,8 +182,9 @@ Department::Department(string &in, int changed)
         }
         cout << "dep4" << endl;
     }
-    
+    cout << "here department" << endl;
     audits = Audit::readArray(in, changed);
+    cout << "here department1" << endl;
     
     if(deleted == "true")
     {
@@ -190,6 +192,7 @@ Department::Department(string &in, int changed)
         this->setDeleted();
         cout << "ov2" << endl;
     }
+    cout << "here department2" << endl;
 }
 string Department::getData(int column)
 {
@@ -297,16 +300,16 @@ vector<Department*>* Department::readArray(string in, int changed)
     string type1;
     while(true)
     {
-        if(in.find("]$Department") != std::string::npos){
-            index = in.find("]$Department");
+        if(in.find("$Department") != std::string::npos){
+            index = in.find("$Department");
             text.push_back(in.substr(0, index));
-            in.erase(0, index + 2);
+            in.erase(0, index + 1);
         }
         else if(in.find("Department[") != std::string::npos){
-            index = in.find_last_of(">");
-            text.push_back(in.substr(0, index));
+            // index = in.find_last_of(">]");
+            text.push_back(in);
             cout << "erase department" << endl;
-            in.erase(0, index + 2);
+            in.erase(0, in.size());
             cout << "erase department 1" << endl;
         }
         else{

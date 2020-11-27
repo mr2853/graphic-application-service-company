@@ -197,20 +197,20 @@ vector<Company*>* Company::readData1(string path, int changed)
         path.erase(0,index+1);
         //cout << "path size: " << path.size() << endl;
         vector<Department*>* departments = new vector<Department*>();
-        if(path.find("$Company[") != string::npos)
+        if(path.find("]$Company[") != string::npos)
         {
-            index = path.find("$Company[");
+            index = path.find("]$Company[");
             departments = Department::readArray(path.substr(0, index), changed);
-            path.erase(0,index);
+            path.erase(0,index + 1);
         }
         else
         {
             //cout << "ovde" << endl;
-            departments = Department::readArray(path, changed);
+            index = path.find_last_of(">]");
+            departments = Department::readArray(path.substr(0, index), changed);
             //cout << "ovde1" << endl;
             //cout << "path size: " << path.size() << endl;
             //cout << index << endl;
-            path.erase(0,index);
             //cout << "ovde1.2" << endl;
             path.erase(0, path.length());
             //cout << "ovde2" << endl;
@@ -260,54 +260,6 @@ string Company::toString() const
     return t;
 }
 
-// vector<Commercialist*>* Company::getCompanyCommercialists()
-// {
-//     vector<Commercialist*>* ret = new vector<Commercialist*>();
-//     for(int i = 0; i < departments->size(); i++)
-//     {
-//         for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
-//         {
-//             ret->push_back(departments->at(i)->getCommercialists()->at(j));
-//         }
-//     }
-//     return ret;
-// }
-// vector<Auditor*>* Company::getCompanyAuditors()
-// {
-//     vector<Auditor*> *ret = new vector<Auditor*>();
-//     for(int i = 0; i < departments->size(); i++)
-//     {
-//         for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
-//         {
-//             ret->push_back(departments->at(i)->getAuditors()->at(j));
-//         }
-//     }
-//     return ret;
-// }
-// vector<Audit*>* Company::getCompanyAudits()
-// {
-//     vector<Audit*> *ret = new vector<Audit*>();
-//     for(int i = 0; i < departments->size(); i++)
-//     {
-//         for(int j = 0; j < departments->at(i)->getAudits()->size(); j++)
-//         {
-//             ret->push_back(departments->at(i)->getAudits()->at(j));
-//         }
-//     }
-//     return ret;
-// }
-// vector<Accountant*>* Company::getCompanyAccountants()
-// {
-//     vector<Accountant*>* ret = new vector<Accountant*>();
-//     for(int i = 0; i < departments->size(); i++)
-//     {
-//         for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
-//         {
-//             ret->push_back(departments->at(i)->getAccountants()->at(j));
-//         }
-//     }
-//     return ret;
-// }
 void Company::removeDepartment(int index)
 {
     departments->erase(departments->begin() + index);
@@ -316,15 +268,7 @@ vector<Department*>* Company::getDepartments()
 {
     return departments;
 }
-// vector<Department> Company::getDepartmentsOriginal()
-// {
-//     vector<Department> ret = vector<Department>();
-//     for(int i = 0; i < departments->size(); i++)
-//     {
-//         ret.push_back(*departments->at(i));
-//     }
-//     return ret;
-// }
+
 void Company::write(ostream &output, Company *d)
 {
     output << "Company[deleted:"; 
@@ -348,14 +292,5 @@ void Company::write(ostream &output, Company *d)
         }
     }
 
-    // output << ">,audits:<";
-    // for(int i = 0; i < d->audits->size(); i++)
-    // {
-    //     d->audits->at(i)->write(output, d->audits->at(i));
-    //     if(i < d->audits->size()-1)
-    //     {
-    //         output << "$";
-    //     }
-    // }
     output << ">]";
 }

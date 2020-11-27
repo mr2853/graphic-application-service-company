@@ -36,7 +36,7 @@ Accountant::Accountant(string in, int changed)
 void Accountant::write(ostream &output, void *data)
 {
     Accountant *d = (Accountant*)data;
-	output << "Accountant";
+	output << "Accountant[";
     AbstractWorker::write(output, d);
     output << ",bodyIssuedPermit:" << d->bodyIssuedPermit << ",maxAmountCompanyIncome:" << d->maxAmountCompanyIncome;
     output << "]";

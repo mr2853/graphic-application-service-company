@@ -18,11 +18,18 @@ Commercialist::Commercialist(string in, int changed)
        this->setSalary(stod(parts.at(3)));
 
        vector<string*>* businessContact = new vector<string*>(0);
-       string part = parts.at(4).substr(parts.at(4).find("<"), parts.at(4).length());
+       cout << "\nPARTS:" << parts.at(4) << endl;
+       int index1 = parts.at(4).find("<");
+       string part = parts.at(4).substr(index1+1, parts.at(4).length());
        vector<string> a = tokenization(part, ":", "$");
        
-       for(string s : a){
-           businessContact->push_back(new string(s));
+       for(int i = 0; i < a.size(); i++){
+           if(i == a.size()-1)
+           {
+               a.at(i) = a.at(i).substr(0, a.at(i).length()-2);
+           }
+           cout << "a[i]: " << a.at(i) << endl;
+           businessContact->push_back(new string(a.at(i)));
        }
        this->setBusinessContact(businessContact);
     }
@@ -40,7 +47,10 @@ Commercialist::Commercialist(string in, int changed)
             if(a.at(i).find(">") != string::npos)
             {
                 int index = a.at(i).find(">");
+                string left = a.at(i).substr(0, index);
+                cout << "left: " << left << endl;
                 businessContact->push_back(new string(a.at(i).substr(0, index)));
+                cout << "businessContact at i: " << businessContact->at(i) << endl;
                 continue;
             }
             businessContact->push_back(new string(a.at(i)));
@@ -74,7 +84,7 @@ string Commercialist::getType()
 void Commercialist::write(ostream &output, void *data)
 {
     Commercialist *d = (Commercialist*)data;
-    output << "Commercialist";
+    output << "Commercialist[";
     AbstractWorker::write(output, d);
     output << ",businessContact:<";
     for(int i = 0; i < d->businessContact->size(); i++)
