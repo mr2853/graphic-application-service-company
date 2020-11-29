@@ -56,7 +56,7 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
     {
         return;
     }
-    WorkerTable<Commercialist*> *table = d->table;
+    Table<Commercialist*> *table = d->table;
     Commercialist *novaOsoba;
     try{              
         table->add(new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),

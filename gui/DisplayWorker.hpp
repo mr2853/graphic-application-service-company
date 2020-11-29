@@ -21,14 +21,14 @@ public:
     DisplayWorker(int x, int y, int w, int h, const char *l);
     virtual ~DisplayWorker();
     virtual void displayWorker(AbstractWorker *worker);
-    string getValueName();
-    string getValueLastName();
-    Date* getValueDateBirth();
-    double getValueSalary();
+    string getValueName() const;
+    string getValueLastName() const;
+    Date* getValueDateBirth() const;
+    double getValueSalary() const;
     virtual void hide();
     void unhide();
-    virtual string getType();
-    bool isInputsEmpty();
+    virtual string getType() const;
+    bool isInputsEmpty() const;
 };
 
 

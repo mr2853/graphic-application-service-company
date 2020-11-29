@@ -27,12 +27,13 @@ protected:
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
     static void audits(Fl_Widget *widget, void *data);
-    void isCompaniesEmpty();
+    void isCompaniesEmpty() const;
 public:
     DataOfCompanies(int x, int y, int w, int h, Array<Company*> *original, Array<Company*> *changed, void *data, const char *l=0);
     virtual ~DataOfCompanies();
     void hideGroup();
     void unhideGroup();
+    int getValueChCompany();
 };
 
 #endif

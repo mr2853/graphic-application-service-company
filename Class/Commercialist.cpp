@@ -59,15 +59,21 @@ Commercialist::Commercialist(string in, int changed)
 }
 Commercialist::Commercialist(string name, string lastname, Date *dateBirth, double salary) : AbstractWorker(name, lastname, dateBirth, salary){}
 
-string* Commercialist::getContact(int indeks)
+string* Commercialist::getContact(int indeks) const
 {
     return businessContact->at(indeks);
 }
 void Commercialist::pushContact(string* contact)
 {
+    ltrim(*contact);
     businessContact->push_back(contact);
 }
-int Commercialist::getNumberOfBusinessContact()
+
+string* Commercialist::getBusinessContact(int index) const
+{
+    return businessContact->at(index);
+}
+int Commercialist::getNumberOfBusinessContact() const
 {
     return businessContact->size();
 }
@@ -75,7 +81,7 @@ void Commercialist::setBusinessContact(vector<string*> *businessContact)
 {
     this->businessContact = businessContact;
 }
-string Commercialist::getType()
+string Commercialist::getType() const
 {
 	return type;
 }

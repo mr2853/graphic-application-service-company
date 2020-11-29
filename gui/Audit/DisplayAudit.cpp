@@ -24,9 +24,10 @@ void DisplayAudit::displayThisAuditor(Auditor* auditor)
     displayAuditor->displayWorker(auditor);
 }
 
-bool DisplayAudit::isInputsEmpty()
+bool DisplayAudit::isInputsEmpty() const
 {
     string a = date->value();
+    ltrim(a);
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -40,7 +41,7 @@ bool DisplayAudit::isInputsEmpty()
     return true;
 }
 
-Audit* DisplayAudit::getAudit()
+Audit* DisplayAudit::getAudit() const
 {
     
     try{
@@ -63,10 +64,11 @@ DisplayAudit::~DisplayAudit(){}
 
 void DisplayAudit::setDate(string t)
 {
+    ltrim(t);
     date->value(t.c_str());
 }
 
-Date* DisplayAudit::getDate()
+Date* DisplayAudit::getDate() const
 {
     string t = date->value();
     ltrim(t);

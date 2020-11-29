@@ -48,22 +48,23 @@ Accountant::Accountant(string name, string lastname, Date *dateBirth, double sal
 : AbstractWorker(name, lastname, dateBirth, salary), bodyIssuedPermit(bodyIssuedPermit), 
     maxAmountCompanyIncome(maxAmountCompanyIncome){}
 
-string Accountant::getBodyIssuedPermit() {
+string Accountant::getBodyIssuedPermit() const {
 	return bodyIssuedPermit;
 }
 
 void Accountant::setBodyIssuedPermit(string bodyIssuedPermit) {
+	ltrim(bodyIssuedPermit);
 	this->bodyIssuedPermit = bodyIssuedPermit;
 }
 
-double Accountant::getMaxAmountCompanyIncome() {
+double Accountant::getMaxAmountCompanyIncome() const {
 	return maxAmountCompanyIncome;
 }
 
 void Accountant::setMaxAmountCompanyIncome(double maxAmountCompanyIncome) {
 	this->maxAmountCompanyIncome = maxAmountCompanyIncome;
 }
-string Accountant::getType()
+string Accountant::getType() const
 {
 	return type;
 }

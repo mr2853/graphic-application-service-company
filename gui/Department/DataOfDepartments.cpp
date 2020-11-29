@@ -42,7 +42,7 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Array<Departmen
     this->checkButtons();
     this->end();
 }
-int DataOfDepartments::getChDepartmentValue()
+int DataOfDepartments::getChDepartmentValue() const
 {
     return chDepartment->value();
 }
@@ -259,8 +259,10 @@ void DataOfDepartments::add(Fl_Widget *widget, void *data)
         return;
     }
     AbstractWorker* worker;
+    AbstractWorker* worker1;
     try{
         worker = d->displayDepartment->getNewHeadOfDepartment();
+        worker1 = d->displayDepartment->getNewHeadOfDepartment();
     }
     catch(WrongDate e)
     {
@@ -268,7 +270,7 @@ void DataOfDepartments::add(Fl_Widget *widget, void *data)
         return;
     }
     d->table->add(new Department(worker, d->displayDepartment->getName()));
-    d->original->add(new Department(worker, d->displayDepartment->getName()));
+    d->original->add(new Department(worker1, d->displayDepartment->getName()));
     d->updateChDepart();
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();

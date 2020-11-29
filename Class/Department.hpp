@@ -33,26 +33,26 @@ public:
 
     virtual bool isDeleted();
     virtual void setDeleted();
-    vector<AbstractWorker*> getWorker();
+    vector<AbstractWorker*> getWorker() const;
     void setWorker(vector<AbstractWorker*>* worker);
-    AbstractWorker* getHeadOfDepartment();
+    AbstractWorker* getHeadOfDepartment() const;
     void setHeadOfDepartment(AbstractWorker *headOfDepartment);
-    string getName();
+    string getName() const;
     void setName(string name);
     vector<Audit*>* getAudits();
     void setAudits(vector<Audit*>* audits);
-    vector<Commercialist*>* getCommercialists();
+    vector<Commercialist*>* getCommercialists() const;
 	void setCommercialists(vector<Commercialist*>* commercialists);
-	vector<Auditor*>* getAuditors();
+	vector<Auditor*>* getAuditors() const;
 	void setAuditors(vector<Auditor*>* auditors);
-	vector<Accountant*>* getAccountants();
+	vector<Accountant*>* getAccountants() const;
 	void setAccountants(vector<Accountant*>* accountants);
     static vector<Department*>* readArray(string in, int changed);
-    double getMaxSalary();
-    double getMinSalary();
+    double getMaxSalary() const;
+    double getMinSalary() const;
     void write(ostream &output, Department *osobe);
-    string getData(int column);
-    int getNumbOfWorkers();
+    string getData(int column) const;
+    int getNumbOfWorkers() const;
 };
 
 #endif

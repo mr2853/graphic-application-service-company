@@ -20,12 +20,12 @@ public:
     virtual ~DisplayAudit();
     void hideGroup();
     void unhide();
-    Date* getDate();
+    Date* getDate() const;
     void setDate(string t);
     void displayThisAudit(Audit* audit);
     void displayThisAuditor(Auditor* worker);
-    Audit* getAudit();
-    bool isInputsEmpty();
+    Audit* getAudit() const;
+    bool isInputsEmpty() const;
 };
 
 #endif

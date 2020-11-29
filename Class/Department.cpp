@@ -9,7 +9,7 @@ Department::~Department()
 {
     
 };
-double Department::getMaxSalary()
+double Department::getMaxSalary() const
 {
     double max = -1;
     for(int j = 0; j < this->getAccountants()->size(); j++)
@@ -41,7 +41,7 @@ double Department::getMaxSalary()
     }
     return max;
 }
-double Department::getMinSalary()
+double Department::getMinSalary() const
 {
     double min = -1;
     for(int j = 0; j < this->getAccountants()->size(); j++)
@@ -177,7 +177,7 @@ Department::Department(string &in, int changed)
         this->setDeleted();
     }
 }
-string Department::getData(int column)
+string Department::getData(int column) const
 {
     if (column == 0)
     {
@@ -204,7 +204,7 @@ Department::Department(vector<Commercialist*>* commercialists, vector<Auditor*>*
 
 
 Department::Department(AbstractWorker *headOfDepartment, string name) : headOfDepartment(headOfDepartment), name(name){}
-int Department::getNumbOfWorkers()
+int Department::getNumbOfWorkers() const
 {
     int number = 0;
     number += commercialists->size();
@@ -213,7 +213,7 @@ int Department::getNumbOfWorkers()
     number += 1;
     return number;
 }  
-AbstractWorker* Department::getHeadOfDepartment() {
+AbstractWorker* Department::getHeadOfDepartment() const {
     return headOfDepartment;
 }
 
@@ -221,22 +221,24 @@ void Department::setHeadOfDepartment(AbstractWorker *headOfDepartment) {
     this->headOfDepartment = headOfDepartment;
 }
 
-string Department::getName() {
+string Department::getName() const {
     return name;
 }
 
 void Department::setName(string name) {
+    ltrim(name);
     this->name = name;
 }
 
-vector<Audit*>* Department::getAudits() {
+vector<Audit*>* Department::getAudits()
+{
     return audits;
 }
 
 void Department::setAudits(vector<Audit*>* audits) {
     this->audits = audits;
 }
-vector<Commercialist*>* Department::getCommercialists() {
+vector<Commercialist*>* Department::getCommercialists() const {
     return commercialists;
 }
 
@@ -244,7 +246,7 @@ void Department::setCommercialists(vector<Commercialist*>* commercialists) {
     this->commercialists = commercialists;
 }
 
-vector<Auditor*>* Department::getAuditors() {
+vector<Auditor*>* Department::getAuditors() const {
     return auditors;
 }
 
@@ -275,7 +277,7 @@ void Department::setAuditors(vector<Auditor*>* auditors) {
 bool Department::isDeleted() {
 	return deleted;
 }
-vector<Accountant*>* Department::getAccountants() {
+vector<Accountant*>* Department::getAccountants() const {
     return accountants;
 }
 

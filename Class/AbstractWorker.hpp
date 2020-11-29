@@ -15,12 +15,12 @@ public:
     AbstractWorker(string name, string lastname, Date *dateBirth, double salary);
     virtual ~AbstractWorker() = 0;
 
-    virtual string getType();
+    virtual string getType() const;
     virtual void setSalary(double salary);
-    virtual double getSalary();
+    virtual double getSalary() const;
     virtual void setDeleted();
     virtual void write(ostream &output, void *d);
-    string getData(int column);
+    string getData(int column) const;
 };
 
 

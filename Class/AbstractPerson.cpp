@@ -1,4 +1,5 @@
 #include "AbstractPerson.hpp"
+#include "../Util.hpp"
 
 AbstractPerson::AbstractPerson(){};
 AbstractPerson::~AbstractPerson()
@@ -23,15 +24,16 @@ void AbstractPerson::write(ostream &output, void *data)
 	output << ",name:" << d->name << ",lastname:" << d->lastname << ",dateBirth:";
 	d->dateBirth->write(output, d->dateBirth);
 }
-string AbstractPerson::getName() {
+string AbstractPerson::getName() const {
 	return name;
 }
 
 void AbstractPerson::setName(string name) {
+	ltrim(name);
 	this->name = name;
 }
 
-string AbstractPerson::getLastname() {
+string AbstractPerson::getLastname() const {
 	return lastname;
 }
 
@@ -45,6 +47,7 @@ void AbstractPerson::setDeleted() {
 }
 
 void AbstractPerson::setLastname(string lastname) {
+	ltrim(lastname);
 	this->lastname = lastname;
 }
 
@@ -52,10 +55,10 @@ void AbstractPerson::setDateBirth(Date *dateBirth) {
 	this->dateBirth = dateBirth;
 }
 
-Date* AbstractPerson::getDateBirth() {
+Date* AbstractPerson::getDateBirth() const {
 	return dateBirth;
 }
-string AbstractPerson::getType()
+string AbstractPerson::getType() const
 {
 	return type;
 }

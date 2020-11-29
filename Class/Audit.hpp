@@ -19,7 +19,7 @@ public:
 
     Auditor* getAuditor();
 	void setAuditor(Auditor *auditor);
-	Date* getDate();
+	Date* getDate() const;
 	void setDate(Date *date);
     void write(ostream &output);
     static vector<Audit *>* readArray(string in, int changed);

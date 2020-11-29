@@ -19,13 +19,13 @@ protected:
 public:
     DisplayCommercialist(int x, int y, int w, int h, const char *l=0);
     virtual ~DisplayCommercialist();
-    vector<string*>* getBusinessContacts();
+    vector<string*>* getBusinessContacts() const;
     void setBusinessContact(string t);
     virtual void displayWorker(Commercialist *worker);
     virtual void hide();
     void unhide();
-    string getType();
-    bool isInputsEmpty();
+    string getType() const;
+    bool isInputsEmpty() const;
 };
 
 

@@ -9,11 +9,11 @@ void AbstractWorker::setSalary(double salary)
 {
     this->salary = salary;
 }
-double AbstractWorker::getSalary()
+double AbstractWorker::getSalary() const
 {
     return salary;
 }
-string AbstractWorker::getType()
+string AbstractWorker::getType() const
 {
 	return type;
 }
@@ -28,7 +28,7 @@ void AbstractWorker::setDeleted() {
 	AbstractPerson::setDeleted();
 }
 
-string AbstractWorker::getData(int column)
+string AbstractWorker::getData(int column) const
 {
     if (column == 0)
     {

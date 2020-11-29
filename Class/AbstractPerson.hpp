@@ -20,12 +20,12 @@ public:
     virtual ~AbstractPerson();
     AbstractPerson(string name, string lastname, Date *dateBirth);
 
-    virtual string getType();
-    virtual string getName();
+    virtual string getType() const;
+    virtual string getName() const;
 	virtual void setName(string name);
-	virtual string getLastname();
+	virtual string getLastname() const;
 	virtual void setLastname(string lastname);
-    virtual Date* getDateBirth();
+    virtual Date* getDateBirth() const;
 	virtual void setDateBirth(Date *dateBirth);
     virtual bool isDeleted();
     virtual void setDeleted();

@@ -5,7 +5,7 @@
 #include <FL/fl_message.H>
 #include <FL/Fl_Button.H>
 #include "Array.hpp"
-#include "WorkerTable.hpp"
+#include "Table.hpp"
 #include "AbstractDisplay.hpp"
 #include "../Util.hpp"
 #include "../Class/Company.hpp"

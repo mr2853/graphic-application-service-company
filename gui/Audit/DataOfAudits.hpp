@@ -26,14 +26,18 @@ protected:
     static void goBack(Fl_Widget *widget, void *data);
     static void displayAud(Fl_Widget *widget, void *data);
     static void displayDep(Fl_Widget *widget, void *data);
+    static void removeElem(Fl_Widget *widget, void *data);
+    
     void insertDataInChDepartment();
     void insertDataInChAuditor(vector<Auditor*>* auditors);
     void setDisplay(int indeks);
-    void isAuditsEmpty();
-    void isAuditorsEmpty();
+    void isAuditsEmpty() const;
+    void isAuditorsEmpty() const;
+    void refreshArrays(int start = 0);
+    void isEmpty();
 public:
-    DataOfAudits(int x, int y, int w, int h, Array<Audit*> *original, Array<Audit*> *changed,
-     Array<Department*> *originalDepartments, Array<Department*> *changedDepartments, void *mainWindow, const char *l=0);
+    DataOfAudits(int x, int y, int w, int h, Array<Department*> *changedDepartments, 
+                                            Array<Department*> *originalDepartments, void *mainWindow, const char *l=0);
     virtual ~DataOfAudits();
     void hideGroup();
     void unhideGroup();

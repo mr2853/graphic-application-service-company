@@ -9,7 +9,7 @@
 #include <FL/Fl_Text_Buffer.H>
 #include <string>
 #include "Array.hpp"
-#include "WorkerTable.hpp"
+#include "Table.hpp"
 #include "AbstractDisplay.hpp"
 #include "../Util.hpp"
 #include "../Class/Company.hpp"
@@ -21,7 +21,7 @@ class DataOf : public Fl_Group, protected AbstractDisplay<T>{
 protected:
     Array<T> *original;
     Array<T> *changed;
-    WorkerTable<T> *table;
+    Table<T> *table;
 
     int current = 0;
 
@@ -40,7 +40,7 @@ protected:
     static void change(Fl_Widget *widget, void *data);
     void elementPushed(int indeks, T element);
     void elementRemoved(int indeks);
-    void isArrayEmpty();
+    void isArrayEmpty() const;
 
 
     void updateLabel();
@@ -52,14 +52,14 @@ public:
     virtual void addToOriginal(T a);
     void addElement(Fl_Widget *widget, void *data);
     void refreshTable();
-    WorkerTable<T>* getTable();
+    Table<T>* getTable() const;
     void addElement(T a);
-    int getCurrent();
-    int sizeOfArray();
+    int getCurrent() const;
+    int sizeOfArray() const;
     void hideGroup();
     virtual void unhideGroup();
-    T getElement(int index);
-    Array<T>* getArrayOriginal();
+    T getElement(int index) const;
+    Array<T>* getArrayOriginal() const;
 };
 template<typename T>
 DataOf<T>::DataOf(int x, int y, int w, int h, Array<T> *original, Array<T> *changed, void *d, const char *l)
@@ -68,7 +68,7 @@ DataOf<T>::DataOf(int x, int y, int w, int h, Array<T> *original, Array<T> *chan
     vector<void*> *data = new vector<void*>();
     data->push_back(d);
 
-    table = new WorkerTable<T>(x+200, y+340, 400, 280, changed);
+    table = new Table<T>(x+200, y+340, 400, 280, changed);
     btnChange = new Fl_Button(x+220, y+300, 70, 30, "Change");
     btnAdd = new Fl_Button(x+300, y+300, 70, 30, "Add");
     btnRemove = new Fl_Button(x+380, y+300, 70, 30, "Remove");
@@ -91,19 +91,20 @@ DataOf<T>::DataOf(int x, int y, int w, int h, Array<T> *original, Array<T> *chan
     
     this->isArrayEmpty();
     this->checkButtons();
+    this->updateLabel();
 }
 
 template<typename T>
 void DataOf<T>::setDisplay(int index){}
 
 template<typename T>
-T DataOf<T>::getElement(int index)
+T DataOf<T>::getElement(int index) const
 {
     return changed->getElement(index);
 }
 
 template<typename T>
-Array<T>* DataOf<T>::getArrayOriginal()
+Array<T>* DataOf<T>::getArrayOriginal() const
 {
     return original;
 }
@@ -115,7 +116,7 @@ void DataOf<T>::addToOriginal(T a)
 }
 
 template<typename T>
-WorkerTable<T>* DataOf<T>::getTable()
+Table<T>* DataOf<T>::getTable() const
 {
     return table;
 }
@@ -128,7 +129,7 @@ void DataOf<T>::addElement(T a)
 }
 
 template<typename T>
-int DataOf<T>::sizeOfArray()
+int DataOf<T>::sizeOfArray() const
 {
     return changed->numberOfElement();
 }
@@ -155,7 +156,14 @@ void DataOf<T>::updateLabel()
         i++;
     }
     type = type.substr(last+1, type.length());
-    sstream << type <<" " << current + 1 << "/" << changed->numberOfElement();
+    if(this->changed->numberOfElement() != 0)
+    {
+        sstream << type <<" " << current + 1 << "/" << changed->numberOfElement();
+    }
+    else
+    {
+        sstream << type <<" " << 0 << "/" << 0;
+    }
     this->copy_label(sstream.str().c_str());
 }
 
@@ -222,7 +230,7 @@ void DataOf<T>::elementRemoved(int indeks) {
 }
 
 template<typename T>
-int DataOf<T>::getCurrent()
+int DataOf<T>::getCurrent() const
 {
     return current;
 }
@@ -240,7 +248,7 @@ DataOf<T>::~DataOf<T>()
 }
 
 template<typename T>
-void DataOf<T>::isArrayEmpty()
+void DataOf<T>::isArrayEmpty() const
 {
     if(changed->numberOfElement() == 0)
     {

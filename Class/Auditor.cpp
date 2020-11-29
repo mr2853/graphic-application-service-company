@@ -82,6 +82,7 @@ void Auditor::removeDateVisiting(Date* date, int original)
         {
             if(datesVisiting->at(i)->isEqual(date))
             {
+                cout << "proslo brisanje 1" << endl;
                 datesVisiting->at(i)->setDeleted();
                 return;
             }
@@ -93,6 +94,7 @@ void Auditor::removeDateVisiting(Date* date, int original)
         {
             if(datesVisiting->at(i)->isEqual(date))
             {
+                cout << "proslo brisanje 0" << endl;
                 datesVisiting->erase(datesVisiting->begin()+i);
                 return;
             }
@@ -123,10 +125,11 @@ void Auditor::setDatesVisiting(vector<Date*> *datesVisiting)
 {
     this->datesVisiting = datesVisiting;
 }
-vector<Date*>* Auditor::getDatesVisiting(){
+vector<Date*>* Auditor::getDatesVisiting()
+{
     return datesVisiting;
 }
-string Auditor::getType()
+string Auditor::getType() const
 {
 	return type;
 }
@@ -147,7 +150,7 @@ void Auditor::write(ostream &output, void *data)
     }
     output << ">]";
 }
-int Auditor::getNumberOfVisits()
+int Auditor::getNumberOfVisits() const
 {
     return datesVisiting->size();
 }

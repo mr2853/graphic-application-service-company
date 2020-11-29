@@ -15,8 +15,8 @@ private:
     vector<AbstractDisplay<T> *> listeners = vector<AbstractDisplay<T> *>();
 
 public:
-    virtual int numberOfElement() = 0;
-    virtual T getElement(int indeks) = 0;
+    virtual int numberOfElement() const = 0;
+    virtual T getElement(int indeks) const = 0;
     virtual void pushElement(int indeks, T element) = 0;
     virtual void removeElement(int indeks) = 0;
     void subscribeListener(AbstractDisplay<T> *listener);

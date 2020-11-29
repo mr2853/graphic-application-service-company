@@ -15,29 +15,29 @@ private:
     vector<T> *array;
     string type = "da";
 public:
-    virtual int numberOfRows();
-    virtual int numberOfColumns();
+    virtual int numberOfRows() const;
+    virtual int numberOfColumns() const;
     virtual void pushElement(int row, T  element);
-    virtual T  getRow(int row);
-    string getText(int row, int column);
-    virtual string horizontalHeader(int column);
-    virtual string verticalHeader(int row);
+    virtual T  getRow(int row) const;
+    string getText(int row, int column) const;
+    virtual string horizontalHeader(int column) const;
+    virtual string verticalHeader(int row) const;
     virtual void pushRow(int row, T  element);
     virtual void removeRow(int row);
     void write(ostream &output);
-    void read(istream &input);
+    void read(istream &input) const;
     Array();
     Array(vector<T> *array);
     virtual ~Array();
     void add(T p);
     void setDeleted(int index);
-    bool isDeleted(int index);
-    T  getElement(int in);
-    vector<T>* arrayOfNotDeleted();
+    bool isDeleted(int index) const;
+    T  getElement(int in) const;
+    vector<T>* arrayOfNotDeleted() const;
 };
 
 template<typename T>
-string Array<T>::getText(int row, int column)
+string Array<T>::getText(int row, int column) const
 {
     T o = this->getRow(row);
     return o->getData(column);
@@ -60,7 +60,7 @@ void Array<T>::setDeleted(int index)
     array->at(index)->setDeleted();
 }
 template<typename T>
-bool Array<T>::isDeleted(int index)
+bool Array<T>::isDeleted(int index) const
 {
     return array->at(index)->isDeleted();
 }
@@ -68,13 +68,13 @@ bool Array<T>::isDeleted(int index)
 
 
 template<typename T>
-int Array<T>::numberOfRows()
+int Array<T>::numberOfRows() const
 {
     return array->size();
 }
 
 template<typename T>
-int Array<T>::numberOfColumns()
+int Array<T>::numberOfColumns() const
 {
     string type = typeid(T).name();
     type = type.substr(1,type.length());
@@ -91,7 +91,7 @@ int Array<T>::numberOfColumns()
 }
 
 template<typename T>
-T Array<T>::getRow(int indeks)
+T Array<T>::getRow(int indeks) const
 {
     return array->at(indeks);
 }
@@ -123,7 +123,7 @@ void Array<T>::write(ostream &output)
 }
 
 template<typename T>
-void Array<T>::read(istream &input)
+void Array<T>::read(istream &input) const
 {
     int brojOsoba;
     input >> brojOsoba;
@@ -143,7 +143,7 @@ void Array<T>::read(istream &input)
 }
 
 template<typename T>
-string Array<T>::horizontalHeader(int column)
+string Array<T>::horizontalHeader(int column) const
 {
     string type = typeid(T).name();
     int i = 0;
@@ -233,7 +233,7 @@ string Array<T>::horizontalHeader(int column)
     return "";
 }
 template<typename T>
-string Array<T>::verticalHeader(int row){  
+string Array<T>::verticalHeader(int row) const{  
     return to_string(row+1);
 };
 template<typename T>
@@ -242,7 +242,10 @@ void Array<T>::pushElement(int row, T a)
     this->pushRow(row, a);
 }
 template<typename T>
-Array<T>::~Array(){}
+Array<T>::~Array()
+{
+    delete array;
+}
 
 template<typename T>
 void Array<T>::add(T p)
@@ -250,7 +253,7 @@ void Array<T>::add(T p)
     array->push_back(p);
 }
 template<typename T>
-T  Array<T>::getElement(int in)
+T  Array<T>::getElement(int in) const
 {
     return array->at(in);
 }

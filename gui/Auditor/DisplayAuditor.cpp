@@ -14,7 +14,7 @@ void DisplayAuditor::deactivate()
     DisplayWorker::deactivate();
     datesVisiting->deactivate();
 }
-bool DisplayAuditor::isInputsEmpty()
+bool DisplayAuditor::isInputsEmpty() const
 {
     if(!DisplayWorker::isInputsEmpty())
     {
@@ -22,7 +22,7 @@ bool DisplayAuditor::isInputsEmpty()
     }
     return true;
 }
-string DisplayAuditor::getType()
+string DisplayAuditor::getType() const
 {
     return "DisplayAuditor";
 }
@@ -43,6 +43,7 @@ void DisplayAuditor::unhide()
 }
 void DisplayAuditor::setDatesVisiting(string t)
 {
+    ltrim(t);
     datesVisiting->value(t.c_str());
 }
 
@@ -50,8 +51,11 @@ void DisplayAuditor::displayWorker(Auditor *worker)
 {
     DisplayWorker::displayWorker(worker);
     datesVisiting->value("");
+    string s = "";
     for(int i = 0; i < worker->getNumberOfVisits(); i++){
-        datesVisiting->insert(worker->getDateVisiting(i)->getDateWithTime().c_str());
-        datesVisiting->insert(",\n");
+        s.append(worker->getDateVisiting(i)->getDateWithTime());
+        s.append(",\n");
     }
+    cout << "s: " << s << endl;
+    datesVisiting->value(s.c_str());
 }

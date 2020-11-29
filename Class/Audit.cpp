@@ -50,11 +50,10 @@ bool Audit::isDeleted() {
 	return deleted;
 }
 void Audit::setDeleted() {
-    auditor->setDeleted();
     date->setDeleted();
 	deleted = true;
 }
-Date* Audit::getDate() {
+Date* Audit::getDate() const {
 	return date;
 }
 void Audit::setDate(Date *date) {

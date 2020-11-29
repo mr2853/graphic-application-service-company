@@ -73,7 +73,9 @@ void Date::setDeleted() {
 
 bool Date::isEqual(Date* date)
 {
-    if(this->hour == date->hour && this->minute == date->minute && this->day == date->day && this->month == date->month && this->year == date->year)
+    if(this->hour == date->hour && this->minute == date->minute 
+    && this->day == date->day && this->month == date->month 
+    && this->year == date->year && this->deleted == date->deleted)
     {
         return true;
     }
@@ -88,41 +90,41 @@ Date::Date(int hour, int minute, int day, int month, int year)
 Date::Date(int day, int month, int year)
     : day(day), month(month), year(year), minute(0), hour(0){}
 
-int Date::getHour() {
+int Date::getHour() const {
     return hour;
 }
 void Date::setHour(int hour) {
     this->hour = hour;
 }
-int Date::getMinute() {
+int Date::getMinute() const {
     return minute;
 }
 void Date::setMinute(int minute) {
     this->minute = minute;
 }
-int Date::getDay() {
+int Date::getDay() const {
     return day;
 }
 void Date::setDay(int day) {
     this->day = day;
 }
-int Date::getMonth() {
+int Date::getMonth() const {
     return month;
 }
 void Date::setMonth(int month) {
     this->month = month;
 }
-int Date::getYear() {
+int Date::getYear() const {
     return year;
 }
 void Date::setYear(int year) {
     this->year = year;
 }
-string Date::getDate()
+string Date::getDate() const
 {
     return to_string(day) + "-" + to_string(month) + "-" + to_string(year);
 }
-string Date::getDateWithTime()
+string Date::getDateWithTime() const
 {
     return to_string(hour) + "-" + to_string(minute) + "-" + Date::getDate();
 }

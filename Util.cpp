@@ -204,12 +204,12 @@ bool correctDate(string t, int time)
     ltrim(t);
     if(time == 1){
         
-        if(!checkDate(t, 1, 24)) //hour
+        if(!checkDate(t, 0, 24)) //hour
         {
             return false;
         }
         
-        if(!checkDate(t, 1, 59)) //minute
+        if(!checkDate(t, 0, 59)) //minute
         {
             return false;
         }

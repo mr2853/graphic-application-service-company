@@ -23,8 +23,8 @@ public:
     virtual void displayWorker(Auditor *worker);
     virtual void hide();
     void unhide();
-    string getType();
-    bool isInputsEmpty();
+    string getType() const;
+    bool isInputsEmpty() const;
     void deactivate();
 };
 

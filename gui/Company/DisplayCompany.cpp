@@ -17,11 +17,14 @@ DisplayCompany::DisplayCompany(int x, int y, int w, int h, const char *l)
 
 DisplayCompany::~DisplayCompany(){}
 
-bool DisplayCompany::isInputsEmpty()
+bool DisplayCompany::isInputsEmpty() const
 {
     string a = name->value();
+    ltrim(a);
     string b = taxIdentificationNumber->value();
+    ltrim(b);
     string c = identificationNumber->value();
+    ltrim(c);
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -56,17 +59,18 @@ bool DisplayCompany::isInputsEmpty()
 }
 void DisplayCompany::setName(string t)
 {
+    ltrim(t);
     name->value(t.c_str());
 }
 
-string DisplayCompany::getName()
+string DisplayCompany::getName() const
 {
     string s = name->value();
     ltrim(s);
     return s;
 }
 
-string DisplayCompany::getTaxIdentificationNumber()
+string DisplayCompany::getTaxIdentificationNumber() const
 {
     string s = taxIdentificationNumber->value();
     ltrim(s);
@@ -74,9 +78,10 @@ string DisplayCompany::getTaxIdentificationNumber()
 }
 void DisplayCompany::setTaxIdentificationNumber(string t)
 {
-     taxIdentificationNumber->value(t.c_str());
+    ltrim(t);
+    taxIdentificationNumber->value(t.c_str());
 }
-string DisplayCompany::getIdentificationNumber()
+string DisplayCompany::getIdentificationNumber() const
 {
     string s = identificationNumber->value();
     ltrim(s);
@@ -84,7 +89,8 @@ string DisplayCompany::getIdentificationNumber()
 }
 void DisplayCompany::setIdentificationNumber(string t)
 {
-     identificationNumber->value(t.c_str());
+    ltrim(t);
+    identificationNumber->value(t.c_str());
 }
 
 void DisplayCompany::hideGroup() {

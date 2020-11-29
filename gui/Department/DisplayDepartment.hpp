@@ -20,12 +20,12 @@ public:
     virtual ~DisplayDepartment();
     void hideGroup();
     void unhide();
-    string getName();
+    string getName() const;
     void setName(string t);
     void displayHeadOfDepartment(AbstractWorker* worker);
-    AbstractWorker* getNewHeadOfDepartment();
-    string getChTypeOfHead();
-    bool isInputsEmpty();
+    AbstractWorker* getNewHeadOfDepartment() const;
+    string getChTypeOfHead() const;
+    bool isInputsEmpty() const;
 };
 
 #endif

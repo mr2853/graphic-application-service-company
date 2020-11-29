@@ -20,11 +20,11 @@ public:
     Accountant(string name, string lastname, Date *dateBirth, double salary, string bodyIssuedPermit, double maxAmountCompanyIncome);
     ~Accountant();
 
-    string getBodyIssuedPermit();
+    string getBodyIssuedPermit() const;
 	void setBodyIssuedPermit(string bodyIssuedPermit);
-	double getMaxAmountCompanyIncome();
+	double getMaxAmountCompanyIncome() const;
 	void setMaxAmountCompanyIncome(double maxAmountCompanyIncome);
-    virtual string getType();
+    virtual string getType() const;
     virtual void write(ostream &output, void *d);
     virtual void setDeleted();
 };

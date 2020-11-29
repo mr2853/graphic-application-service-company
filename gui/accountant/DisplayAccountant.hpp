@@ -21,14 +21,14 @@ protected:
 public:
     DisplayAccountant(int x, int y, int w, int h, const char *l=0);
     virtual ~DisplayAccountant();
-    string getBodyIssuedPermit();
-    double getMaxAmountCompanyIncome();
+    string getBodyIssuedPermit() const;
+    double getMaxAmountCompanyIncome() const;
     void setBodyIssuedPermit(string t);
     void setMaxAmountCompanyIncome(string t);
     virtual void hide();
     void unhide();
-    string getType();
-    bool isInputsEmpty();
+    string getType() const;
+    bool isInputsEmpty() const;
 };
 
 

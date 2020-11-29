@@ -20,14 +20,14 @@ public:
     Auditor(string name, string lastname, Date *dateBirth, double salary);
     Auditor(string name, string lastname, Date *dateBirth, double salary, vector<Date*> *datesVisiting);
 
-    virtual string getType();
+    virtual string getType() const;
     void pushDateVisiting(Date *date);
     Date* getDateVisiting(int indeks);
     void setDatesVisiting(vector<Date*> *datesVisiting);
     vector<Date*>* getDatesVisiting();
     virtual string verticalHeader(int row);
     virtual string horizontalHeader(int kolona);
-    int getNumberOfVisits();
+    int getNumberOfVisits() const;
     bool isAvailabe(Date* date);
     void addDateVisiting(Date* date);
     void removeDateVisiting(Date* date, int original=0);

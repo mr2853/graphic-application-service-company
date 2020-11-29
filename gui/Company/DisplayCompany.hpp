@@ -20,13 +20,13 @@ public:
     virtual ~DisplayCompany();
     void hideGroup();
     void unhide();
-    string getName();
+    string getName() const;
     void setName(string t);
-    string getTaxIdentificationNumber();
+    string getTaxIdentificationNumber() const;
     void setTaxIdentificationNumber(string t);
-    string getIdentificationNumber();
+    string getIdentificationNumber() const;
     void setIdentificationNumber(string t);
-    bool isInputsEmpty();
+    bool isInputsEmpty() const;
 };
 
 #endif

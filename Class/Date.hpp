@@ -23,22 +23,22 @@ public:
     Date(int hour, int minute, int day, int month, int year);
     ~Date();
 
-	int getHour();
+	int getHour() const;
 	void setHour(int hour);
-	int getMinute();
+	int getMinute() const;
 	void setMinute(int minute);
-	int getDay();
+	int getDay() const;
 	void setDay(int day);
-	int getMonth();
+	int getMonth() const;
 	void setMonth(int month);
-	int getYear();
+	int getYear() const;
 	void setYear(int year);
     virtual bool isDeleted();
     virtual void setDeleted();
     bool isEqual(Date* date);
 
-    string getDate();
-    string getDateWithTime();
+    string getDate() const;
+    string getDateWithTime() const;
     static vector<Date *> readArray(string in, int changed);
     void write(ostream &output, Date *osobe);
 };

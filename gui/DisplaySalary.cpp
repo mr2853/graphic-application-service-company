@@ -16,13 +16,13 @@ DisplaySalary::DisplaySalary(int x, int y, int w, int h, const char* l) : Fl_Gro
 
     boxDep1->align(FL_ALIGN_LEFT);
     boxDep2->align(FL_ALIGN_RIGHT);
-    boxDep3->align(FL_ALIGN_TOP);
-    boxDep4->align(FL_ALIGN_BOTTOM);
+    boxDep3->align(FL_ALIGN_TOP_RIGHT);
+    boxDep4->align(FL_ALIGN_BOTTOM_RIGHT);
 
     boxComp1->align(FL_ALIGN_LEFT);
     boxComp2->align(FL_ALIGN_RIGHT);
-    boxComp3->align(FL_ALIGN_TOP);
-    boxComp4->align(FL_ALIGN_BOTTOM);
+    boxComp3->align(FL_ALIGN_TOP_RIGHT);
+    boxComp4->align(FL_ALIGN_BOTTOM_RIGHT);
     
     boxDep1->box(FL_UP_BOX);
     boxDep2->box(FL_UP_BOX);
@@ -93,7 +93,7 @@ void DisplaySalary::refresh()
     boxComp4->resize(boxComp4->x(), boxComp4->y(), boxComp2->w() * (average2 / max2), boxComp4->h());
     boxComp4->copy_label(sstream.str().c_str());
 }
-double DisplaySalary::getAverage1()
+double DisplaySalary::getAverage1() const
 {
     return min1;
 }
@@ -103,7 +103,7 @@ void DisplaySalary::setAverage1(double average1)
     this->average1 = average1;
     this->refresh();
 }
-double DisplaySalary::getAverage2()
+double DisplaySalary::getAverage2() const
 {
     return min1;
 }
@@ -113,7 +113,7 @@ void DisplaySalary::setAverage2(double average2)
     this->average2 = average2;
     this->refresh();
 }
-double DisplaySalary::getMin1()
+double DisplaySalary::getMin1() const
 {
     return min1;
 }
@@ -123,7 +123,7 @@ void DisplaySalary::setMin1(double min1)
     this->min1 = min1;
     this->refresh();
 }
-double DisplaySalary::getMin2()
+double DisplaySalary::getMin2() const
 {
     return min2;
 }
@@ -133,7 +133,7 @@ void DisplaySalary::setMin2(double min2)
     this->min2 = min2;
     this->refresh();
 }
-double DisplaySalary::getCurrent()
+double DisplaySalary::getCurrent() const
 {
     return current;
 }
@@ -143,7 +143,7 @@ void DisplaySalary::setCurrent(double current)
     this->current = current;
     this->refresh();
 }
-double DisplaySalary::getMax1()
+double DisplaySalary::getMax1() const
 {
     return max1;
 }
@@ -153,7 +153,7 @@ void DisplaySalary::setMax1(double max1)
     this->max1 = max1;
     this->refresh();
 }
-double DisplaySalary::getMax2()
+double DisplaySalary::getMax2() const
 {
     return max2;
 }

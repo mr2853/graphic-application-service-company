@@ -33,7 +33,7 @@ public:
     virtual ~DataOfDepartments();
     void hideGroup();
     void unhideGroup();
-    int getChDepartmentValue();
+    int getChDepartmentValue() const;
 };
 
 #endif

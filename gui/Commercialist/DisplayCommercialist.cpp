@@ -9,13 +9,14 @@ DisplayCommercialist::DisplayCommercialist(int x, int y, int w, int h, const cha
     
     this->end();
 }
-bool DisplayCommercialist::isInputsEmpty()
+bool DisplayCommercialist::isInputsEmpty() const
 {
     if(!DisplayWorker::isInputsEmpty())
     {
         return false;
     }
     string a = businessContact->value();
+    ltrim(a);
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -28,7 +29,7 @@ bool DisplayCommercialist::isInputsEmpty()
     }
     return true;
 }
-string DisplayCommercialist::getType()
+string DisplayCommercialist::getType() const
 {
     return "DisplayCommercialist";
 }
@@ -49,9 +50,10 @@ void DisplayCommercialist::unhide()
 }
 void DisplayCommercialist::setBusinessContact(string t)
 {
+    ltrim(t);
     businessContact->value(t.c_str());
 }
-vector<string*>* DisplayCommercialist::getBusinessContacts(){
+vector<string*>* DisplayCommercialist::getBusinessContacts() const{
     string t = this->businessContact->value();
     ltrim(t);
     vector<string*> *contacts = new vector<string*>(0);

@@ -23,29 +23,29 @@ public:
     Company(string name, string taxIdentificationNumber, string identificationNumber);
     Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments);
     
-    string getName();
+    string getName() const;
 	void setName(string name);
     virtual bool isDeleted();
     virtual void setDeleted();
-	string getTaxIdentificationNumber();
+	string getTaxIdentificationNumber() const;
 	void setTaxIdentificationNumber(string taxIdentificationNumber);
-	string getIdentificationNumber();
+	string getIdentificationNumber() const;
 	void setIdentificationNumber(string identificationNumber);
-	Department* getDepartment(int indeks);
+	Department* getDepartment(int indeks) const;
 	void pushDepartments(Department *department);
     void setDepartments(vector<Department*>* departments);
     vector<Department*>* getDepartments();
     
-    int getDepartmentsSize();
+    int getDepartmentsSize() const;
     static vector<Company*>* readData1(string path, int changed=0);
     string toString() const;
     
     void removeDepartment(int index);
-    double getMaxSalary();
-    double getMinSalary();
-    int getNumbOfWorkers();
+    double getMaxSalary() const;
+    double getMinSalary() const;
+    int getNumbOfWorkers() const;
     void write(ostream &output, Company *d);
-    string getData(int column);
+    string getData(int column) const;
 
 };
 

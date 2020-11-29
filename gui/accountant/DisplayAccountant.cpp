@@ -10,7 +10,7 @@ DisplayAccountant::DisplayAccountant(int x, int y, int w, int h, const char *l)
     maxAmountCompanyIncome->precision(2);
     this->end();
 }
-string DisplayAccountant::getType()
+string DisplayAccountant::getType() const
 {
     return "DisplayAccountant";
 }
@@ -19,13 +19,14 @@ DisplayAccountant::~DisplayAccountant()
     delete bodyIssuedPermit;
     delete maxAmountCompanyIncome;
 }
-bool DisplayAccountant::isInputsEmpty()
+bool DisplayAccountant::isInputsEmpty() const
 {
     if(!DisplayWorker::isInputsEmpty())
     {
         return false;
     }
     string a = bodyIssuedPermit->value();
+    ltrim(a);
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -54,20 +55,22 @@ void DisplayAccountant::unhide()
 
 void DisplayAccountant::setBodyIssuedPermit(string t)
 {
+    ltrim(t);
     bodyIssuedPermit->value(t.c_str());
 }
 void DisplayAccountant::setMaxAmountCompanyIncome(string t)
 {
+    ltrim(t);
     maxAmountCompanyIncome->value(stod(t));
 }
 
-string DisplayAccountant::getBodyIssuedPermit()
+string DisplayAccountant::getBodyIssuedPermit() const
 {
     string s = bodyIssuedPermit->value();
     ltrim(s);
     return s;
 }
-double DisplayAccountant::getMaxAmountCompanyIncome()
+double DisplayAccountant::getMaxAmountCompanyIncome() const
 {
     return maxAmountCompanyIncome->value();
 }

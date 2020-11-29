@@ -15,25 +15,27 @@
 #include "Array.hpp"
 
 template<typename T>
-class WorkerTable : public Fl_Table_Row, protected AbstractDisplay<T>{
+class Table : public Fl_Table_Row, protected AbstractDisplay<T>{
 protected:
     Array<T>* changed;
     virtual void draw_cell(TableContext context, int row = 0, int column = 0, int x = 0, int y = 0, int w = 0, int h = 0);
 
 public:
-    WorkerTable(int x, int y, int w, int h, Array<T>* changed, const char* l=0);
-    virtual ~WorkerTable();
-    WorkerTable();
+    Table(int x, int y, int w, int h, Array<T>* changed, const char* l=0);
+    virtual ~Table();
+    Table();
     void add(T p);
     void refreshTable();
     virtual void elementPushed(int row, T element);
     virtual void elementRemoved(int row);
+    void setArray(Array<T>* changed);
 };
 
 template<typename T>
-WorkerTable<T>::WorkerTable(int x, int y, int w, int h, Array<T>* changed, const char* l) : Fl_Table_Row(x, y, w, h, l),
+Table<T>::Table(int x, int y, int w, int h, Array<T>* changed, const char* l) : Fl_Table_Row(x, y, w, h, l),
     changed(changed)
 {
+    this->SELECT_SINGLE;
     this->end();
     col_resize_min(10);
     col_resize(1);
@@ -43,7 +45,7 @@ WorkerTable<T>::WorkerTable(int x, int y, int w, int h, Array<T>* changed, const
 }
 
 template<typename T>
-void WorkerTable<T>::draw_cell(TableContext context, int row, int column, int x, int y, int w, int h)
+void Table<T>::draw_cell(TableContext context, int row, int column, int x, int y, int w, int h)
 {
     
     switch (context)
@@ -94,14 +96,21 @@ void WorkerTable<T>::draw_cell(TableContext context, int row, int column, int x,
 }
 
 template<typename T>
-void WorkerTable<T>::elementPushed(int row, T element)
+void Table<T>::setArray(Array<T>* changed)
+{
+    this->changed = changed;
+    this->refreshTable();
+}
+
+template<typename T>
+void Table<T>::elementPushed(int row, T element)
 {
     rows(changed->numberOfRows());
     cols(changed->numberOfColumns());
 }
 
 template<typename T>
-void WorkerTable<T>::elementRemoved(int row)
+void Table<T>::elementRemoved(int row)
 {
     changed->removeRow(row);
     rows(changed->numberOfRows());
@@ -109,10 +118,10 @@ void WorkerTable<T>::elementRemoved(int row)
 }
 
 template<typename T>
-WorkerTable<T>::~WorkerTable<T>(){}
+Table<T>::~Table<T>(){}
 
 template<typename T>
-void WorkerTable<T>::add(T r)
+void Table<T>::add(T r)
 {
     this->changed->add(r);
     rows(changed->numberOfRows());
@@ -120,7 +129,7 @@ void WorkerTable<T>::add(T r)
 }
 
 template<typename T>
-void WorkerTable<T>::refreshTable()
+void Table<T>::refreshTable()
 {
     rows(changed->numberOfRows());
     cols(changed->numberOfColumns());

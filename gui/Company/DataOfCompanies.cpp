@@ -63,7 +63,7 @@ void DataOfCompanies::setDisplay(int indeks)
     updateLabel();
 }
 
-void DataOfCompanies::isCompaniesEmpty()
+void DataOfCompanies::isCompaniesEmpty() const
 {
     this->isArrayEmpty();
     if(this->sizeOfArray() == 0){
@@ -184,34 +184,9 @@ void DataOfCompanies::audits(Fl_Widget *widget, void *d)
     }
     
     Company *company2 = data->changed->getElement(intDep);
-    vector<Audit*>* audits1 = new vector<Audit*>();
-    for(int i = 0; i < company1->getDepartments()->size(); i++)
-    {
-        if(company1->getDepartments()->at(i)->isDeleted())
-        {
-            continue;
-        }
-        for(int j = 0; j < company1->getDepartments()->at(i)->getAudits()->size(); j++)
-        {
-            if(company1->getDepartments()->at(i)->getAudits()->at(j)->isDeleted())
-            {
-                continue;
-            }
-            audits1->push_back(company1->getDepartments()->at(i)->getAudits()->at(j));
-        }
-    }
+    
 
-    vector<Audit*>* audits2 = new vector<Audit*>();
-    for(int i = 0; i < company2->getDepartments()->size(); i++)
-    {
-        for(int j = 0; j < company2->getDepartments()->at(i)->getAudits()->size(); j++)
-        {
-            audits2->push_back(company2->getDepartments()->at(i)->getAudits()->at(j));
-        }
-    }
-
-    DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(), 
-        new Array<Audit*>(audits1), new Array<Audit*>(audits2),
+    DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(),
          new Array<Department*>(company1->getDepartments()), new Array<Department*>(company2->getDepartments()), data);
          
     data->hideGroup();
@@ -219,6 +194,10 @@ void DataOfCompanies::audits(Fl_Widget *widget, void *d)
 }
 
 
+int DataOfCompanies::getValueChCompany()
+{
+    return chCompany->value();
+}
 DataOfCompanies::~DataOfCompanies(){}
 
 void DataOfCompanies::add(Fl_Widget *widget, void *data)

@@ -22,11 +22,14 @@ void DisplayDepartment::displayHeadOfDepartment(AbstractWorker* worker)
     headOfDepartment->displayWorker(worker);
 }
 
-bool DisplayDepartment::isInputsEmpty()
+bool DisplayDepartment::isInputsEmpty() const
 {
     string a = name->value();
+    ltrim(a);
     string b = headOfDepartment->getValueName();
+    ltrim(b);
     string c = headOfDepartment->getValueLastName();
+    ltrim(c);
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -44,7 +47,7 @@ bool DisplayDepartment::isInputsEmpty()
     return true;
 }
 
-AbstractWorker* DisplayDepartment::getNewHeadOfDepartment()
+AbstractWorker* DisplayDepartment::getNewHeadOfDepartment() const
 {
     string type = this->getChTypeOfHead();
     if(type == "Accountant")
@@ -69,10 +72,11 @@ DisplayDepartment::~DisplayDepartment(){}
 
 void DisplayDepartment::setName(string t)
 {
+    ltrim(t);
     name->value(t.c_str());
 }
 
-string DisplayDepartment::getName()
+string DisplayDepartment::getName() const
 {
     string s = name->value();
     ltrim(s);
@@ -91,7 +95,7 @@ void DisplayDepartment::unhide() {
     headOfDepartment->unhide();
     this->chTypeOfHead->show();
 }
-string DisplayDepartment::getChTypeOfHead()
+string DisplayDepartment::getChTypeOfHead() const
 {
     if(chTypeOfHead->value() == 0)
     {

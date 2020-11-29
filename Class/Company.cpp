@@ -16,7 +16,7 @@ Company::Company(string name, string taxIdentificationNumber, string identificat
 Company::Company(string name, string taxIdentificationNumber, string identificationNumber, vector<Department*>* departments)
     : name(name), taxIdentificationNumber(taxIdentificationNumber), identificationNumber(identificationNumber), departments(departments){}
 
-string Company::getData(int column)
+string Company::getData(int column) const
 {
     if (column == 0)
     {
@@ -32,7 +32,7 @@ string Company::getData(int column)
     }
     return "";
 }
-double Company::getMaxSalary()
+double Company::getMaxSalary() const
 {
     double max = -1;
     for(int i = 0; i < departments->size(); i++)
@@ -71,7 +71,7 @@ double Company::getMaxSalary()
     }
     return max;
 }
-double Company::getMinSalary()
+double Company::getMinSalary() const
 {
     double min = -1;
     for(int i = 0; i < departments->size(); i++)
@@ -111,7 +111,7 @@ double Company::getMinSalary()
     return min;
 }
 
-int Company::getNumbOfWorkers()
+int Company::getNumbOfWorkers() const
 {
     int number = 0;
     for(int i = 0; i < departments->size(); i++)
@@ -121,25 +121,28 @@ int Company::getNumbOfWorkers()
     }
     return number;
 }
-string Company::getName() {
+string Company::getName() const {
     return name;
 }
 void Company::setName(string name) {
+    ltrim(name);
     this->name = name;
 }
-string Company::getTaxIdentificationNumber() {
+string Company::getTaxIdentificationNumber() const {
     return taxIdentificationNumber;
 }
 void Company::setTaxIdentificationNumber(string taxIdentificationNumber) {
+    ltrim(taxIdentificationNumber);
     this->taxIdentificationNumber = taxIdentificationNumber;
 }
-string Company::getIdentificationNumber() {
+string Company::getIdentificationNumber() const {
     return identificationNumber;
 }
 void Company::setIdentificationNumber(string identificationNumber) {
+    ltrim(identificationNumber);
     this->identificationNumber = identificationNumber;
 }
-Department* Company::getDepartment(int indeks) {
+Department* Company::getDepartment(int indeks) const {
     return departments->at(indeks);
 }
 void Company::pushDepartments(Department *department) {
@@ -148,7 +151,7 @@ void Company::pushDepartments(Department *department) {
 void Company::setDepartments(vector<Department*>* departments) {
     this->departments = departments;
 }
-int Company::getDepartmentsSize()
+int Company::getDepartmentsSize() const
 {
     return departments->size();
 }

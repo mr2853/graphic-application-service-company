@@ -11,10 +11,12 @@ DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0) : Fl_G
     salary->precision(2);
     this->end();
 }
-bool DisplayWorker::isInputsEmpty()
+bool DisplayWorker::isInputsEmpty() const
 {
     string a = name->value();
+    ltrim(a);
     string b = lastName->value();
+    ltrim(b);
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -38,7 +40,7 @@ bool DisplayWorker::isInputsEmpty()
     return true;
 }
 
-string DisplayWorker::getType()
+string DisplayWorker::getType() const
 {
     return "DisplayWorker";
 }
@@ -72,19 +74,19 @@ void DisplayWorker::displayWorker(AbstractWorker *worker)
     salary->value(worker->getSalary());
 }
 
-string DisplayWorker::getValueName()
+string DisplayWorker::getValueName() const
 {
     string s = name->value();
     ltrim(s);
     return s;
 }
-string DisplayWorker::getValueLastName()
+string DisplayWorker::getValueLastName() const
 {
     string s = lastName->value();
     ltrim(s);
     return s;
 }
-Date* DisplayWorker::getValueDateBirth()
+Date* DisplayWorker::getValueDateBirth() const
 {
     string t = dateBirth->value();
     ltrim(t);
@@ -140,7 +142,7 @@ Date* DisplayWorker::getValueDateBirth()
     
     return date;
 }
-double DisplayWorker::getValueSalary()
+double DisplayWorker::getValueSalary() const
 {
     return salary->value();
 }

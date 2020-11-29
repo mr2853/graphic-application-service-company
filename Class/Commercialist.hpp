@@ -18,12 +18,12 @@ public:
     Commercialist(string in, int changed);
     Commercialist(string name, string lastname, Date *dateBirth, double salary);
 
-    virtual string getType();
-    string* getContact(int indeks);
+    virtual string getType() const;
+    string* getContact(int indeks) const;
     void pushContact(string* contact);
     void setBusinessContact(vector<string*> *businessContact);
-    int getNumberOfBusinessContact();
-    string getBusinessContact(int index);
+    int getNumberOfBusinessContact() const;
+    string* getBusinessContact(int index) const;
     virtual void write(ostream &output, void *d);
     virtual void setDeleted();
 };
