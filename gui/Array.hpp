@@ -35,7 +35,6 @@ public:
     T  getElement(int in) const;
     vector<T>* arrayOfNotDeleted() const;
 };
-
 template<typename T>
 string Array<T>::getText(int row, int column) const
 {
@@ -50,9 +49,7 @@ Array<T>::Array() : AbstractTableModel<T>()
 }
 
 template<typename T>
-Array<T>::Array(vector<T> *array) : AbstractTableModel<T>(), array(array)
-{
-}
+Array<T>::Array(vector<T> *array) : AbstractTableModel<T>(), array(array){}
 
 template<typename T>
 void Array<T>::setDeleted(int index)
@@ -77,7 +74,17 @@ template<typename T>
 int Array<T>::numberOfColumns() const
 {
     string type = typeid(T).name();
-    type = type.substr(1,type.length());
+    int i = 0;
+    int last = 0;
+    while (i < type.size())
+    {
+        if(isdigit(type[i]))
+        {
+            last = i;      
+        }
+        i++;
+    }
+    type = type.substr(last+1, type.length());
     if(type == "Company")
     {
         return 3;
@@ -133,7 +140,17 @@ void Array<T>::read(istream &input) const
         T novaOsoba;
         input >> tip;
         string type = typeid(T).name();
-        type = type.substr(1,type.length());
+        int z = 0;
+        int last = 0;
+        while (z < type.size())
+        {
+            if(isdigit(type[z]))
+            {
+                last = z;      
+            }
+            z++;
+        }
+        type = type.substr(last+1, type.length());
         if (tip == type)
         {
             novaOsoba = new T();

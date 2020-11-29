@@ -19,10 +19,10 @@ using namespace std;
 
 void save(Fl_Widget *widget, void *data)
 {
-    int answer = fl_choice("Do you want to save changes and close window?", "Yes", "No", "Go back");
+    Array<Company*> *original = (Array<Company*>*)data;
+    int answer = fl_choice("Do you want to save changes before closing?", "Yes", "No", "Go back");
     if (answer == 0)
     {
-        Array<Company*> *original = (Array<Company*>*)data;
         ofstream datoteka("podaciTest.txt");
         original->write(datoteka);
         datoteka.close();
@@ -38,7 +38,7 @@ int main()
     Array<Company*> *original = new Array<Company*>(Company::readData1("podaciTest.txt"));
     Array<Company*> *changed = new Array<Company*>(Company::readData1("podaciTest.txt", 1));
 
-    Fl_Window *window = new Fl_Window(900, 700, "Projekat");
+    Fl_Window *window = new Fl_Window(900, 700, "Project");
     DataOfCompanies *dataOfCompanies = new DataOfCompanies(50, 50, 900, 700, original, changed, window, "");
     window->resizable(dataOfCompanies);
     window->end();

@@ -1,9 +1,10 @@
 #include "Util.hpp"
 #include "Class/Company.hpp"
+#include <FL/fl_message.H>
 
 vector<string> tokenization(string &line, string delimiter1, string delimiter2)
 {
-    ltrim(line);
+    trim(line, 0);
     vector<string> parts = vector<string>();
     int pos;
     while(true)
@@ -30,7 +31,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2)
     return parts;
 }
 vector<string> tokenization(string &line, string delimiter1, string delimiter2, string del3, int changed){
-    ltrim(line);
+    trim(line, 0);
     vector<string> parts = vector<string>();
     int pos;
     pos = line.find(delimiter1);
@@ -138,7 +139,7 @@ vector<string> tokenization(string &line, string delimiter1, string delimiter2, 
 };
 vector<int> getDate(string &t)
 {
-    ltrim(t);
+    trim(t, 0);
     vector<int> date = vector<int>();
 
     int index = t.find("-");
@@ -201,7 +202,7 @@ bool checkDate(string &t, int min, int max)
 }
 bool correctDate(string t, int time)
 {
-    ltrim(t);
+    trim(t, 0);
     if(time == 1){
         
         if(!checkDate(t, 0, 24)) //hour

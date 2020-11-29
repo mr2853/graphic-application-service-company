@@ -58,7 +58,12 @@ void DataOfAccountants::add(Fl_Widget *widget, void *data)
         fl_message(e.what("Date birth"));
         return;
     }
-                    
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
+
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();
     d->isArrayEmpty();
@@ -98,7 +103,11 @@ void DataOfAccountants::change(Fl_Widget *widget, void *d)
         fl_message(e.what("Date birth"));
         return;
     }
-
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     
     int counter = 0;
     for(int i = 0; i < data->original->numberOfElement(); i++)

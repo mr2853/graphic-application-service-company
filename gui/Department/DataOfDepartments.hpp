@@ -27,6 +27,8 @@ protected:
     static void details(Fl_Widget *widget, void *data);
     static void change(Fl_Widget *widget, void *data);
     static void goBack(Fl_Widget *widget, void *data);
+    static void nextElement(Fl_Widget *widget, void *data);
+    static void previousElement(Fl_Widget *widget, void *data);
     void isDepartmentsEmpty();
 public:
     DataOfDepartments(int x, int y, int w, int h, Array<Department*> *original, Array<Department*> *changed, void *mainWindow, const char *l=0);

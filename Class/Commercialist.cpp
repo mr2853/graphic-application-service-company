@@ -67,7 +67,15 @@ string* Commercialist::getContact(int indeks) const
 }
 void Commercialist::pushContact(string* contact)
 {
-    ltrim(*contact);
+    try
+    {
+        trim(*contact);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     businessContact->push_back(contact);
 }
 

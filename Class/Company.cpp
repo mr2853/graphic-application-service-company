@@ -37,38 +37,12 @@ double Company::getMaxSalary() const
     double max = -1;
     for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
+        if(max < departments->at(i)->getMaxSalary() || max == -1)
         {
-            if(max < departments->at(i)->getCommercialists()->at(j)->getSalary() || max == -1)
-            {
-                max = departments->at(i)->getCommercialists()->at(j)->getSalary();
-            }
-        }
-
-        for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
-        {
-            if(max < departments->at(i)->getAccountants()->at(j)->getSalary() || max == -1)
-            {
-                max = departments->at(i)->getAccountants()->at(j)->getSalary();
-            }
-        }
-
-        for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
-        {
-            if(max < departments->at(i)->getAuditors()->at(j)->getSalary() || max == -1)
-            {
-                max = departments->at(i)->getAuditors()->at(j)->getSalary();
-            }
+            max = departments->at(i)->getMaxSalary();
         }
     }
 
-    for(int j = 0; j < departments->size(); j++)
-    {
-        if(max < departments->at(j)->getHeadOfDepartment()->getSalary() || max == -1)
-        {
-            max = departments->at(j)->getHeadOfDepartment()->getSalary();
-        }
-    }
     return max;
 }
 double Company::getMinSalary() const
@@ -76,38 +50,12 @@ double Company::getMinSalary() const
     double min = -1;
     for(int i = 0; i < departments->size(); i++)
     {
-        for(int j = 0; j < departments->at(i)->getCommercialists()->size(); j++)
+        if(min > departments->at(i)->getMinSalary() || min == -1)
         {
-            if(min > departments->at(i)->getCommercialists()->at(j)->getSalary() || min == -1)
-            {
-                min = departments->at(i)->getCommercialists()->at(j)->getSalary();
-            }
-        }
-
-        for(int j = 0; j < departments->at(i)->getAccountants()->size(); j++)
-        {
-            if(min > departments->at(i)->getAccountants()->at(j)->getSalary() || min == -1)
-            {
-                min = departments->at(i)->getAccountants()->at(j)->getSalary();
-            }
-        }
-
-        for(int j = 0; j < departments->at(i)->getAuditors()->size(); j++)
-        {
-            if(min > departments->at(i)->getAuditors()->at(j)->getSalary() || min == -1)
-            {
-                min = departments->at(i)->getAuditors()->at(j)->getSalary();
-            }
+            min = departments->at(i)->getMinSalary();
         }
     }
-
-    for(int j = 0; j < departments->size(); j++)
-    {
-        if(min > departments->at(j)->getHeadOfDepartment()->getSalary() || min == -1)
-        {
-            min = departments->at(j)->getHeadOfDepartment()->getSalary();
-        }
-    }
+    
     return min;
 }
 
@@ -117,7 +65,6 @@ int Company::getNumbOfWorkers() const
     for(int i = 0; i < departments->size(); i++)
     {
         number += departments->at(i)->getNumbOfWorkers();
-        number += 1;
     }
     return number;
 }
@@ -125,21 +72,45 @@ string Company::getName() const {
     return name;
 }
 void Company::setName(string name) {
-    ltrim(name);
+    try
+    {
+        trim(name);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     this->name = name;
 }
 string Company::getTaxIdentificationNumber() const {
     return taxIdentificationNumber;
 }
 void Company::setTaxIdentificationNumber(string taxIdentificationNumber) {
-    ltrim(taxIdentificationNumber);
+    try
+    {
+        trim(taxIdentificationNumber);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     this->taxIdentificationNumber = taxIdentificationNumber;
 }
 string Company::getIdentificationNumber() const {
     return identificationNumber;
 }
 void Company::setIdentificationNumber(string identificationNumber) {
-    ltrim(identificationNumber);
+    try
+    {
+        trim(identificationNumber);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     this->identificationNumber = identificationNumber;
 }
 Department* Company::getDepartment(int indeks) const {
@@ -257,6 +228,16 @@ void Company::removeDepartment(int index)
 vector<Department*>* Company::getDepartments()
 {
     return departments;
+}
+
+double Company::getSumSalaries() const
+{
+    double number = 0;
+    for(int i = 0; i < departments->size(); i++)
+    {
+        number += departments->at(i)->getSumSalaries();
+    }
+    return number;
 }
 
 void Company::write(ostream &output, Company *d)

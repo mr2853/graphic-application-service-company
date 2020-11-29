@@ -1,18 +1,19 @@
 #include "DisplaySalary.hpp"
 #include <sstream>
 #include <FL/Fl_Text_Buffer.H>
+
 using namespace std;
 DisplaySalary::DisplaySalary(int x, int y, int w, int h, const char* l) : Fl_Group(x, y, w, h, l)
 {
-    boxDep1 = new Fl_Box(x, y, 300, 50);
+    boxDep1 = new Fl_Box(x, y, 1, 50);
     boxDep2 = new Fl_Box(x, y, 300, 50);
-    boxDep3 = new Fl_Box(x, y, 300, 50);
-    boxDep4 = new Fl_Box(x, y, 300, 50);
+    boxDep3 = new Fl_Box(x, y, 1, 50);
+    boxDep4 = new Fl_Box(x, y, 1, 50);
 
-    boxComp1 = new Fl_Box(x, y+80, 300, 50);
+    boxComp1 = new Fl_Box(x, y+80, 1, 50);
     boxComp2 = new Fl_Box(x, y+80, 300, 50);
-    boxComp3 = new Fl_Box(x, y+80, 300, 50);
-    boxComp4 = new Fl_Box(x, y+80, 300, 50);
+    boxComp3 = new Fl_Box(x, y+80, 1, 50);
+    boxComp4 = new Fl_Box(x, y+80, 1, 50);
 
     boxDep1->align(FL_ALIGN_LEFT);
     boxDep2->align(FL_ALIGN_RIGHT);
@@ -24,15 +25,15 @@ DisplaySalary::DisplaySalary(int x, int y, int w, int h, const char* l) : Fl_Gro
     boxComp3->align(FL_ALIGN_TOP_RIGHT);
     boxComp4->align(FL_ALIGN_BOTTOM_RIGHT);
     
-    boxDep1->box(FL_UP_BOX);
-    boxDep2->box(FL_UP_BOX);
-    boxDep3->box(FL_UP_BOX);
-    boxDep4->box(FL_UP_BOX);
+    boxDep1->box(FL_BORDER_BOX);
+    boxDep2->box(FL_BORDER_BOX);
+    boxDep3->box(FL_BORDER_BOX);
+    boxDep4->box(FL_BORDER_BOX);
 
-    boxComp1->box(FL_UP_BOX);
-    boxComp2->box(FL_UP_BOX);
-    boxComp3->box(FL_UP_BOX);
-    boxComp4->box(FL_UP_BOX);
+    boxComp1->box(FL_BORDER_BOX);
+    boxComp2->box(FL_BORDER_BOX);
+    boxComp3->box(FL_BORDER_BOX);
+    boxComp4->box(FL_BORDER_BOX);
     
     this->end();
 }
@@ -56,18 +57,18 @@ void DisplaySalary::refresh()
     
     sstream.str("");
     sstream << max1;
-    boxDep2->resize(boxDep2->x(), boxDep2->y(), boxDep2->w(), boxDep2->h());
+    // boxDep2->resize(boxDep2->x(), boxDep2->y(), boxDep2->w(), boxDep2->h());
     boxDep2->copy_label(sstream.str().c_str());
 
     sstream.str("");
     sstream << current;
-    boxDep3->resize(boxDep3->x(), boxDep3->y(), boxDep2->w() * (current / max1), boxDep3->h());
+    boxDep3->resize(boxDep2->x() + (boxDep2->w() * ((current - min1) / (max1 - min1))), boxDep3->y(), boxDep3->w(), boxDep3->h());
     boxDep3->copy_label(sstream.str().c_str());
 
 
     sstream.str("");
     sstream << average1;
-    boxDep4->resize(boxDep4->x(), boxDep4->y(), boxDep2->w() * (average1 / max1), boxDep4->h());
+    boxDep4->resize(boxDep2->x() + (boxDep2->w() * ((average1 - min1) / (max1 - min1))), boxDep4->y(), boxDep4->w(), boxDep4->h());
     boxDep4->copy_label(sstream.str().c_str());
 
     
@@ -79,18 +80,18 @@ void DisplaySalary::refresh()
     
     sstream.str("");
     sstream << max2;
-    boxComp2->resize(boxComp2->x(), boxComp2->y(), boxComp2->w(), boxComp2->h());
+    // boxComp2->resize(boxComp2->x(), boxComp2->y(), boxComp2->w(), boxComp2->h());
     boxComp2->copy_label(sstream.str().c_str());
 
     sstream.str("");
     sstream << current;
-    boxComp3->resize(boxComp3->x(), boxComp3->y(), boxComp2->w() * (current / max2), boxComp3->h());
+    boxComp3->resize(boxComp2->x() + (boxComp2->w() * ((current - min2) / (max2 - min2))), boxComp3->y(), boxComp3->w(), boxComp3->h());
     boxComp3->copy_label(sstream.str().c_str());
 
 
     sstream.str("");
     sstream << average2;
-    boxComp4->resize(boxComp4->x(), boxComp4->y(), boxComp2->w() * (average2 / max2), boxComp4->h());
+    boxComp4->resize(boxComp2->x() + (boxComp2->w() * ((average2 - min2) / (max2 - min2))), boxComp4->y(), boxComp4->w(), boxComp4->h());
     boxComp4->copy_label(sstream.str().c_str());
 }
 double DisplaySalary::getAverage1() const

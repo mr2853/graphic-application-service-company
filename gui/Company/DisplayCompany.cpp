@@ -20,11 +20,19 @@ DisplayCompany::~DisplayCompany(){}
 bool DisplayCompany::isInputsEmpty() const
 {
     string a = name->value();
-    ltrim(a);
     string b = taxIdentificationNumber->value();
-    ltrim(b);
     string c = identificationNumber->value();
-    ltrim(c);
+    try
+    {
+        trim(a);
+        trim(b);
+        trim(c);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return false;
+    }
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -59,37 +67,61 @@ bool DisplayCompany::isInputsEmpty() const
 }
 void DisplayCompany::setName(string t)
 {
-    ltrim(t);
+    try
+    {
+        trim(t);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     name->value(t.c_str());
 }
 
 string DisplayCompany::getName() const
 {
     string s = name->value();
-    ltrim(s);
+    trim(s);
     return s;
 }
 
 string DisplayCompany::getTaxIdentificationNumber() const
 {
     string s = taxIdentificationNumber->value();
-    ltrim(s);
+    trim(s);
     return s;
 }
 void DisplayCompany::setTaxIdentificationNumber(string t)
 {
-    ltrim(t);
+    try
+    {
+        trim(t);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     taxIdentificationNumber->value(t.c_str());
 }
 string DisplayCompany::getIdentificationNumber() const
 {
     string s = identificationNumber->value();
-    ltrim(s);
+    trim(s);
     return s;
 }
 void DisplayCompany::setIdentificationNumber(string t)
 {
-    ltrim(t);
+    try
+    {
+        trim(t);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     identificationNumber->value(t.c_str());
 }
 

@@ -16,7 +16,6 @@ bool DisplayCommercialist::isInputsEmpty() const
         return false;
     }
     string a = businessContact->value();
-    ltrim(a);
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -50,12 +49,11 @@ void DisplayCommercialist::unhide()
 }
 void DisplayCommercialist::setBusinessContact(string t)
 {
-    ltrim(t);
+    trim(t, 0);
     businessContact->value(t.c_str());
 }
 vector<string*>* DisplayCommercialist::getBusinessContacts() const{
     string t = this->businessContact->value();
-    ltrim(t);
     vector<string*> *contacts = new vector<string*>(0);
     if(t.empty()){
         return contacts;
@@ -64,14 +62,14 @@ vector<string*>* DisplayCommercialist::getBusinessContacts() const{
     while(t.find(",") != string::npos){
         index = t.find(",");
         string t1 = t.substr(0, index);
-        string s = ltrim(t1);
-        contacts->push_back(new string(s));
+        trim(t1, 0);
+        contacts->push_back(new string(t1));
         t.erase(0, index + 1);
     } 
     if(t.find(",") == string::npos){
         string t1 = t.substr(0, t.length());
-        string s = ltrim(t1);
-        contacts->push_back(new string(s));
+        trim(t1, 0);
+        contacts->push_back(new string(t1));
         t.erase(0, t.length());
         return contacts;
     }

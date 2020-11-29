@@ -29,7 +29,15 @@ string AbstractPerson::getName() const {
 }
 
 void AbstractPerson::setName(string name) {
-	ltrim(name);
+    try
+    {
+        trim(name);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
 	this->name = name;
 }
 
@@ -47,7 +55,15 @@ void AbstractPerson::setDeleted() {
 }
 
 void AbstractPerson::setLastname(string lastname) {
-	ltrim(lastname);
+    try
+    {
+        trim(lastname);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
 	this->lastname = lastname;
 }
 

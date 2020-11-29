@@ -37,9 +37,10 @@ DataOfAudits::DataOfAudits(int x, int y, int w, int h, Array<Department*> *origi
     chDepartment->callback(displayDep, this);
 
     this->insertDataInChDepartment();
+    this->refreshArrays(1);
     
     if(this->changed->numberOfElement() != 0){
-        this->displayAudit->displayThisAudit(this->changed->getElement(0),
+        this->displayAudit->displayThisAudit(this->changed->getElement(this->changed->numberOfElement()-1),
          this->changedDepartments->getElement(this->chDepartment->value())->getAuditors()->at(this->chAuditor->value()));
     }
     
@@ -52,6 +53,7 @@ void DataOfAudits::isEmpty()
     this->isAuditsEmpty();
     this->isAuditorsEmpty();
     this->checkButtons();
+    this->table->refreshTable();
 }
 void DataOfAudits::refreshArrays(int start)
 {
@@ -227,9 +229,10 @@ void DataOfAudits::displayDep(Fl_Widget *widget, void *d)
     data->isAuditorsEmpty();
     data->refreshArrays(1);
     if(data->changed->numberOfElement() != 0){
-        data->displayAudit->displayThisAudit(data->changed->getElement(0),
+        data->displayAudit->displayThisAudit(data->changed->getElement(data->changed->numberOfElement() - 1),
          data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value()));
     }
+    data->isEmpty();
 }
 void DataOfAudits::insertDataInChDepartment()
 {
@@ -248,10 +251,9 @@ void DataOfAudits::insertDataInChDepartment()
     chDepartment->redraw();
     if(changedDepartments->numberOfElement() != 0)
     {
-        chDepartment->value(0);
-        this->insertDataInChAuditor(changedDepartments->getElement(0)->getAuditors());
+        chDepartment->value(changedDepartments->numberOfElement() - 1);
+        this->insertDataInChAuditor(changedDepartments->getElement(chDepartment->value())->getAuditors());
     }
-    // this->refreshArrays(1);
 }
 void DataOfAudits::insertDataInChAuditor(vector<Auditor*>* auditors)
 {
@@ -272,8 +274,8 @@ void DataOfAudits::insertDataInChAuditor(vector<Auditor*>* auditors)
     
     if(auditors->size() != 0)
     {
-        chAuditor->value(0);
-        displayAudit->displayThisAuditor(auditors->at(0));
+        chAuditor->value(auditors->size() - 1);
+        displayAudit->displayThisAuditor(auditors->at(auditors->size() - 1));
     }
 }
 void DataOfAudits::goBack(Fl_Widget *widget, void *d)
@@ -302,7 +304,7 @@ void DataOfAudits::setDisplay(int indeks)
 void DataOfAudits::isAuditsEmpty() const
 {
     this->isArrayEmpty();
-    if(this->sizeOfArray() == 0){
+    if(this->sizeOfArray() == 0 || this->changedDepartments->getElement(chDepartment->value())->getAuditors()->size() == 0){
         btnChange->deactivate();
     }
     else
@@ -357,7 +359,12 @@ void DataOfAudits::add(Fl_Widget *widget, void *data)
         fl_message(e.what("Date"));
         return;
     }
-    
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
+
     int counter = 0;
     int counter1 = 0;
     bool found = false;
@@ -419,9 +426,22 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
     Auditor* head1 = data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value());
     // Auditor* head1 = data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value());
     Date oldDate = *data->getElement(data->getCurrent())->getDate();
-    if(!head1->isAvailabe(data->displayAudit->getDate()))
+    try
     {
-        fl_message("Auditor is not available at that time, please choose another time!");
+        if(!head1->isAvailabe(data->displayAudit->getDate()))
+        {
+            fl_message("Auditor is not available at that time, please choose another time!");
+            return;
+        }
+    }
+    catch(WrongDate e)
+    {
+        fl_message(e.what("Date"));
+        return;
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
         return;
     }
     depC->setDate(data->displayAudit->getDate());

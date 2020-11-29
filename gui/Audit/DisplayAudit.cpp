@@ -27,7 +27,15 @@ void DisplayAudit::displayThisAuditor(Auditor* auditor)
 bool DisplayAudit::isInputsEmpty() const
 {
     string a = date->value();
-    ltrim(a);
+    try
+    {
+        trim(a, 0);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return false;
+    }
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -35,7 +43,7 @@ bool DisplayAudit::isInputsEmpty() const
     }
     catch(EmptyInput e)
     {
-        fl_message(e.what("Name of Department"));
+        fl_message(e.what("Date"));
         return false;
     }
     return true;
@@ -64,14 +72,22 @@ DisplayAudit::~DisplayAudit(){}
 
 void DisplayAudit::setDate(string t)
 {
-    ltrim(t);
+    try
+    {
+        trim(t, 0);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     date->value(t.c_str());
 }
 
 Date* DisplayAudit::getDate() const
 {
     string t = date->value();
-    ltrim(t);
+    trim(t, 0);
     if(!correctDate(t, 1)){
         throw WrongDate();
     }

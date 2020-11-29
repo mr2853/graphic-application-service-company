@@ -33,6 +33,8 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Array<Departmen
     btnChange->callback(change, this);
     btnAdd->callback(DataOfDepartments::add, this);
     btnRemove->callback(DataOfDepartments::removeElem, this);
+    btnNext->callback(nextElement, this);
+    btnPrevious->callback(previousElement, this);
     
     if(changed->numberOfElement() != 0){
         this->setDisplay(this->getCurrent());
@@ -42,6 +44,20 @@ DataOfDepartments::DataOfDepartments(int x, int y, int w, int h, Array<Departmen
     this->checkButtons();
     this->end();
 }
+void DataOfDepartments::previousElement(Fl_Widget *widget, void *d)
+{
+    DataOfDepartments *data = (DataOfDepartments *) d;
+    DataOf<Department*>::previousElement(widget, data);
+    data->chDepartment->value(data->getCurrent());
+}
+
+void DataOfDepartments::nextElement(Fl_Widget *widget, void *d)
+{
+    DataOfDepartments *data = (DataOfDepartments *) d;
+    DataOf<Department*>::nextElement(widget, data);
+    data->chDepartment->value(data->getCurrent());
+}
+
 int DataOfDepartments::getChDepartmentValue() const
 {
     return chDepartment->value();
@@ -123,56 +139,64 @@ void DataOfDepartments::change(Fl_Widget *widget, void *d)
     }
     int current = data->getCurrent();
     Department *dep = data->changed->getRow(current);
-    dep->setName(data->displayDepartment->getName());
-    string type = data->changed->getElement(current)->getHeadOfDepartment()->getType();
-    AbstractWorker* head;
-    try{
-        head = data->displayDepartment->getNewHeadOfDepartment();
-    }
-    catch(WrongDate e)
+    try
     {
-        fl_message(e.what("Date birth"));
-        return;
-    }
-    if(type == "Accountant")
-    {
-        dep->setHeadOfDepartment(new Accountant(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
-    }
-    else if(type == "Auditor")
-    {
-        dep->setHeadOfDepartment(new Auditor(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
-    }
-    else if(type == "Commercialist")
-    {
-        dep->setHeadOfDepartment(new Commercialist(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
-    }
-
-    int counter = 0;
-    for(int i = 0; i < data->original->numberOfElement(); i++)
-    {
-        if(!data->original->getElement(i)->isDeleted())
-        {
-            if(counter == current)
-            {
-                Department *dep1 = data->original->getElement(i);
-                dep1->setName(data->displayDepartment->getName());
-
-                if(type == "Accountant")
-                {
-                    dep1->setHeadOfDepartment(new Accountant(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
-                }
-                else if(type == "Auditor")
-                {
-                    dep1->setHeadOfDepartment(new Auditor(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
-                }
-                else if(type == "Commercialist")
-                {
-                    dep1->setHeadOfDepartment(new Commercialist(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
-                }
-                break;
-            }
-            counter++;
+        dep->setName(data->displayDepartment->getName());
+        string type = data->changed->getElement(current)->getHeadOfDepartment()->getType();
+        AbstractWorker* head;
+        try{
+            head = data->displayDepartment->getNewHeadOfDepartment();
         }
+        catch(WrongDate e)
+        {
+            fl_message(e.what("Date birth"));
+            return;
+        }
+        if(type == "Accountant")
+        {
+            dep->setHeadOfDepartment(new Accountant(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+        }
+        else if(type == "Auditor")
+        {
+            dep->setHeadOfDepartment(new Auditor(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+        }
+        else if(type == "Commercialist")
+        {
+            dep->setHeadOfDepartment(new Commercialist(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+        }
+
+        int counter = 0;
+        for(int i = 0; i < data->original->numberOfElement(); i++)
+        {
+            if(!data->original->getElement(i)->isDeleted())
+            {
+                if(counter == current)
+                {
+                    Department *dep1 = data->original->getElement(i);
+                    dep1->setName(data->displayDepartment->getName());
+
+                    if(type == "Accountant")
+                    {
+                        dep1->setHeadOfDepartment(new Accountant(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+                    }
+                    else if(type == "Auditor")
+                    {
+                        dep1->setHeadOfDepartment(new Auditor(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+                    }
+                    else if(type == "Commercialist")
+                    {
+                        dep1->setHeadOfDepartment(new Commercialist(head->getName(), head->getLastname(), head->getDateBirth(), head->getSalary()));
+                    }
+                    break;
+                }
+                counter++;
+            }
+        }
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
     }
     data->table->redraw();
     data->updateChDepart();
@@ -260,17 +284,25 @@ void DataOfDepartments::add(Fl_Widget *widget, void *data)
     }
     AbstractWorker* worker;
     AbstractWorker* worker1;
-    try{
-        worker = d->displayDepartment->getNewHeadOfDepartment();
-        worker1 = d->displayDepartment->getNewHeadOfDepartment();
-    }
-    catch(WrongDate e)
+    try
     {
-        fl_message(e.what("Date birth"));
+        try{
+            worker = d->displayDepartment->getNewHeadOfDepartment();
+            worker1 = d->displayDepartment->getNewHeadOfDepartment();
+        }
+        catch(WrongDate e)
+        {
+            fl_message(e.what("Date birth"));
+            return;
+        }
+        d->table->add(new Department(worker, d->displayDepartment->getName()));
+        d->original->add(new Department(worker1, d->displayDepartment->getName()));
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
         return;
     }
-    d->table->add(new Department(worker, d->displayDepartment->getName()));
-    d->original->add(new Department(worker1, d->displayDepartment->getName()));
     d->updateChDepart();
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();

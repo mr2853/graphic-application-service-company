@@ -14,9 +14,25 @@ DisplayWorker::DisplayWorker(int x, int y, int w, int h, const char *l=0) : Fl_G
 bool DisplayWorker::isInputsEmpty() const
 {
     string a = name->value();
-    ltrim(a);
+    try
+    {
+        trim(a);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return false;
+    }
     string b = lastName->value();
-    ltrim(b);
+    try
+    {
+        trim(b);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return false;
+    }
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -77,19 +93,19 @@ void DisplayWorker::displayWorker(AbstractWorker *worker)
 string DisplayWorker::getValueName() const
 {
     string s = name->value();
-    ltrim(s);
+    trim(s);
     return s;
 }
 string DisplayWorker::getValueLastName() const
 {
     string s = lastName->value();
-    ltrim(s);
+    trim(s);
     return s;
 }
 Date* DisplayWorker::getValueDateBirth() const
 {
     string t = dateBirth->value();
-    ltrim(t);
+    trim(t, 0);
     int index = 0;
     int counter = 0;
     string check = t;

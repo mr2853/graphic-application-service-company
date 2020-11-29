@@ -46,6 +46,7 @@ public:
     int getNumbOfWorkers() const;
     void write(ostream &output, Company *d);
     string getData(int column) const;
+    double getSumSalaries() const;
 
 };
 

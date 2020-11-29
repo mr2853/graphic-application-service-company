@@ -39,6 +39,7 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "*.xpm": "cpp"
+        "*.xpm": "cpp",
+        "locale": "cpp"
     }
 }

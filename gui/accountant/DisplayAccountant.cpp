@@ -26,7 +26,15 @@ bool DisplayAccountant::isInputsEmpty() const
         return false;
     }
     string a = bodyIssuedPermit->value();
-    ltrim(a);
+    try
+    {
+        trim(a);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return false;
+    }
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -55,19 +63,35 @@ void DisplayAccountant::unhide()
 
 void DisplayAccountant::setBodyIssuedPermit(string t)
 {
-    ltrim(t);
+    try
+    {
+        trim(t);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     bodyIssuedPermit->value(t.c_str());
 }
 void DisplayAccountant::setMaxAmountCompanyIncome(string t)
 {
-    ltrim(t);
+    try
+    {
+        trim(t);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     maxAmountCompanyIncome->value(stod(t));
 }
 
 string DisplayAccountant::getBodyIssuedPermit() const
 {
     string s = bodyIssuedPermit->value();
-    ltrim(s);
+    trim(s);
     return s;
 }
 double DisplayAccountant::getMaxAmountCompanyIncome() const

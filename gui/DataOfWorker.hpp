@@ -44,10 +44,12 @@ void DataOfWorker<T>::refreshDisplaySalary()
     int chDepValue = this->dataOfDepartments->getChDepartmentValue();
     this->displaySalary->setMin1(this->dataOfDepartments->getElement(chDepValue)->getMinSalary());
     this->displaySalary->setMax1(this->dataOfDepartments->getElement(chDepValue)->getMaxSalary());
+    
     this->displaySalary->setMin2(this->company->getMinSalary());
     this->displaySalary->setMax2(this->company->getMaxSalary());
-    this->displaySalary->setAverage1(this->displaySalary->getMax1() / this->dataOfDepartments->getElement(chDepValue)->getNumbOfWorkers());
-    this->displaySalary->setAverage2(this->displaySalary->getMax2() / this->company->getNumbOfWorkers());
+    
+    this->displaySalary->setAverage1(this->dataOfDepartments->getElement(chDepValue)->getSumSalaries() / this->dataOfDepartments->getElement(chDepValue)->getNumbOfWorkers());
+    this->displaySalary->setAverage2(this->company->getSumSalaries() / this->company->getNumbOfWorkers());
 }
 template<typename T>
 DataOfWorker<T>::~DataOfWorker<T>(){}

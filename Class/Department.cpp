@@ -212,7 +212,27 @@ int Department::getNumbOfWorkers() const
     number += auditors->size();
     number += 1;
     return number;
-}  
+}
+
+double Department::getSumSalaries() const
+{
+    double number = 0;
+    for(int i = 0; i < commercialists->size(); i++)
+    {
+        number += commercialists->at(i)->getSalary();
+    }
+    for(int i = 0; i < auditors->size(); i++)
+    {
+        number += auditors->at(i)->getSalary();
+    }
+    for(int i = 0; i < accountants->size(); i++)
+    {
+        number += accountants->at(i)->getSalary();
+    }
+    number += headOfDepartment->getSalary();
+    return number;
+}
+
 AbstractWorker* Department::getHeadOfDepartment() const {
     return headOfDepartment;
 }
@@ -226,7 +246,15 @@ string Department::getName() const {
 }
 
 void Department::setName(string name) {
-    ltrim(name);
+    try
+    {
+        trim(name);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     this->name = name;
 }
 

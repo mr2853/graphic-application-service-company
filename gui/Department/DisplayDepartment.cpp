@@ -25,11 +25,19 @@ void DisplayDepartment::displayHeadOfDepartment(AbstractWorker* worker)
 bool DisplayDepartment::isInputsEmpty() const
 {
     string a = name->value();
-    ltrim(a);
     string b = headOfDepartment->getValueName();
-    ltrim(b);
     string c = headOfDepartment->getValueLastName();
-    ltrim(c);
+    try
+    {
+        trim(a);
+        trim(b);
+        trim(c);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return false;
+    }
     try{
         if(a.empty()){
             throw EmptyInput();
@@ -50,20 +58,28 @@ bool DisplayDepartment::isInputsEmpty() const
 AbstractWorker* DisplayDepartment::getNewHeadOfDepartment() const
 {
     string type = this->getChTypeOfHead();
-    if(type == "Accountant")
+    try
     {
-        return new Accountant(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
-                headOfDepartment->getValueSalary());
+        if(type == "Accountant")
+        {
+            return new Accountant(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
+                    headOfDepartment->getValueSalary());
+        }
+        else if(type == "Auditor")
+        {
+            return new Auditor(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
+                    headOfDepartment->getValueSalary());
+        }
+        else if(type == "Commercialist")
+        {
+            return new Commercialist(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
+                    headOfDepartment->getValueSalary());
+        }
     }
-    else if(type == "Auditor")
+    catch(InputContainsForbiddenCharacter e)
     {
-        return new Auditor(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
-                headOfDepartment->getValueSalary());
-    }
-    else if(type == "Commercialist")
-    {
-        return new Commercialist(headOfDepartment->getValueName(), headOfDepartment->getValueLastName(),headOfDepartment->getValueDateBirth(),
-                headOfDepartment->getValueSalary());
+        fl_message(e.what());
+        return nullptr;
     }
     return nullptr;
 }
@@ -72,14 +88,22 @@ DisplayDepartment::~DisplayDepartment(){}
 
 void DisplayDepartment::setName(string t)
 {
-    ltrim(t);
+    try
+    {
+        trim(t);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     name->value(t.c_str());
 }
 
 string DisplayDepartment::getName() const
 {
     string s = name->value();
-    ltrim(s);
+    trim(s);
     return s;
 }
 

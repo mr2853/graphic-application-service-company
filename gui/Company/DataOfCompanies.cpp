@@ -86,26 +86,33 @@ void DataOfCompanies::change(Fl_Widget *widget, void *d)
         return;
     }
     Company *dep = data->changed->getRow(data->getCurrent());
-
-    dep->setName(data->display->getName());
-    dep->setTaxIdentificationNumber(data->display->getTaxIdentificationNumber());
-    dep->setIdentificationNumber(data->display->getIdentificationNumber());
-
-    int counter = 0;
-    for(int i = 0; i < data->original->numberOfElement(); i++)
+    try
     {
-        if(!data->original->getElement(i)->isDeleted())
+        dep->setName(data->display->getName());
+        dep->setTaxIdentificationNumber(data->display->getTaxIdentificationNumber());
+        dep->setIdentificationNumber(data->display->getIdentificationNumber());
+
+        int counter = 0;
+        for(int i = 0; i < data->original->numberOfElement(); i++)
         {
-            if(counter == data->getCurrent())
+            if(!data->original->getElement(i)->isDeleted())
             {
-                Company *dep1 = data->original->getRow(i);
-                dep1->setName(data->display->getName());
-                dep1->setTaxIdentificationNumber(data->display->getTaxIdentificationNumber());
-                dep1->setIdentificationNumber(data->display->getIdentificationNumber());
-                break;
+                if(counter == data->getCurrent())
+                {
+                    Company *dep1 = data->original->getRow(i);
+                    dep1->setName(data->display->getName());
+                    dep1->setTaxIdentificationNumber(data->display->getTaxIdentificationNumber());
+                    dep1->setIdentificationNumber(data->display->getIdentificationNumber());
+                    break;
+                }
+                counter++;
             }
-            counter++;
         }
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
     }
     data->table->redraw();
     data->updateChCompany();
@@ -206,9 +213,16 @@ void DataOfCompanies::add(Fl_Widget *widget, void *data)
     {
         return;
     }
-    
-    d->table->add(new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber()));
-    d->original->add(new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber()));
+    try
+    {
+        d->table->add(new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber()));
+        d->original->add(new Company(d->display->getName(),d->display->getTaxIdentificationNumber(),d->display->getIdentificationNumber()));
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
     d->updateChCompany();
     d->setDisplay(d->changed->numberOfElement()-1);
     d->updateLabel();

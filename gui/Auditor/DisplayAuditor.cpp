@@ -43,7 +43,6 @@ void DisplayAuditor::unhide()
 }
 void DisplayAuditor::setDatesVisiting(string t)
 {
-    ltrim(t);
     datesVisiting->value(t.c_str());
 }
 

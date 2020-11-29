@@ -53,6 +53,7 @@ public:
     void write(ostream &output, Department *osobe);
     string getData(int column) const;
     int getNumbOfWorkers() const;
+    double getSumSalaries() const;
 };
 
 #endif

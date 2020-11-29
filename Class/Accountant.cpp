@@ -53,7 +53,15 @@ string Accountant::getBodyIssuedPermit() const {
 }
 
 void Accountant::setBodyIssuedPermit(string bodyIssuedPermit) {
-	ltrim(bodyIssuedPermit);
+    try
+    {
+        trim(bodyIssuedPermit);
+    }
+    catch(InputContainsForbiddenCharacter e)
+    {
+        fl_message(e.what());
+        return;
+    }
 	this->bodyIssuedPermit = bodyIssuedPermit;
 }
 
