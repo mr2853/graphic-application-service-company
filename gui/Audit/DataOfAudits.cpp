@@ -232,6 +232,10 @@ void DataOfAudits::displayDep(Fl_Widget *widget, void *d)
         data->displayAudit->displayThisAudit(data->changed->getElement(data->changed->numberOfElement() - 1),
          data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value()));
     }
+    else
+    {
+        data->displayAudit->setDate("");
+    }
     data->isEmpty();
 }
 void DataOfAudits::insertDataInChDepartment()
