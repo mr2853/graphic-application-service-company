@@ -15,9 +15,7 @@ using namespace std;
 DataOfAudits::DataOfAudits(int x, int y, int w, int h, Array<Department*> *originalDepartments, Array<Department*> *changedDepartments, void *mainWindow, const char *l)
  : DataOf(x, y, w, h, new Array<Audit*>(), new Array<Audit*>(), mainWindow, l), changedDepartments(changedDepartments), originalDepartments(originalDepartments)
  {
-    cout << "ovdde" << endl;
     this->refreshArrays();
-    cout << "ovdde1" << endl;
     chAuditor = new Fl_Choice(x+50, y, 100, 50, "Auditor:");
     chDepartment = new Fl_Choice(x+160, y, 100, 50, "Department:");
     chDepartment->align(FL_ALIGN_TOP);
@@ -40,14 +38,11 @@ DataOfAudits::DataOfAudits(int x, int y, int w, int h, Array<Department*> *origi
 
     this->insertDataInChDepartment();
     
-    cout << "ovdde2" << endl;
     if(this->changed->numberOfElement() != 0){
-        cout << this->changed->numberOfElement() << endl;
-        this->displayAudit->displayThisAudit(this->changed->getElement(0));
-        // this->refreshArrays(1);
+        this->displayAudit->displayThisAudit(this->changed->getElement(0),
+         this->changedDepartments->getElement(this->chDepartment->value())->getAuditors()->at(this->chAuditor->value()));
     }
     
-    cout << "ovdde3" << endl;
     this->isEmpty();
     this->end();
 }
@@ -60,11 +55,8 @@ void DataOfAudits::isEmpty()
 }
 void DataOfAudits::refreshArrays(int start)
 {
-    // this->original = new Array<Audit*>();
-    cout << "d1" << endl;
     Department* dep1;
     int counterDep1 = 0;
-    cout << "d2" << endl;
     for(int i = 0; i < originalDepartments->numberOfElement(); i++)
     {
         if(!originalDepartments->getElement(i)->isDeleted())
@@ -77,23 +69,19 @@ void DataOfAudits::refreshArrays(int start)
             }
             else if(chDepartment->value() == counterDep1 && start != 0)
             {
-                cout << "d3" << endl;
                 dep1 = originalDepartments->getElement(i);
-                cout << "d4" << endl;
                 counterDep1++;
                 break;
             }
             counterDep1++;
         }
     }
-    cout << "delete1" << endl;
+    
     if(counterDep1 != 0)
     {
         original = new Array<Audit*>(dep1->getAudits());
     }
 
-    // this->changed = new Array<Audit*>();
-    cout << "delete2" << endl;
     Department* dep2;
     if(changedDepartments->numberOfElement() != 0)
     {
@@ -107,9 +95,8 @@ void DataOfAudits::refreshArrays(int start)
         }
         changed = new Array<Audit*>(dep2->getAudits());
     }
-    cout << "delete4" << endl;
 
-    this->table->setArray(this->changed);
+    this->table->setArray(changed);
 
     this->updateLabel();
 }
@@ -137,33 +124,18 @@ void DataOfAudits::removeElem(Fl_Widget *widget, void *d)
     }
     for (int i = endRow; i >= startRow; i--)
     {
-        cout << "size: " << e->changed->numberOfElement() << endl;
-        // parent->getElement(parent->getCurrent())->getDepartments()->at(e->chDepartment->value())->getAudits()->at(i)->getAuditor()->removeDateVisiting(e->changed->getElement(i)->getDate());
         Auditor *changA = e->changedDepartments->getElement(e->chDepartment->value())->getAudits()->at(i)->getAuditor();
-        cout << "ovde 1." << endl;
-
-        changA->removeDateVisiting(e->changed->getElement(i)->getDate());
-        // e->changed->getElement(i)->getAuditor()->removeDateVisiting(e->changed->getElement(i)->getDate());
-        cout << "ovde 1.." << endl;
-
-        e->changedDepartments->getElement(e->chDepartment->value())->getAudits()->at(i)->getAuditor()->removeDateVisiting(e->changed->getElement(i)->getDate());
+        Date* date1 = e->changed->getElement(i)->getDate();
+        changA->removeDateVisiting(date1);
+        e->changed->getElement(i)->getAuditor()->removeDateVisiting(date1);
+        e->changedDepartments->getElement(e->chDepartment->value())->getAudits()->at(i)->getAuditor()->removeDateVisiting(date1);
         e->changedDepartments->getElement(e->chDepartment->value())->getAudits()->at(i)->setAuditor(nullptr);
-        // e->changed->getElement(i)->setAuditor(nullptr);
-        cout << "ovde 1..." << endl;
-        parent->getElement(parent->getValueChCompany())->getDepartment(e->chDepartment->value())->getAuditors()->at(e->chAuditor->value())->removeDateVisiting(e->changed->getElement(i)->getDate());
+        parent->getElement(parent->getValueChCompany())->getDepartment(e->chDepartment->value())->getAuditors()->at(e->chAuditor->value())->removeDateVisiting(date1);
         
-        // e->changed->removeRow(i);
-        cout << "ovde 1.../" << endl;
 
         e->changedDepartments->getElement(e->chDepartment->value())->getAudits()->erase(e->changedDepartments->getElement(e->chDepartment->value())->getAudits()->begin()+i);
-        // e->changed->getElement(i)->getAuditor()->removeDateVisiting(e->changed->getElement(i)->getDate());
-        // cout << "ovde 1" << endl;
-        // e->changed->getElement(i)->setAuditor(nullptr);
-        // cout << "ovde 2" << endl;
-        e->table->refreshTable();
-        // cout << "size: " << e->changed->numberOfElement() << endl;
         
-        cout << "ovde 3" << endl;
+        e->table->refreshTable();
 
         int counterA = 0;
         for(int j = 0; j < e->original->numberOfElement(); j++)
@@ -196,18 +168,24 @@ void DataOfAudits::removeElem(Fl_Widget *widget, void *d)
                         {
                             if(counter1 == e->chAuditor->value())
                             {
-                                cout << "here0" << endl;
+                                Date* date2 = e->original->getElement(counterA)->getDate();
                                 a1 = e->originalDepartments->getRow(z)->getAuditors()->at(j);
-                                cout << "here1" << endl;
-                                a1->removeDateVisiting(e->original->getElement(counterA)->getDate(), 1);
-                                cout << "here2" << endl;
-                                // e->original->getElement(counterA)->getAuditor()->removeDateVisiting(e->original->getElement(counterA)->getDate(), 1);
-
-                                // e->original->getElement(counterA)->setDeleted();
+                                a1->removeDateVisiting(date2, 1);
+                                e->original->getElement(counterA)->getAuditor()->removeDateVisiting(date2, 1);
                                 e->originalDepartments->getElement(z)->getAudits()->at(counterA)->setDeleted();
-                                e->originalDepartments->getElement(z)->getAudits()->at(counterA)->getAuditor()->removeDateVisiting(e->original->getElement(counterA)->getDate(), 1);
-                                cout << "here3" << endl;
-
+                                e->originalDepartments->getElement(z)->getAudits()->at(counterA)->getAuditor()->removeDateVisiting(date2, 1);
+                                int counterC = 0;
+                                // for(int x = 0; x < parent->getArrayOriginal()->numberOfElement(); x++)
+                                // {
+                                //     if(!parent->getArrayOriginal()->getElement(z)->isDeleted())
+                                //     {
+                                //         if(counterC == parent->getValueChCompany())
+                                //         {
+                                //             parent->getArrayOriginal()->getElement(x)->getDepartment(z)->getAuditors()->at(j)->removeDateVisiting(date2);
+                                //             break;
+                                //         }
+                                //     }
+                                // }
                                 found = true;
                                 counter = z;
                                 break;
@@ -225,19 +203,15 @@ void DataOfAudits::removeElem(Fl_Widget *widget, void *d)
         }
     }
     
-    cout << "here4" << endl;
-    cout << e->changed->numberOfElement() << endl;
     if(e->changed->numberOfElement() != 0)
     {
-        e->displayAudit->displayThisAudit(e->changed->getElement(0));
+        e->displayAudit->displayThisAudit(e->changed->getElement(0),
+         e->changedDepartments->getElement(e->chDepartment->value())->getAuditors()->at(e->chAuditor->value()));
     }
-    cout << "here5" << endl;
+    
     e->updateLabel();
     e->isEmpty();
-    cout << "here6" << endl;
     displayDep(widget, e);
-    cout << "here7" << endl;
-    // e->refreshArrays(1);
 }
 
 
@@ -249,13 +223,13 @@ void DataOfAudits::displayAud(Fl_Widget *widget, void *d)
 void DataOfAudits::displayDep(Fl_Widget *widget, void *d)
 {
     DataOfAudits *data = (DataOfAudits*)d;
-    cout << "displayDep" << endl;
     data->insertDataInChAuditor(data->changedDepartments->getElement(data->chDepartment->value())->getAuditors());
-    cout << "displayDep1" << endl;
     data->isAuditorsEmpty();
-    cout << "displayDep2" << endl;
     data->refreshArrays(1);
-    cout << "displayDep3" << endl;
+    if(data->changed->numberOfElement() != 0){
+        data->displayAudit->displayThisAudit(data->changed->getElement(0),
+         data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value()));
+    }
 }
 void DataOfAudits::insertDataInChDepartment()
 {
@@ -281,10 +255,8 @@ void DataOfAudits::insertDataInChDepartment()
 }
 void DataOfAudits::insertDataInChAuditor(vector<Auditor*>* auditors)
 {
-    cout << "insert" << endl;
     string aud = "";
     chAuditor->clear();
-    cout << "insert1" << endl;
     
     for(int i = 0; i < auditors->size(); i++)
     {
@@ -294,20 +266,14 @@ void DataOfAudits::insertDataInChAuditor(vector<Auditor*>* auditors)
         aud.append(s);
         aud.append("|");
     }
-    cout << "insert1" << endl;
-    cout << "insert" << endl;
     
     chAuditor->add(aud.c_str());
     chAuditor->redraw();
-    cout << aud << endl;
     
     if(auditors->size() != 0)
     {
-        cout << "insert3" << endl;
         chAuditor->value(0);
-        cout << "insert4" << endl;
         displayAudit->displayThisAuditor(auditors->at(0));
-        cout << "insert5" << endl;
     }
 }
 void DataOfAudits::goBack(Fl_Widget *widget, void *d)
@@ -327,7 +293,8 @@ void DataOfAudits::setDisplay(int indeks)
     if (indeks >= 0 && indeks < this->sizeOfArray())
     {
         current = indeks;
-        displayAudit->displayThisAudit(this->getElement(current));
+        displayAudit->displayThisAudit(this->getElement(current),
+         this->changedDepartments->getElement(this->chDepartment->value())->getAuditors()->at(this->chAuditor->value()));
     }
     updateLabel();
 }
@@ -355,12 +322,15 @@ void DataOfAudits::isAuditsEmpty() const
 
 void DataOfAudits::isAuditorsEmpty() const
 {
-    if(this->changedDepartments->getElement(chDepartment->value())->getAuditors()->size() == 0)
+    if(this->changedDepartments->numberOfElement() != 0)
     {
-        this->btnAdd->deactivate();
-    }
-    else{
-        this->btnAdd->activate();
+        if(this->changedDepartments->getElement(chDepartment->value())->getAuditors()->size() == 0)
+        {
+            this->btnAdd->deactivate();
+        }
+        else{
+            this->btnAdd->activate();
+        }
     }
 }
 
@@ -444,19 +414,23 @@ void DataOfAudits::change(Fl_Widget *widget, void *d)
     {
         return;
     }
-    Audit *dep = data->changed->getRow(data->getCurrent());
+    Audit *depC = data->changed->getRow(data->getCurrent());
+    // Audit *depCD = data->changedDepartments->getRow(data->chDepartment->value())->getAudits()->at(data->getCurrent());
     Auditor* head1 = data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value());
+    // Auditor* head1 = data->changedDepartments->getElement(data->chDepartment->value())->getAuditors()->at(data->chAuditor->value());
     Date oldDate = *data->getElement(data->getCurrent())->getDate();
     if(!head1->isAvailabe(data->displayAudit->getDate()))
     {
         fl_message("Auditor is not available at that time, please choose another time!");
         return;
     }
-    dep->setDate(data->displayAudit->getDate());
-    dep->getAuditor()->removeDateVisiting(&oldDate);
+    depC->setDate(data->displayAudit->getDate());
+    depC->getAuditor()->removeDateVisiting(&oldDate);
+    // depC->getAuditor()->addDateVisiting(data->displayAudit->getDate());
+    
     head1->removeDateVisiting(&oldDate);
     head1->addDateVisiting(data->displayAudit->getDate());
-    dep->setAuditor(head1);
+    depC->setAuditor(head1);
 
     int counter = 0;
     int counter1 = 0;

@@ -56,6 +56,5 @@ void DisplayAuditor::displayWorker(Auditor *worker)
         s.append(worker->getDateVisiting(i)->getDateWithTime());
         s.append(",\n");
     }
-    cout << "s: " << s << endl;
     datesVisiting->value(s.c_str());
 }

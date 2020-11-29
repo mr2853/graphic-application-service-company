@@ -58,6 +58,8 @@ Commercialist::Commercialist(string in, int changed)
     }
 }
 Commercialist::Commercialist(string name, string lastname, Date *dateBirth, double salary) : AbstractWorker(name, lastname, dateBirth, salary){}
+Commercialist::Commercialist(string name, string lastname, Date *dateBirth, double salary, vector<string*> *businessContact)
+ : AbstractWorker(name, lastname, dateBirth, salary), businessContact(businessContact){}
 
 string* Commercialist::getContact(int indeks) const
 {

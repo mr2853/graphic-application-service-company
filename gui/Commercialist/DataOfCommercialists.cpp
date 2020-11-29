@@ -60,10 +60,10 @@ void DataOfCommercialists::add(Fl_Widget *widget, void *data)
     Commercialist *novaOsoba;
     try{              
         table->add(new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
-                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary()));
+                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary(), d->displayCommercialist->getBusinessContacts()));
 
         d->original->add(new Commercialist(d->displayCommercialist->getValueName(), d->displayCommercialist->getValueLastName(),
-                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary()));
+                        d->displayCommercialist->getValueDateBirth(), d->displayCommercialist->getValueSalary(), d->displayCommercialist->getBusinessContacts()));
     }
     catch(WrongDate e)
     {

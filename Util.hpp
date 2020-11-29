@@ -25,9 +25,9 @@ vector<int> getDate(string &line);
 bool correctDate(string t, int time = 0);
 static bool checkDate(string &t, int min, int max = -1);
 
-static inline std::string &ltrim(std::string &s) {
-    s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](int c) {return !std::isspace(c);}));
-    return s;
+static inline std::string &ltrim(std::string &str) {
+   str.erase(remove_if(str.begin(), str.end(), ::isspace), str.end());
+   return str;
 }
 
 struct WrongDate : public exception {

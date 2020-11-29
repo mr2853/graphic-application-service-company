@@ -17,6 +17,7 @@ public:
     ~Commercialist();
     Commercialist(string in, int changed);
     Commercialist(string name, string lastname, Date *dateBirth, double salary);
+    Commercialist(string name, string lastname, Date *dateBirth, double salary, vector<string*> *businessContact);
 
     virtual string getType() const;
     string* getContact(int indeks) const;

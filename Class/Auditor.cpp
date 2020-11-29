@@ -82,7 +82,6 @@ void Auditor::removeDateVisiting(Date* date, int original)
         {
             if(datesVisiting->at(i)->isEqual(date))
             {
-                cout << "proslo brisanje 1" << endl;
                 datesVisiting->at(i)->setDeleted();
                 return;
             }
@@ -94,7 +93,6 @@ void Auditor::removeDateVisiting(Date* date, int original)
         {
             if(datesVisiting->at(i)->isEqual(date))
             {
-                cout << "proslo brisanje 0" << endl;
                 datesVisiting->erase(datesVisiting->begin()+i);
                 return;
             }

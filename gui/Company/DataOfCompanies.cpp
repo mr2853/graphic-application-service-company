@@ -139,7 +139,7 @@ void DataOfCompanies::unhideGroup(){
 void DataOfCompanies::details(Fl_Widget *widget, void *d)
 {
     DataOfCompanies *data = (DataOfCompanies*)d;
-    int intDep = data->chCompany->value();
+    int intComp = data->chCompany->value();
     Company *company1;
     int counter = 0;
 
@@ -147,7 +147,7 @@ void DataOfCompanies::details(Fl_Widget *widget, void *d)
     {
         if(!data->original->getElement(j)->isDeleted())
         {
-            if(counter == intDep)
+            if(counter == intComp)
             {
                 company1 = data->original->getElement(j);
             }
@@ -155,7 +155,7 @@ void DataOfCompanies::details(Fl_Widget *widget, void *d)
         }
     }
     
-    Company *company2 = data->changed->getElement(intDep);
+    Company *company2 = data->changed->getElement(intComp);
     
     DataOfDepartments *dataOfDepartments = new DataOfDepartments(data->x(),
                     data->y(), data->w(), data->h(), new Array<Department*>(company1->getDepartments()),
@@ -167,14 +167,14 @@ void DataOfCompanies::details(Fl_Widget *widget, void *d)
 void DataOfCompanies::audits(Fl_Widget *widget, void *d)
 {
     DataOfCompanies *data = (DataOfCompanies*)d;
-    int intDep = data->chCompany->value();
+    int intComp = data->chCompany->value();
     Company *company1;
     int counter = 0;
     for(int j = 0; j < data->original->numberOfElement(); j++)
     {
         if(!data->original->getElement(j)->isDeleted())
         {
-            if(counter == intDep)
+            if(counter == intComp)
             {
                 company1 = data->original->getElement(j);
                 break;
@@ -183,8 +183,7 @@ void DataOfCompanies::audits(Fl_Widget *widget, void *d)
         }
     }
     
-    Company *company2 = data->changed->getElement(intDep);
-    
+    Company *company2 = data->changed->getElement(intComp);
 
     DataOfAudits *dataOfAudits = new DataOfAudits(data->x(), data->y(), data->w(), data->h(),
          new Array<Department*>(company1->getDepartments()), new Array<Department*>(company2->getDepartments()), data);

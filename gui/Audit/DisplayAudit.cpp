@@ -13,9 +13,9 @@ DisplayAudit::DisplayAudit(int x, int y, int w, int h, const char *l)
     displayAuditor->deactivate();
     this->end();
 }
-void DisplayAudit::displayThisAudit(Audit* audit)
+void DisplayAudit::displayThisAudit(Audit* audit, Auditor* auditor)
 {
-    displayAuditor->displayWorker(audit->getAuditor());
+    this->displayThisAuditor(auditor);
     date->value(audit->getDate()->getDateWithTime().c_str());
 }
 

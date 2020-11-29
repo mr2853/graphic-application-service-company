@@ -22,7 +22,7 @@ public:
     void unhide();
     Date* getDate() const;
     void setDate(string t);
-    void displayThisAudit(Audit* audit);
+    void displayThisAudit(Audit* audit, Auditor* auditor);
     void displayThisAuditor(Auditor* worker);
     Audit* getAudit() const;
     bool isInputsEmpty() const;

@@ -162,6 +162,10 @@ vector<Company*>* Company::readData1(string path, int changed)
     ifstream in(path);
     string str;
     path = "";
+    if(!in.is_open())
+    {
+        return ret;
+    }
     while(!in.eof()){
         getline(in, str);
         path += str;
